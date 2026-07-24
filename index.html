@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presales Agent | Vodafone</title>
+<style>
+:root{
+  --vf-red:#E60000;
+  --vf-red-dark:#B10000;
+  --vf-red-light:#FFEAEA;
+  --vf-dark:#1B1B1B;
+  --vf-grey:#5A5D5E;
+  --vf-grey-light:#8A8D8E;
+  --vf-bg:#F5F6F7;
+  --vf-card:#FFFFFF;
+  --vf-border:#E5E7E9;
+  --vf-green:#0C9B4A;
+  --vf-green-bg:#E7F8ED;
+  --vf-amber:#B77A00;
+  --vf-amber-bg:#FFF4E0;
+  --vf-blue:#0A84C7;
+  --vf-blue-bg:#E6F4FB;
+  --vf-grey-bg:#F0F1F2;
+  --radius:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 6px 20px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  background:var(--vf-bg);
+  color:var(--vf-dark);
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+input,textarea,select{font-family:inherit;}
+/* Safety net: inline icon SVGs with no explicit size would otherwise render at the
+   browser's default intrinsic size. More specific rules below override this. */
+svg{width:16px;height:16px;flex-shrink:0;}
+.pill svg{width:12px;height:12px;}
+
+/* ---------- Layout ---------- */
+#app{min-height:100vh;}
+
+.topnav{
+  position:fixed;top:0;left:0;right:0;height:64px;background:#fff;
+  border-bottom:1px solid var(--vf-border);z-index:100;box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topnav-inner{max-width:1360px;margin:0 auto;height:100%;display:flex;align-items:center;gap:26px;padding:0 26px;}
+.topnav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.topnav-brand .mark{
+  width:34px;height:34px;border-radius:8px;background:var(--vf-red);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0;
+}
+.topnav-brand .txt{line-height:1.15;}
+.topnav-brand .txt b{display:block;font-size:14px;letter-spacing:.1px;}
+.topnav-brand .txt span{display:block;font-size:10.5px;color:var(--vf-grey-light);}
+.topnav-links{display:flex;gap:4px;flex:1;}
+.topnav-link{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--vf-grey);}
+.topnav-link svg{width:17px;height:17px;flex-shrink:0;}
+.topnav-link:hover{background:var(--vf-grey-bg);color:var(--vf-dark);}
+.topnav-link.active{background:var(--vf-red-light);color:var(--vf-red-dark);}
+.topnav-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+
+.main{padding-top:64px;}
+.avatar{
+  width:34px;height:34px;border-radius:50%;background:var(--vf-red);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;
+}
+.content{padding:26px;max-width:1280px;width:100%;margin:0 auto;}
+
+/* ---------- Page head ---------- */
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px;}
+.page-head h1{font-size:20px;margin:0;font-weight:800;}
+.page-head .sub{font-size:12.5px;color:var(--vf-grey);margin-top:3px;}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;border:1px solid var(--vf-border);
+  background:#fff;color:var(--vf-dark);padding:9px 15px;border-radius:8px;font-size:13.5px;font-weight:600;
+  transition:all .12s;
+}
+.btn:hover{border-color:#c8cacb;background:#fafafa;}
+.btn-primary{background:var(--vf-red);border-color:var(--vf-red);color:#fff;}
+.btn-primary:hover{background:var(--vf-red-dark);border-color:var(--vf-red-dark);}
+.btn-ghost{border-color:transparent;background:transparent;}
+.btn-ghost:hover{background:var(--vf-grey-bg);}
+.btn-sm{padding:6px 11px;font-size:12.5px;border-radius:7px;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn svg{width:15px;height:15px;}
+
+/* ---------- Cards ---------- */
+.card{background:var(--vf-card);border:1px solid var(--vf-border);border-radius:var(--radius);box-shadow:var(--shadow);}
+.card-pad{padding:20px 22px;}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.card-head h3{font-size:15px;margin:0;font-weight:700;}
+.card-head .hint{font-size:12px;color:var(--vf-grey-light);}
+
+.grid{display:grid;gap:18px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:1000px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}}
+
+/* ---------- KPI ---------- */
+.kpi{padding:18px 20px;}
+.kpi .num{font-size:26px;font-weight:800;line-height:1;}
+.kpi .lbl{font-size:12.5px;color:var(--vf-grey);margin-top:6px;}
+.kpi .delta{font-size:11.5px;margin-top:8px;display:inline-flex;gap:4px;align-items:center;padding:2px 7px;border-radius:5px;}
+.kpi-click{cursor:pointer;transition:box-shadow .12s, transform .12s;}
+.kpi-click:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.f-row-click{cursor:pointer;border-radius:6px;transition:background .12s;}
+.f-row-click:hover{background:#FAFAFA;}
+.legend-row-click,.legend-item-click{cursor:pointer;transition:background .12s;}
+.legend-row-click:hover,.legend-item-click:hover{background:var(--vf-grey-bg);}
+.delta.up{color:var(--vf-green);background:var(--vf-green-bg);}
+.delta.flat{color:var(--vf-grey);background:var(--vf-grey-bg);}
+
+/* ---------- Badges / Pills ---------- */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;}
+.pill-grey{background:var(--vf-grey-bg);color:var(--vf-grey);}
+.pill-blue{background:var(--vf-blue-bg);color:var(--vf-blue);}
+.pill-amber{background:var(--vf-amber-bg);color:var(--vf-amber);}
+.pill-green{background:var(--vf-green-bg);color:var(--vf-green);}
+.pill-red{background:var(--vf-red-light);color:var(--vf-red-dark);}
+.pill-dark{background:#2A2A2A;color:#fff;}
+.pill-teal{background:#E3F5F4;color:#0E7C86;}
+.pill-orange{background:#FDEEDC;color:#C1622B;}
+
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:8px;background:var(--vf-grey-bg);color:var(--vf-dark);border:1px solid var(--vf-border);}
+.chip-red{background:var(--vf-red-light);color:var(--vf-red-dark);border-color:#F7CACA;}
+
+.pega-num{font-family:"SF Mono",Consolas,monospace;font-weight:700;font-size:12.5px;background:var(--vf-grey-bg);padding:3px 9px;border-radius:6px;letter-spacing:.2px;white-space:nowrap;}
+.pega-num.pending{background:var(--vf-amber-bg);color:var(--vf-amber);font-family:inherit;font-weight:600;font-style:italic;}
+
+/* ---------- Table-ish list rows ---------- */
+.rowlist .row{
+  display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--vf-border);
+}
+.rowlist .row:last-child{border-bottom:none;}
+.rowlist .row:hover{background:#FAFAFA;cursor:pointer;}
+
+/* ---------- Opportunity card list (customers grid reuses this) ---------- */
+.opp-card{
+  padding:16px 18px;display:flex;flex-direction:column;gap:9px;cursor:pointer;transition:box-shadow .12s, transform .12s;
+}
+.opp-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.opp-card .oc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.opp-card .oc-name{font-weight:700;font-size:14.5px;}
+.opp-card .oc-cust{font-size:12.5px;color:var(--vf-grey);margin-top:2px;}
+.opp-card .oc-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--vf-grey);margin-top:2px;}
+.opp-card .oc-val{font-weight:700;color:var(--vf-dark);}
+
+/* ---------- Opportunities: segmented tabs + toolbar + table ---------- */
+.seg-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.seg-tab{padding:8px 14px;border-radius:20px;font-size:12.5px;font-weight:600;color:var(--vf-grey);background:#fff;border:1px solid var(--vf-border);cursor:pointer;display:flex;align-items:center;gap:7px;}
+.seg-tab:hover{border-color:#c8cacb;}
+.seg-tab.active{background:var(--vf-dark);color:#fff;border-color:var(--vf-dark);}
+.seg-tab .seg-count{background:rgba(0,0,0,.08);border-radius:10px;padding:1px 7px;font-size:11px;}
+.seg-tab.active .seg-count{background:rgba(255,255,255,.18);}
+
+.opp-toolbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+
+.opp-table{width:100%;border-collapse:collapse;}
+.opp-table thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--vf-grey-light);padding:12px 16px;border-bottom:1px solid var(--vf-border);white-space:nowrap;}
+.opp-table thead th.sortable{cursor:pointer;user-select:none;}
+.opp-table thead th.sortable:hover{color:var(--vf-grey);}
+.opp-table tbody td{padding:13px 16px;font-size:13px;border-bottom:1px solid var(--vf-border);vertical-align:middle;}
+.opp-table tbody tr:last-child td{border-bottom:none;}
+.opp-table tbody tr:hover{background:#FAFAFA;cursor:pointer;}
+.opp-table tbody td:last-child{width:20px;color:var(--vf-grey-light);}
+.opp-table tbody td:last-child svg{width:15px;height:15px;display:block;}
+
+/* ---------- Forms ---------- */
+label.field-label{display:block;font-size:12.5px;font-weight:700;color:var(--vf-grey);margin-bottom:6px;}
+.field{margin-bottom:16px;}
+.input, textarea.input, select.input{
+  width:100%;padding:10px 12px;border:1px solid var(--vf-border);border-radius:8px;font-size:13.5px;background:#fff;color:var(--vf-dark);
+}
+.input:focus, textarea.input:focus, select.input:focus{outline:none;border-color:var(--vf-red);box-shadow:0 0 0 3px rgba(230,0,0,.08);}
+textarea.input{resize:vertical;min-height:70px;}
+.field-req::after{content:" *";color:var(--vf-red);}
+.field-note{font-size:11.5px;color:var(--vf-grey-light);margin-top:5px;}
+
+/* ---------- Modal ---------- */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(20,20,20,.5);display:flex;align-items:center;justify-content:center;
+  z-index:200;padding:20px;
+}
+.modal{
+  background:#fff;border-radius:14px;width:560px;max-width:100%;max-height:88vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--vf-border);}
+.modal-head h2{font-size:16.5px;margin:0;}
+.modal-body{padding:22px;}
+.modal-foot{padding:16px 22px;border-top:1px solid var(--vf-border);display:flex;justify-content:flex-end;gap:10px;}
+.modal-close{width:30px;height:30px;border-radius:8px;border:none;background:var(--vf-grey-bg);display:flex;align-items:center;justify-content:center;color:var(--vf-grey);}
+.modal-close:hover{background:#e9e9e9;}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--vf-border);margin-bottom:20px;}
+.tab{padding:10px 16px;font-size:13.5px;font-weight:600;color:var(--vf-grey);border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab.active{color:var(--vf-red);border-color:var(--vf-red);}
+.tab:hover{color:var(--vf-dark);cursor:pointer;}
+.tab.locked{opacity:.45;cursor:not-allowed;}
+
+/* ---------- Banner ---------- */
+.banner{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:10px;margin-bottom:20px;}
+.banner-warn{background:var(--vf-amber-bg);border:1px solid #F5D999;}
+.banner-red{background:var(--vf-red-light);border:1px solid #F0B7B7;}
+.banner-info{background:var(--vf-blue-bg);border:1px solid #B9DEF0;}
+.banner .b-title{font-weight:700;font-size:13.5px;}
+.banner .b-text{font-size:12.5px;color:var(--vf-grey);margin-top:2px;}
+.banner svg{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
+
+/* ---------- Bar chart ---------- */
+.barchart{display:flex;align-items:flex-end;gap:10px;height:150px;padding-top:10px;}
+.barchart .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+.barchart .bar{width:100%;max-width:36px;background:linear-gradient(180deg,var(--vf-red),var(--vf-red-dark));border-radius:5px 5px 2px 2px;position:relative;}
+.barchart .bar-val{font-size:10.5px;font-weight:700;margin-bottom:4px;}
+.barchart .bar-lbl{font-size:11px;color:var(--vf-grey);margin-top:8px;}
+
+.stackbar{width:100%;max-width:36px;display:flex;flex-direction:column-reverse;border-radius:5px 5px 2px 2px;overflow:hidden;}
+.stackbar > div{width:100%;}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--vf-border);}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--vf-grey);}
+.legend-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0;}
+
+.funnel{display:flex;flex-direction:column;gap:8px;}
+.funnel .f-row{display:flex;align-items:center;gap:10px;}
+.funnel .f-lbl{width:120px;font-size:12px;color:var(--vf-grey);flex-shrink:0;}
+.funnel .f-bar-wrap{flex:1;background:var(--vf-grey-bg);border-radius:6px;height:22px;overflow:hidden;}
+.funnel .f-bar{height:100%;background:var(--vf-red);display:flex;align-items:center;padding-left:8px;color:#fff;font-size:11px;font-weight:700;border-radius:6px;}
+.funnel .f-num{width:26px;text-align:right;font-size:12px;font-weight:700;flex-shrink:0;}
+
+/* ---------- Avatars group ---------- */
+.avatar-sm{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10.5px;font-weight:700;flex-shrink:0;}
+
+/* ---------- Comments ---------- */
+.comment{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--vf-border);}
+.comment:last-child{border-bottom:none;}
+.comment .c-body{flex:1;}
+.comment .c-head{display:flex;align-items:center;gap:8px;font-size:12.5px;}
+.comment .c-name{font-weight:700;}
+.comment .c-time{color:var(--vf-grey-light);}
+.comment .c-text{font-size:13px;margin-top:4px;line-height:1.5;}
+.comment .c-text .mention{color:var(--vf-red);font-weight:700;}
+.comment .c-attach{margin-top:6px;}
+
+.mention-menu{position:absolute;background:#fff;border:1px solid var(--vf-border);border-radius:8px;box-shadow:var(--shadow-md);width:220px;max-height:180px;overflow-y:auto;z-index:60;}
+.mention-menu .mm-item{padding:8px 12px;font-size:13px;display:flex;align-items:center;gap:8px;}
+.mention-menu .mm-item:hover{background:var(--vf-grey-bg);cursor:pointer;}
+
+/* ---------- Documents ---------- */
+.doc-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--vf-border);border-radius:10px;margin-bottom:8px;}
+.doc-icon{width:36px;height:36px;border-radius:8px;background:var(--vf-red-light);color:var(--vf-red-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.doc-icon svg{width:18px;height:18px;}
+.doc-name{font-weight:700;font-size:13px;}
+.doc-meta{font-size:11.5px;color:var(--vf-grey-light);}
+.doc-slot{border:1.5px dashed var(--vf-border);border-radius:10px;padding:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.doc-slot .ds-l{display:flex;align-items:center;gap:12px;}
+.doc-slot .ds-name{font-weight:700;font-size:13px;}
+.doc-slot .ds-desc{font-size:11.5px;color:var(--vf-grey-light);}
+
+/* ---------- Chatbot ---------- */
+.chat-fab{
+  position:fixed;bottom:26px;right:26px;z-index:150;background:var(--vf-red);color:#fff;border:none;
+  width:56px;height:56px;border-radius:50%;box-shadow:0 8px 24px rgba(230,0,0,.35);display:flex;align-items:center;justify-content:center;
+  transition:transform .15s;
+}
+.chat-fab:hover{transform:scale(1.06);}
+.chat-fab svg{width:25px;height:25px;}
+.chat-panel{
+  position:fixed;bottom:96px;right:26px;width:370px;max-width:92vw;height:520px;max-height:75vh;background:#fff;
+  border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.28);z-index:160;display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid var(--vf-border);
+}
+.chat-head{background:var(--vf-dark);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
+.chat-head .ch-t{font-size:14px;font-weight:700;}
+.chat-head .ch-s{font-size:11px;color:#B9BBBC;margin-top:1px;}
+.chat-disclaim{font-size:10.5px;color:var(--vf-grey-light);background:var(--vf-grey-bg);padding:7px 12px;text-align:center;}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:85%;padding:9px 12px;border-radius:12px;font-size:12.8px;line-height:1.45;}
+.msg.bot{background:var(--vf-grey-bg);align-self:flex-start;border-bottom-left-radius:3px;}
+.msg.user{background:var(--vf-red);color:#fff;align-self:flex-end;border-bottom-right-radius:3px;}
+.chat-input-wrap{display:flex;gap:8px;padding:12px;border-top:1px solid var(--vf-border);}
+.chat-input-wrap input{flex:1;border:1px solid var(--vf-border);border-radius:20px;padding:9px 14px;font-size:13px;}
+.chat-input-wrap input:focus{outline:none;border-color:var(--vf-red);}
+.chat-send{width:36px;height:36px;border-radius:50%;background:var(--vf-red);color:#fff;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chat-send svg{width:16px;height:16px;}
+.chat-suggest{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;}
+.chat-suggest .sg{font-size:11px;background:#fff;border:1px solid var(--vf-border);padding:5px 10px;border-radius:14px;color:var(--vf-grey);}
+.chat-suggest .sg:hover{border-color:var(--vf-red);color:var(--vf-red);}
+
+/* ---------- Misc ---------- */
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--vf-grey);margin:22px 0 10px;}
+.section-title:first-child{margin-top:0;}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--vf-border);font-size:13px;}
+.kv:last-child{border-bottom:none;}
+.kv .k{color:var(--vf-grey);}
+.kv .v{font-weight:600;text-align:right;max-width:60%;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--vf-grey-light);}
+.empty-state svg{width:46px;height:46px;margin-bottom:10px;opacity:.5;}
+.toast{position:fixed;top:20px;right:26px;background:var(--vf-dark);color:#fff;padding:12px 18px;border-radius:9px;font-size:13px;z-index:300;box-shadow:var(--shadow-md);animation:fadein .2s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.spin{width:16px;height:16px;border:2px solid rgba(0,0,0,.15);border-top-color:var(--vf-red);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.link-btn{color:var(--vf-red);font-weight:700;font-size:13px;}
+.link-btn:hover{text-decoration:underline;}
+.searchbox{display:flex;align-items:center;gap:8px;background:var(--vf-grey-bg);border-radius:8px;padding:8px 12px;width:230px;}
+.searchbox input{border:none;background:transparent;font-size:13px;width:100%;}
+.searchbox input:focus{outline:none;}
+.searchbox svg{width:15px;height:15px;color:var(--vf-grey-light);flex-shrink:0;}
+.progress-track{height:6px;background:var(--vf-grey-bg);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--vf-red);}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script>
+/* =====================================================================
+   PRESALES AGENT — interactive prototype (mock data, client-side only)
+   ===================================================================== */
+
+/* ---------------------- ICONS ---------------------- */
+const ICONS = {
+  dashboard:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
+  briefcase:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>',
+  building:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/><path d="M10 21v-4h4v4"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>',
+  upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>',
+  chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+  send:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg>',
+  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>',
+  attach:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.4 11.5 12.4 20.5a5 5 0 0 1-7.1-7.1l9-9a3.5 3.5 0 0 1 5 5l-9 9a2 2 0 0 1-2.8-2.8l8.3-8.3"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>',
+  ban:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>',
+  arrowr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
+  clip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3"/></svg>',
+  trend:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',
+};
+function ic(name){return ICONS[name]||'';}
+
+/* ---------------------- UTIL ---------------------- */
+function uid(p){return p+'_'+Math.random().toString(36).slice(2,9);}
+function esc(s){return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtDate(iso){
+  const d=new Date(iso);
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+}
+function fmtDateTime(iso){
+  const d=new Date(iso);
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+function fmtMoney(n){return '€'+Number(n).toLocaleString('en-US');}
+function initials(name){return name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();}
+const AVATAR_COLORS=['#E60000','#0A84C7','#0C9B4A','#B77A00','#7A4FE6','#0E7C86'];
+function colorFor(seed){
+  let h=0;for(const c of String(seed)){h=(h*31+c.charCodeAt(0))>>>0;}
+  return AVATAR_COLORS[h%AVATAR_COLORS.length];
+}
+function toast(msg){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2600);
+}
+
+/* ---------------------- SEED DATA ---------------------- */
+const TEAM = [
+  {id:'t1',name:'Sarah Bennett',role:'Presales Lead',expertise:['Retail','Connectivity','SD-WAN']},
+  {id:'t2',name:'James Carter',role:'Solution Architect',expertise:['5G','Private Networks','IoT Architecture']},
+  {id:'t3',name:'Olivia Turner',role:'Presales Consultant',expertise:['Retail Analytics','Customer Experience']},
+  {id:'t4',name:'Daniel Brooks',role:'Presales Consultant',expertise:['Logistics','Fleet IoT']},
+  {id:'t5',name:'Emily Clarke',role:'Practice Lead',expertise:['Healthcare','Compliance & Security']},
+  {id:'t6',name:'Michael Reed',role:'Solution Architect',expertise:['Manufacturing','Private 5G','Predictive Maintenance']},
+];
+
+const APPROVERS = [
+  {name:'Victoria Hughes',role:'Presales Manager',email:'victoria.hughes@vodafonebusiness-demo.com'},
+  {name:'Marcus Webb',role:'Financial Approver',email:'marcus.webb@vodafonebusiness-demo.com'},
+];
+
+const SERVICE_CATALOG = {
+  'Retail':['IoT Smart Shelving & Inventory','Unified Customer Analytics Platform','Omnichannel Connectivity Suite','Managed SD-WAN for Stores'],
+  'Logistics':['Fleet Tracking IoT Platform','Private 5G Network','Supply Chain Visibility Suite','Edge Computing Nodes'],
+  'Healthcare':['Remote Patient Monitoring IoT','Secure Cloud Storage (Compliant)','Unified Communications Suite','Private APN for Devices'],
+  'Financial Services':['Fraud Detection AI Engine','Secure Private Network','Cloud Contact Center','Enterprise Data Analytics Platform'],
+  'Manufacturing':['Industrial IoT Sensors Platform','Private 5G for Factory Floor','Predictive Maintenance AI','Managed Network Security'],
+};
+
+const CUSTOMERS = [
+  {id:'c1',name:'Harrogate Retail Group',industry:'Retail',hq:'London, UK',employees:'4,200',revenue:'€3.1B',
+   overview:'Harrogate Retail Group operates 140+ supermarkets and convenience stores across the UK. Actively investing in digital transformation to modernise in-store connectivity, inventory visibility and customer analytics.',
+   priorities:['Unify store connectivity nationwide','Reduce stock-out rates via real-time inventory IoT','Launch loyalty & personalisation analytics'],
+   contacts:[{name:'Robert Hayes',title:'CIO',email:'robert.hayes@harrogateretail.co.uk',phone:'+44 20 7946 0958'},{name:'Laura Simmons',title:'Head of IT Infrastructure',email:'laura.simmons@harrogateretail.co.uk',phone:'+44 20 7946 0112'}]},
+  {id:'c2',name:'Clyde Logistics Group',industry:'Logistics',hq:'Glasgow, UK',employees:'2,600',revenue:'€1.8B',
+   overview:'Clyde Logistics Group is a national freight & distribution company with a fleet of 900+ vehicles. Looking to modernise fleet visibility and warehouse operations with connected technologies.',
+   priorities:['Real-time fleet tracking across fleet','Warehouse automation & visibility','Reduce fuel costs via route optimisation'],
+   contacts:[{name:'William Parker',title:'COO',email:'william.parker@clydelogistics.co.uk',phone:'+44 141 496 0113'},{name:'Hannah Wright',title:'IT Manager',email:'hannah.wright@clydelogistics.co.uk',phone:'+44 141 496 0771'}]},
+  {id:'c3',name:'Wessex Healthcare Group',industry:'Healthcare',hq:'Bristol, UK',employees:'5,100',revenue:'€2.4B',
+   overview:'Wessex Healthcare Group runs a network of 9 hospitals and 30 clinics across the South West. Priority is improving patient monitoring, data security compliance and internal communications across facilities.',
+   priorities:['Remote patient monitoring rollout','Strengthen data compliance & security','Unify communications across 9 hospitals'],
+   contacts:[{name:'Dr. Andrew Collins',title:'Chief Digital Officer',email:'andrew.collins@wessexhealthcare.co.uk',phone:'+44 117 496 0221'},{name:'Rachel Foster',title:'IT Director',email:'rachel.foster@wessexhealthcare.co.uk',phone:'+44 117 496 0339'}]},
+  {id:'c4',name:'Albion Merchant Bank',industry:'Financial Services',hq:'Edinburgh, UK',employees:'7,800',revenue:'€6.5B',
+   overview:'Albion Merchant Bank is a top-5 UK retail and commercial bank with 210 branches. Focused on fraud prevention, secure connectivity between branches, and elevating digital customer service channels.',
+   priorities:['Modernise fraud detection capability','Secure private network across 210 branches','Upgrade contact centre to cloud'],
+   contacts:[{name:'Thomas Walsh',title:'CTO',email:'thomas.walsh@albionbank.co.uk',phone:'+44 131 496 0334'},{name:'Sophie Ramsey',title:'Head of Digital Channels',email:'sophie.ramsey@albionbank.co.uk',phone:'+44 131 496 0556'}]},
+  {id:'c5',name:'Midland Manufacturing Group',industry:'Manufacturing',hq:'Birmingham, UK',employees:'3,300',revenue:'€1.5B',
+   overview:'Midland Manufacturing Group produces industrial equipment across 3 factories in the Midlands. Exploring Industry 4.0 investments to reduce downtime and improve production visibility.',
+   priorities:['Reduce unplanned downtime via predictive maintenance','Improve factory floor connectivity','Centralise production data'],
+   contacts:[{name:'Christopher Hall',title:'Head of Operations',email:'christopher.hall@midlandmfg.co.uk',phone:'+44 121 496 0445'}]},
+];
+
+/* Fixed "current" reference date so the whole app reads as 2025 (seed data and anything
+   created live during a demo), independent of the real system clock. */
+const APP_NOW=new Date('2025-12-15T09:00:00');
+function appNow(){return new Date(APP_NOW);}
+function daysAgo(n){const d=appNow();d.setDate(d.getDate()-n);return d.toISOString();}
+
+const OPPORTUNITIES = [
+  {id:'o1',pegaNumber:'PEGA-2025-10432',customerId:'c1',status:'Won',stage:'Won',value:4200000,
+   created:daysAgo(162),assignedTo:'t1',demandFormFileName:'PEGA_DemandForm_Harrogate_Connectivity.pdf',
+   profile:{customerContact:'Laura Simmons (Head of IT Infrastructure)',problemStatement:'Inconsistent connectivity across 140 stores causing POS downtime and lost sales during peak hours.',
+     scoring:{overall:87,band:'Hot',factors:[{label:'Strategic Fit',score:92},{label:'Budget Confirmed',score:90},{label:'Technical Fit',score:85},{label:'Competitive Position',score:80},{label:'Urgency',score:88}]},
+     internalTeam:['t1','t2']},
+   documents:[
+     {id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Harrogate_Connectivity.pdf',date:daysAgo(162),by:'Sarah Bennett'},
+     {id:uid('d'),type:'Fit Gap Analysis',fileName:'FitGap_Harrogate_Connectivity_v1.docx',date:daysAgo(150),by:'James Carter'},
+     {id:uid('d'),type:'Customer Proposal',fileName:'Proposal_Harrogate_Connectivity_Final.pptx',date:daysAgo(130),by:'Sarah Bennett'},
+     {id:uid('d'),type:'Initial Solution Architecture',fileName:'SolutionArch_Harrogate_v2.vsdx',date:daysAgo(140),by:'James Carter'},
+   ],
+   comments:[
+     {id:uid('cm'),author:'Sarah Bennett',text:'Signed off by client procurement — moving to contracting.',mentions:[],time:daysAgo(20)},
+     {id:uid('cm'),author:'James Carter',text:'@Emily Clarke please review final architecture before handover.',mentions:['Emily Clarke'],time:daysAgo(18)},
+   ],
+   cancelReason:null, aiRecommendedServices:['Managed SD-WAN for Stores','Omnichannel Connectivity Suite'],
+   approval:{requestedAt:daysAgo(128),approvers:[
+     {name:'Victoria Hughes',role:'Presales Manager',approved:true,approvedAt:daysAgo(126)},
+     {name:'Marcus Webb',role:'Financial Approver',approved:true,approvedAt:daysAgo(125)},
+   ]}},
+
+  {id:'o2',pegaNumber:'PEGA-2025-20817',customerId:'c1',status:'Discovery',stage:'Discovery',value:2650000,
+   created:daysAgo(58),assignedTo:'t3',demandFormFileName:'PEGA_DemandForm_Harrogate_Inventory.pdf',
+   profile:{customerContact:'Robert Hayes (CIO)',problemStatement:'Manual stock counts leading to ~12% stock-out rate and lost revenue during promotions.',
+     scoring:{overall:71,band:'Warm',factors:[{label:'Strategic Fit',score:78},{label:'Budget Confirmed',score:65},{label:'Technical Fit',score:74},{label:'Competitive Position',score:62},{label:'Urgency',score:76}]},
+     internalTeam:['t3','t2']},
+   documents:[
+     {id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Harrogate_Inventory.pdf',date:daysAgo(58),by:'Olivia Turner'},
+     {id:uid('d'),type:'Fit Gap Analysis',fileName:'FitGap_Harrogate_Inventory.docx',date:daysAgo(40),by:'Olivia Turner'},
+   ],
+   comments:[
+     {id:uid('cm'),author:'Olivia Turner',text:'Waiting on customer to confirm store pilot list before proposal finalization.',mentions:[],time:daysAgo(9)},
+   ],
+   cancelReason:null, aiRecommendedServices:['IoT Smart Shelving & Inventory','Unified Customer Analytics Platform']},
+
+  {id:'o3',pegaNumber:'PEGA-2025-30945',customerId:'c2',status:'Discovery',stage:'Discovery',value:1850000,
+   created:daysAgo(30),assignedTo:'t4',demandFormFileName:'PEGA_DemandForm_ClydeLogistics_Fleet.pdf',
+   profile:{customerContact:'Hannah Wright (IT Manager)',problemStatement:'No real-time visibility into fleet location leading to inefficient routing and high fuel costs.',
+     scoring:{overall:64,band:'Warm',factors:[{label:'Strategic Fit',score:70},{label:'Budget Confirmed',score:55},{label:'Technical Fit',score:68},{label:'Competitive Position',score:58},{label:'Urgency',score:69}]},
+     internalTeam:['t4']},
+   documents:[
+     {id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_ClydeLogistics_Fleet.pdf',date:daysAgo(30),by:'Daniel Brooks'},
+   ],
+   comments:[], cancelReason:null, aiRecommendedServices:['Fleet Tracking IoT Platform','Supply Chain Visibility Suite']},
+
+  {id:'o4',pegaNumber:'PEGA-2025-90233',customerId:'c2',status:'New',stage:'New',value:1450000,
+   created:daysAgo(4),assignedTo:'t4',demandFormFileName:'PEGA_DemandForm_ClydeLogistics_Warehouse.pdf',
+   profile:{customerContact:'William Parker (COO)',problemStatement:'Manual warehouse processes causing pick-pack delays and limited visibility into stock movement.',
+     scoring:{overall:61,band:'Warm',factors:[{label:'Strategic Fit',score:68},{label:'Budget Confirmed',score:52},{label:'Technical Fit',score:65},{label:'Competitive Position',score:55},{label:'Urgency',score:65}]},
+     internalTeam:['t4']},
+   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_ClydeLogistics_Warehouse.pdf',date:daysAgo(4),by:'Daniel Brooks'}],
+   comments:[], cancelReason:null, aiRecommendedServices:['Supply Chain Visibility Suite','Edge Computing Nodes']},
+
+  {id:'o5',pegaNumber:'PEGA-2025-40221',customerId:'c3',status:'Awaiting Approval',stage:'Awaiting Approval',value:3400000,
+   created:daysAgo(70),assignedTo:'t2',demandFormFileName:'PEGA_DemandForm_Wessex_RPM.pdf',
+   profile:{customerContact:'Dr. Andrew Collins (Chief Digital Officer)',problemStatement:'High readmission rates for chronic patients due to lack of remote monitoring between visits.',
+     scoring:{overall:79,band:'Hot',factors:[{label:'Strategic Fit',score:85},{label:'Budget Confirmed',score:74},{label:'Technical Fit',score:82},{label:'Competitive Position',score:70},{label:'Urgency',score:84}]},
+     internalTeam:['t2','t5']},
+   documents:[
+     {id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Wessex_RPM.pdf',date:daysAgo(70),by:'James Carter'},
+     {id:uid('d'),type:'Fit Gap Analysis',fileName:'FitGap_Wessex_RPM.docx',date:daysAgo(55),by:'Emily Clarke'},
+     {id:uid('d'),type:'Initial Solution Architecture',fileName:'SolutionArch_Wessex_RPM.vsdx',date:daysAgo(45),by:'James Carter'},
+     {id:uid('d'),type:'Customer Proposal',fileName:'Proposal_Wessex_RPM_v1.pptx',date:daysAgo(30),by:'James Carter'},
+   ],
+   comments:[
+     {id:uid('cm'),author:'Emily Clarke',text:'Compliance review complete — data residency requirements confirmed as met.',mentions:[],time:daysAgo(12)},
+   ],
+   cancelReason:null, aiRecommendedServices:['Remote Patient Monitoring IoT','Secure Cloud Storage (Compliant)'],
+   approval:{requestedAt:daysAgo(20),approvers:[
+     {name:'Victoria Hughes',role:'Presales Manager',approved:false,approvedAt:null},
+     {name:'Marcus Webb',role:'Financial Approver',approved:false,approvedAt:null},
+   ]}},
+
+  {id:'o6',pegaNumber:'PEGA-2025-50678',customerId:'c3',status:'Blocked',stage:'Blocked',value:980000,
+   created:daysAgo(140),assignedTo:'t5',demandFormFileName:'PEGA_DemandForm_Wessex_UC.pdf',
+   profile:{customerContact:'Rachel Foster (IT Director)',problemStatement:'Fragmented communication tools across 9 hospital sites causing coordination delays.',
+     scoring:{overall:48,band:'Cool',factors:[{label:'Strategic Fit',score:55},{label:'Budget Confirmed',score:40},{label:'Technical Fit',score:58},{label:'Competitive Position',score:35},{label:'Urgency',score:52}]},
+     internalTeam:['t5']},
+   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Wessex_UC.pdf',date:daysAgo(140),by:'Emily Clarke'}],
+   comments:[{id:uid('cm'),author:'Emily Clarke',text:'Blocked pending customer budget re-approval; competitor offered a lower price — revisit in 6 months.',mentions:[],time:daysAgo(95)}],
+   cancelReason:null, aiRecommendedServices:['Unified Communications Suite']},
+
+  {id:'o7',pegaNumber:'PEGA-2025-60389',customerId:'c4',status:'Discovery',stage:'Discovery',value:5100000,
+   created:daysAgo(22),assignedTo:'t6',demandFormFileName:'PEGA_DemandForm_AlbionBank_Network.pdf',
+   profile:{customerContact:'Thomas Walsh (CTO)',problemStatement:'Legacy MPLS network across 210 branches is costly and lacks modern security controls.',
+     scoring:{overall:69,band:'Warm',factors:[{label:'Strategic Fit',score:75},{label:'Budget Confirmed',score:60},{label:'Technical Fit',score:72},{label:'Competitive Position',score:63},{label:'Urgency',score:75}]},
+     internalTeam:['t6','t2']},
+   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_AlbionBank_Network.pdf',date:daysAgo(22),by:'Michael Reed'}],
+   comments:[], cancelReason:null, aiRecommendedServices:['Secure Private Network','Fraud Detection AI Engine']},
+
+  {id:'o8',pegaNumber:'PEGA-2025-70154',customerId:'c4',status:'Cancelled',stage:'Cancelled',value:1200000,
+   created:daysAgo(95),assignedTo:'t1',demandFormFileName:'PEGA_DemandForm_AlbionBank_CCM.pdf',
+   profile:{customerContact:'Sophie Ramsey (Head of Digital Channels)',problemStatement:'On-prem contact center infrastructure nearing end-of-life with high maintenance costs.',
+     scoring:{overall:39,band:'Cool',factors:[{label:'Strategic Fit',score:45},{label:'Budget Confirmed',score:30},{label:'Technical Fit',score:48},{label:'Competitive Position',score:32},{label:'Urgency',score:40}]},
+     internalTeam:['t1']},
+   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_AlbionBank_CCM.pdf',date:daysAgo(95),by:'Sarah Bennett'}],
+   comments:[], cancelReason:'Customer paused all cloud migration initiatives pending internal budget review for next fiscal year.',
+   aiRecommendedServices:['Cloud Contact Center']},
+
+  {id:'o9',pegaNumber:'PEGA-2025-90876',customerId:'c5',status:'New',stage:'New',value:980000,
+   created:daysAgo(2),assignedTo:'t6',demandFormFileName:'PEGA_DemandForm_Midland_Maintenance.pdf',
+   profile:{customerContact:'Christopher Hall (Head of Operations)',problemStatement:'Reactive maintenance approach causing unplanned downtime across production lines.',
+     scoring:{overall:58,band:'Warm',factors:[{label:'Strategic Fit',score:65},{label:'Budget Confirmed',score:48},{label:'Technical Fit',score:62},{label:'Competitive Position',score:50},{label:'Urgency',score:65}]},
+     internalTeam:['t6']},
+   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Midland_Maintenance.pdf',date:daysAgo(2),by:'Michael Reed'}],
+   comments:[], cancelReason:null, aiRecommendedServices:['Predictive Maintenance AI','Industrial IoT Sensors Platform']},
+
+  {id:'o10',pegaNumber:'PEGA-2025-80512',customerId:'c5',status:'Discovery',stage:'Discovery',value:2900000,
+   created:daysAgo(14),assignedTo:'t2',demandFormFileName:'PEGA_DemandForm_Midland_5G.pdf',
+   profile:{customerContact:'Christopher Hall (Head of Operations)',problemStatement:'Wi-Fi interference on factory floor causing connectivity drops for automated equipment.',
+     scoring:{overall:73,band:'Warm',factors:[{label:'Strategic Fit',score:80},{label:'Budget Confirmed',score:62},{label:'Technical Fit',score:78},{label:'Competitive Position',score:65},{label:'Urgency',score:80}]},
+     internalTeam:['t2']},
+   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Midland_5G.pdf',date:daysAgo(14),by:'James Carter'}],
+   comments:[], cancelReason:null, aiRecommendedServices:['Private 5G for Factory Floor','Industrial IoT Sensors Platform']},
+];
+
+const STATUS_ORDER=['New','Discovery','Awaiting Approval','Blocked','Won','Cancelled'];
+const STATUS_PILL={
+  'New':'pill-grey','Discovery':'pill-blue','Awaiting Approval':'pill-amber','Blocked':'pill-orange',
+  'Won':'pill-green','Cancelled':'pill-red'
+};
+
+/* ---------------------- PEGA NUMBER & SCORING HELPERS ---------------------- */
+function generatePegaNumber(){
+  const year=appNow().getFullYear();
+  const rand=Math.floor(10000+Math.random()*89999);
+  return `PEGA-${year}-${rand}`;
+}
+function oppLabel(o){return o.pegaNumber || 'Pending PEGA Number';}
+function computeScoring(o,c){
+  const factors=[
+    {label:'Strategic Fit',score:60+Math.round(Math.random()*35)},
+    {label:'Budget Confirmed',score:40+Math.round(Math.random()*50)},
+    {label:'Technical Fit',score:55+Math.round(Math.random()*40)},
+    {label:'Competitive Position',score:40+Math.round(Math.random()*45)},
+    {label:'Urgency',score:45+Math.round(Math.random()*45)},
+  ];
+  const overall=Math.round(factors.reduce((s,f)=>s+f.score,0)/factors.length);
+  const band= overall>=75?'Hot': overall>=55?'Warm':'Cool';
+  return {overall,band,factors};
+}
+function scoreBandPill(band){
+  return {Hot:'pill-green',Warm:'pill-amber',Cool:'pill-grey'}[band]||'pill-grey';
+}
+function scoreBadge(scoring){
+  if(!scoring) return '<span class="pill pill-grey">—</span>';
+  return `<span class="pill ${scoreBandPill(scoring.band)}">${scoring.overall} · ${esc(scoring.band)}</span>`;
+}
+function factorBarColor(score){
+  return score>=75?'var(--vf-green)':score>=55?'var(--vf-amber)':'var(--vf-grey-light)';
+}
+
+/* ---------------------- STORAGE ---------------------- */
+const STORE_KEY='presales_agent_prototype_v2';
+let DB;
+function seedDB(){
+  return {team:TEAM,customers:CUSTOMERS,opportunities:OPPORTUNITIES};
+}
+function loadDB(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return seedDB();
+}
+function saveDB(){
+  try{localStorage.setItem(STORE_KEY,JSON.stringify(DB));}catch(e){}
+}
+DB=loadDB();
+
+/* ---------------------- ROUTER STATE ---------------------- */
+let ROUTE={page:'dashboard',id:null};
+let CURRENT_USER={name:'Basma G.',role:'Presales Agent'};
+
+function go(page,id){ROUTE={page,id:id||null};render();window.scrollTo(0,0);}
+
+/* ---------------------- HELPERS ---------------------- */
+function getOpp(id){return DB.opportunities.find(o=>o.id===id);}
+function getCustomer(id){return DB.customers.find(c=>c.id===id);}
+function getTeamMember(id){return DB.team.find(t=>t.id===id);}
+function oppsForCustomer(cid){return DB.opportunities.filter(o=>o.customerId===cid);}
+function pipelineValue(list){return list.filter(o=>o.status!=='Cancelled').reduce((s,o)=>s+o.value,0);}
+
+function avatarSm(name){
+  return `<div class="avatar-sm" style="background:${colorFor(name)}" title="${esc(name)}">${initials(name)}</div>`;
+}
+
+function statusPill(status){
+  return `<span class="pill ${STATUS_PILL[status]||'pill-grey'}">${esc(status)}</span>`;
+}
+function pegaBadge(o){
+  return o.pegaNumber
+    ? `<span class="pega-num">${esc(o.pegaNumber)}</span>`
+    : `<span class="pega-num pending">Pending</span>`;
+}
+
+/* ================= RENDER: SHELL ================= */
+function render(){
+  const app=document.getElementById('app');
+  app.innerHTML=`
+    ${renderTopNav()}
+    <div class="main">
+      <div class="content">${renderPage()}</div>
+    </div>
+    ${renderChatFab()}
+    ${window.__chatOpen?renderChatPanel():''}
+  `;
+  attachGlobalHandlers();
+}
+
+function renderTopNav(){
+  const items=[
+    {p:'dashboard',label:'Dashboard',icon:'dashboard'},
+    {p:'opportunities',label:'Opportunities',icon:'briefcase'},
+    {p:'customers',label:'Customers',icon:'building'},
+  ];
+  const isActive=(p)=>{
+    if(ROUTE.page===p) return true;
+    if(p==='opportunities'&&ROUTE.page==='opportunity') return true;
+    if(p==='customers'&&ROUTE.page==='customer') return true;
+    return false;
+  };
+  return `
+  <div class="topnav">
+    <div class="topnav-inner">
+      <div class="topnav-brand">
+        <div class="mark">V!</div>
+        <div class="txt"><b>Presales Agent</b><span>Vodafone Business</span></div>
+      </div>
+      <div class="topnav-links">
+        ${items.map(it=>`
+          <div class="topnav-link ${isActive(it.p)?'active':''}" data-nav="${it.p}">
+            ${ic(it.icon)}<span>${it.label}</span>
+          </div>`).join('')}
+      </div>
+      <div class="topnav-right">
+        <div class="searchbox">${ic('search')}<input placeholder="Search PEGA #, customer..." id="globalSearch"></div>
+        <div class="avatar" title="${esc(CURRENT_USER.name)}">${initials(CURRENT_USER.name)}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageTitle(){
+  if(ROUTE.page==='dashboard') return ['Dashboard','Team performance, pipeline health & AI insights'];
+  if(ROUTE.page==='customers') return ['Customers','Accounts, company briefs and opportunity history'];
+  return ['Presales Agent',''];
+}
+function pageHead(){
+  const [t,sub]=pageTitle();
+  return `<div class="page-head"><div><h1>${esc(t)}</h1>${sub?`<div class="sub">${esc(sub)}</div>`:''}</div></div>`;
+}
+
+function renderPage(){
+  if(ROUTE.page==='dashboard') return pageHead()+renderDashboard();
+  if(ROUTE.page==='opportunities') return renderOpportunitiesList();
+  if(ROUTE.page==='opportunity') return renderOpportunityDetail(ROUTE.id);
+  if(ROUTE.page==='customers') return pageHead()+renderCustomersList();
+  if(ROUTE.page==='customer') return renderCustomerDetail(ROUTE.id);
+  return '<div class="empty-state">Page not found</div>';
+}
+
+/* ================= DASHBOARD ================= */
+function renderDashboard(){
+  const opps=DB.opportunities;
+  const active=opps.filter(o=>!['Won','Cancelled'].includes(o.status));
+  const won=opps.filter(o=>o.status==='Won');
+  const totalPipeline=pipelineValue(opps);
+  const winRate=Math.round(100*won.length/Math.max(1,opps.filter(o=>['Won','Cancelled'].includes(o.status)).length));
+
+  // Team workload
+  const teamRows=DB.team.map(tm=>{
+    const mine=opps.filter(o=>o.assignedTo===tm.id);
+    const activeMine=mine.filter(o=>!['Won','Cancelled'].includes(o.status));
+    const value=pipelineValue(mine);
+    return {tm,total:mine.length,active:activeMine.length,value};
+  }).sort((a,b)=>b.value-a.value);
+
+  // Lead status funnel
+  const funnelStages=['New','Discovery','Awaiting Approval','Won'];
+  const maxCount=Math.max(1,...funnelStages.map(s=>opps.filter(o=>o.status===s).length));
+
+  // Months window (last 6 months incl current)
+  const months=[];
+  const now=appNow();
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push({key:d.getFullYear()+'-'+d.getMonth(),label:d.toLocaleDateString('en-GB',{month:'short'})});
+  }
+
+  // Demand Trend by Service Requested (stacked)
+  const allServiceCounts={};
+  opps.forEach(o=>o.aiRecommendedServices.forEach(s=>{allServiceCounts[s]=(allServiceCounts[s]||0)+1;}));
+  const topServices=Object.entries(allServiceCounts).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>e[0]);
+  const svcColor={};topServices.forEach(s=>svcColor[s]=colorFor(s));
+  const monthData=months.map(m=>{
+    const inMonth=opps.filter(o=>{const d=new Date(o.created);return (d.getFullYear()+'-'+d.getMonth())===m.key;});
+    const segs=topServices.map(s=>({service:s,count:inMonth.filter(o=>o.aiRecommendedServices.includes(s)).length}));
+    const otherCount=inMonth.reduce((sum,o)=>sum+o.aiRecommendedServices.filter(s=>!topServices.includes(s)).length,0);
+    return {segs,other:otherCount,total:segs.reduce((s,x)=>s+x.count,0)+otherCount};
+  });
+  const maxStack=Math.max(1,...monthData.map(m=>m.total));
+  const hasOtherServices=Object.keys(allServiceCounts).length>topServices.length;
+
+  // AI recommended services aggregate (current active opps) — by pipeline value
+  const svcValue={};
+  active.forEach(o=>o.aiRecommendedServices.forEach(s=>{svcValue[s]=(svcValue[s]||0)+o.value;}));
+  const svcSorted=Object.entries(svcValue).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const svcTotal=svcSorted.reduce((s,[,v])=>s+v,0);
+  const svcDonutData=svcSorted.map(([s,v])=>({label:s,value:v,color:colorFor(s)}));
+
+  return `
+  <div class="grid grid-4" style="margin-bottom:18px;">
+    <div class="card kpi kpi-click" data-goactive="1"><div class="num">${active.length}</div><div class="lbl">Active Opportunities</div></div>
+    <div class="card kpi kpi-click" data-goactive="1"><div class="num">${fmtMoney(totalPipeline)}</div><div class="lbl">Open Pipeline Value</div><span class="delta up">${ic('trend')} Excl. cancelled</span></div>
+    <div class="card kpi kpi-click" data-goclosed="1"><div class="num">${winRate}%</div><div class="lbl">Win Rate</div></div>
+    <div class="card kpi kpi-click" data-goscore="Hot"><div class="num">${opps.filter(o=>o.profile.scoring&&o.profile.scoring.band==='Hot').length}</div><div class="lbl">Hot Opportunities</div><span class="delta up">High scoring</span></div>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:18px;">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Team Workload</h3><span class="hint">By assigned pipeline value</span></div>
+      <div class="rowlist">
+        ${teamRows.map(r=>`
+          <div class="row" data-goassignee="${r.tm.id}">
+            ${avatarSm(r.tm.name)}
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13px;">${esc(r.tm.name)}</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">${esc(r.tm.role)} · ${r.active} active / ${r.total} total</div>
+            </div>
+            <div style="text-align:right;font-weight:700;font-size:13px;">${fmtMoney(r.value)}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-head"><h3>Lead Status</h3><span class="hint">Opportunity funnel</span></div>
+      <div class="funnel">
+        ${funnelStages.map(s=>{
+          const c=opps.filter(o=>o.status===s).length;
+          const pct=Math.round(100*c/maxCount);
+          return `<div class="f-row f-row-click" data-gostatus="${esc(s)}">
+            <div class="f-lbl">${esc(s)}</div>
+            <div class="f-bar-wrap"><div class="f-bar" style="width:${pct}%"></div></div>
+            <div class="f-num">${c}</div>
+          </div>`;
+        }).join('')}
+        <div class="f-row f-row-click" data-gostatus="Blocked"><div class="f-lbl">Blocked</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*opps.filter(o=>o.status==='Blocked').length/maxCount)}%;background:#E08A3E"></div></div><div class="f-num">${opps.filter(o=>o.status==='Blocked').length}</div></div>
+        <div class="f-row f-row-click" data-gostatus="Cancelled"><div class="f-lbl">Cancelled</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*opps.filter(o=>o.status==='Cancelled').length/maxCount)}%;background:#C94B4B"></div></div><div class="f-num">${opps.filter(o=>o.status==='Cancelled').length}</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Demand Trend — Services Requested</h3><span class="hint">New opportunities per month, by service</span></div>
+      <div class="barchart">
+        ${months.map((m,i)=>{
+          const md=monthData[i];
+          const segsHtml=md.segs.filter(s=>s.count>0).map(s=>`<div style="height:${Math.round(100*s.count/maxStack)}%;background:${svcColor[s.service]}" title="${esc(s.service)}: ${s.count}"></div>`).join('');
+          const otherHtml=md.other>0?`<div style="height:${Math.round(100*md.other/maxStack)}%;background:var(--vf-grey-light)" title="Other: ${md.other}"></div>`:'';
+          return `
+          <div class="bar-col">
+            <div class="bar-val">${md.total}</div>
+            <div class="stackbar" style="height:${Math.max(6,Math.round(100*md.total/maxStack))}%">${segsHtml}${otherHtml}</div>
+            <div class="bar-lbl">${m.label}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${topServices.length?`
+      <div class="legend">
+        ${topServices.map(s=>`<div class="legend-item legend-item-click" data-goservice="${esc(s)}"><span class="legend-dot" style="background:${svcColor[s]}"></span>${esc(s)}</div>`).join('')}
+        ${hasOtherServices?`<div class="legend-item"><span class="legend-dot" style="background:var(--vf-grey-light)"></span>Other</div>`:''}
+      </div>`:''}
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-head"><h3>AI Recommended Services</h3><span class="hint">Share of pipeline value, active opportunities</span></div>
+      ${svcDonutData.length? renderDonutChart(svcDonutData) : `<div class="empty-state">No recommendations yet</div>`}
+    </div>
+  </div>
+  `;
+}
+
+function renderDonutChart(data,size){
+  size=size||158;
+  const total=data.reduce((s,d)=>s+d.value,0)||1;
+  let cursor=0;
+  const stops=data.map(d=>{
+    const pct=100*d.value/total;
+    const stop=`${d.color} ${cursor}% ${cursor+pct}%`;
+    cursor+=pct;
+    return stop;
+  });
+  return `
+  <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
+    <div style="width:${size}px;height:${size}px;border-radius:50%;background:conic-gradient(${stops.join(', ')});position:relative;flex-shrink:0;">
+      <div style="position:absolute;inset:19%;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+        <div style="font-size:14px;font-weight:800;">${fmtMoney(total)}</div>
+        <div style="font-size:9.5px;color:var(--vf-grey-light);">Total Value</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:9px;">
+      ${data.map(d=>`
+        <div class="legend-row-click" data-goservice="${esc(d.label)}" style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:4px 6px;margin:-4px -6px;border-radius:6px;">
+          <span style="display:flex;align-items:center;gap:7px;min-width:0;"><span class="legend-dot" style="background:${d.color}"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(d.label)}</span></span>
+          <span style="font-weight:700;color:var(--vf-grey);white-space:nowrap;">${fmtMoney(d.value)}</span>
+        </div>`).join('')}
+    </div>
+  </div>
+  `;
+}
+
+/* ================= OPPORTUNITIES LIST (redesigned) ================= */
+function renderOpportunitiesList(){
+  const q=(window.__oppFilter||{});
+  const sort=window.__oppSort||{key:'created',dir:'desc'};
+  let list=DB.opportunities.slice();
+  if(q.status) list=list.filter(o=>o.status===q.status);
+  if(q.statusIn) list=list.filter(o=>q.statusIn.includes(o.status));
+  if(q.excludeStatuses) list=list.filter(o=>!q.excludeStatuses.includes(o.status));
+  if(q.assignedTo) list=list.filter(o=>o.assignedTo===q.assignedTo);
+  if(q.scoreBand) list=list.filter(o=>o.profile.scoring && o.profile.scoring.band===q.scoreBand);
+  if(q.service) list=list.filter(o=>o.aiRecommendedServices.includes(q.service));
+  if(q.text){
+    const t=q.text.toLowerCase();
+    list=list.filter(o=>(o.pegaNumber&&o.pegaNumber.toLowerCase().includes(t))||getCustomer(o.customerId).name.toLowerCase().includes(t));
+  }
+  list.sort((a,b)=>{
+    let av,bv;
+    if(sort.key==='value'){av=a.value;bv=b.value;}
+    else {av=new Date(a.created).getTime();bv=new Date(b.created).getTime();}
+    return sort.dir==='asc'? av-bv : bv-av;
+  });
+  const sortArrow=(key)=> sort.key===key ? (sort.dir==='asc'?' ▲':' ▼') : '';
+
+  const extraFilterLabels=[];
+  if(q.excludeStatuses) extraFilterLabels.push('Open pipeline');
+  if(q.statusIn) extraFilterLabels.push(q.statusIn.join(' + '));
+  if(q.scoreBand) extraFilterLabels.push(`${q.scoreBand} score`);
+  if(q.service) extraFilterLabels.push(`Service: ${q.service}`);
+  if(q.assignedTo) extraFilterLabels.push(`Assigned: ${getTeamMember(q.assignedTo).name}`);
+
+  return `
+  <div class="page-head">
+    <div><h1>Opportunities</h1><div class="sub">Every active and historical opportunity in one place</div></div>
+    <button class="btn btn-primary" id="btnNewOpp">${ic('plus')} New Opportunity</button>
+  </div>
+
+  ${extraFilterLabels.length?`
+  <div class="banner banner-info" style="margin-bottom:16px;padding:10px 14px;">
+    ${ic('info')}
+    <div style="flex:1;font-size:12.5px;"><b>Showing:</b> ${extraFilterLabels.map(esc).join(', ')}</div>
+    <button class="btn btn-sm" id="btnClearFilters">Clear filters</button>
+  </div>`:''}
+
+  <div class="seg-tabs">
+    <div class="seg-tab ${!q.status?'active':''}" data-setstatus="">All <span class="seg-count">${DB.opportunities.length}</span></div>
+    ${STATUS_ORDER.map(s=>`<div class="seg-tab ${q.status===s?'active':''}" data-setstatus="${s}">${s} <span class="seg-count">${DB.opportunities.filter(o=>o.status===s).length}</span></div>`).join('')}
+  </div>
+
+  <div class="opp-toolbar">
+    <div class="searchbox" style="width:280px;">${ic('search')}<input id="oppSearch" placeholder="Search PEGA #, customer..." value="${esc(q.text||'')}"></div>
+    <select id="fAssignee" class="input" style="width:200px;">
+      <option value="">All team members</option>
+      ${DB.team.map(t=>`<option value="${t.id}" ${q.assignedTo===t.id?'selected':''}>${t.name}</option>`).join('')}
+    </select>
+  </div>
+
+  <div class="card">
+    ${list.length? `
+    <table class="opp-table">
+      <thead><tr>
+        <th>Customer</th><th>PEGA Number</th><th>Assigned To</th><th>Score</th>
+        <th class="sortable" data-sort="value">Value${sortArrow('value')}</th>
+        <th class="sortable" data-sort="created">Created${sortArrow('created')}</th>
+        <th>Status</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${list.map(o=>{
+          const c=getCustomer(o.customerId);
+          const assignee=getTeamMember(o.assignedTo);
+          return `
+          <tr data-openopp="${o.id}">
+            <td>${esc(c.name)}</td>
+            <td>${pegaBadge(o)}</td>
+            <td style="white-space:nowrap;">${esc(assignee.name)}</td>
+            <td>${scoreBadge(o.profile.scoring)}</td>
+            <td>${o.value?fmtMoney(o.value):'—'}</td>
+            <td>${fmtDate(o.created)}</td>
+            <td>${statusPill(o.status)}</td>
+            <td>${ic('arrowr')}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>` : `<div class="empty-state">${ic('briefcase')}<div>No opportunities match your filters.</div></div>`}
+  </div>
+  `;
+}
+
+/* ================= OPPORTUNITY DETAIL ================= */
+let ACTIVE_TAB='profile';
+function renderOpportunityDetail(id){
+  const o=getOpp(id);
+  if(!o) return `<div class="empty-state">Opportunity not found. <a class="link-btn" data-nav="opportunities">Back to list</a></div>`;
+  const c=getCustomer(o.customerId);
+  const assignee=getTeamMember(o.assignedTo);
+
+  return `
+  <div style="margin-bottom:14px;">
+    <a data-nav="opportunities" class="link-btn" style="display:inline-flex;align-items:center;gap:5px;">&larr; All opportunities</a>
+  </div>
+
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <h2 style="font-size:17px;margin:0;"><a class="link-btn" data-nav-customer="${c.id}" style="font-size:inherit;">${esc(c.name)}</a></h2>
+          ${statusPill(o.status)}
+        </div>
+        <div style="color:var(--vf-grey);font-size:13px;margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          ${pegaBadge(o)} · ${esc(c.industry)} · Created ${fmtDate(o.created)}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <div style="font-size:12px;color:var(--vf-grey);">Assigned to</div>
+        <select class="input" style="width:auto;" id="assignSelect" data-oppid="${o.id}">
+          ${DB.team.map(t=>`<option value="${t.id}" ${o.assignedTo===t.id?'selected':''}>${t.name}</option>`).join('')}
+        </select>
+        <select class="input" style="width:auto;" id="statusSelect" data-oppid="${o.id}">
+          ${STATUS_ORDER.map(s=>`<option value="${s}" ${o.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+        <div style="font-weight:700;font-size:16px;">${o.value?fmtMoney(o.value):'—'}</div>
+      </div>
+    </div>
+  </div>
+
+  ${o.status==='Cancelled'?`
+  <div class="banner banner-red">
+    ${ic('ban')}
+    <div><div class="b-title">Opportunity Cancelled</div><div class="b-text"><b>Reason:</b> ${esc(o.cancelReason||'—')}</div></div>
+  </div>`:''}
+
+  <div class="tabs">
+    <div class="tab ${ACTIVE_TAB==='profile'?'active':''}" data-tab="profile">Profile</div>
+    <div class="tab ${ACTIVE_TAB==='documents'?'active':''}" data-tab="documents">Documents</div>
+    <div class="tab ${ACTIVE_TAB==='comments'?'active':''}" data-tab="comments">Comments</div>
+  </div>
+
+  ${ACTIVE_TAB==='profile'?renderOppProfileTab(o,c):''}
+  ${ACTIVE_TAB==='documents'?renderOppDocumentsTab(o):''}
+  ${ACTIVE_TAB==='comments'?renderOppCommentsTab(o):''}
+  `;
+}
+
+function renderOppProfileTab(o,c){
+  const internal=o.profile.internalTeam.map(tid=>getTeamMember(tid)).filter(Boolean);
+  const sc=o.profile.scoring;
+  return `
+  <div class="grid grid-2">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Opportunity Profile</h3><span class="hint">Auto-populated from demand form</span></div>
+      <div class="kv"><div class="k">PEGA Number</div><div class="v">${esc(o.pegaNumber)}</div></div>
+      <div class="kv"><div class="k">Customer</div><div class="v">${esc(c.name)}</div></div>
+      <div class="kv"><div class="k">Customer Contact</div><div class="v">${esc(o.profile.customerContact||'—')}</div></div>
+      <div class="kv"><div class="k">Internal Team</div><div class="v">${internal.length?internal.map(t=>esc(t.name)).join(', '):'—'}</div></div>
+      <div class="kv"><div class="k">Source Document</div><div class="v">${esc(o.demandFormFileName)}</div></div>
+
+      <div class="section-title">Problem Statement</div>
+      <div style="font-size:13px;line-height:1.6;">${esc(o.profile.problemStatement||'—')}</div>
+
+      ${o.aiRecommendedServices.length?`
+      <div class="section-title">AI Recommended Services</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${o.aiRecommendedServices.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div>`:''}
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-head"><h3>Opportunity Scoring</h3><span class="hint">Model-assisted qualification score</span></div>
+      ${sc?`
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <div style="font-size:34px;font-weight:800;line-height:1;">${sc.overall}</div>
+        <span class="pill ${scoreBandPill(sc.band)}" style="font-size:12.5px;">${esc(sc.band)}</span>
+      </div>
+      ${sc.factors.map(f=>`
+        <div style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+            <span>${esc(f.label)}</span><span style="color:var(--vf-grey-light);font-weight:700;">${f.score}</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:${f.score}%;background:${factorBarColor(f.score)}"></div></div>
+        </div>`).join('')}
+      `:`<div class="empty-state">${ic('spark')}<div>Scoring not yet available.</div></div>`}
+
+      <div class="section-title">Company Brief</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px;">${esc(c.overview)}</div>
+      <div class="kv"><div class="k">Industry</div><div class="v">${esc(c.industry)}</div></div>
+      <div class="kv"><div class="k">HQ</div><div class="v">${esc(c.hq)}</div></div>
+      <div class="kv"><div class="k">Annual Revenue</div><div class="v">${esc(c.revenue)}</div></div>
+      <div style="margin-top:14px;">
+        <a class="link-btn" data-nav-customer="${c.id}">View full customer profile &rarr;</a>
+      </div>
+    </div>
+  </div>
+  ${renderScheduledReportCard(o)}
+  `;
+}
+
+function renderScheduledReportCard(o){
+  const sr=o.scheduledReport;
+  return `
+  <div class="card card-pad" style="margin-top:18px;">
+    <div class="card-head"><h3>Scheduled Report</h3><span class="hint">Recurring status report delivery</span></div>
+    ${sr?`
+    <div class="kv"><div class="k">Frequency</div><div class="v">${esc(sr.frequency)}</div></div>
+    <div class="kv"><div class="k">Format</div><div class="v">${sr.format==='xlsx'?'Excel':'PowerPoint'}</div></div>
+    <div class="kv"><div class="k">Next Run</div><div class="v">${fmtDate(sr.nextRun)}</div></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-sm" data-runschedulenow="${o.id}">${ic('send')} Send Now</button>
+      <button class="btn btn-sm" data-cancelschedule="${o.id}">Cancel Schedule</button>
+    </div>
+    `:`
+    <div style="font-size:13px;color:var(--vf-grey);line-height:1.6;margin-bottom:14px;">Automatically generate and send this opportunity's status report to the assigned presales engineer on a recurring basis.</div>
+    <button class="btn btn-primary btn-sm" data-schedulereport="${o.id}">${ic('send')} Schedule Report</button>
+    `}
+  </div>`;
+}
+
+const DOC_TYPES=['Fit Gap Analysis','Customer Proposal','Initial Solution Architecture'];
+const DOC_DESC={
+  'Fit Gap Analysis':'Auto-generated comparison of customer requirements against current capability set.',
+  'Customer Proposal':'Auto-generated client-facing proposal document for this opportunity.',
+  'Initial Solution Architecture':'Auto-generated draft technical architecture for the proposed solution.',
+};
+const DOC_EXT={'Fit Gap Analysis':'docx','Customer Proposal':'pptx','Initial Solution Architecture':'vsdx'};
+const DOC_PREFIX={'Fit Gap Analysis':'FitGap','Customer Proposal':'Proposal','Initial Solution Architecture':'SolutionArch'};
+function renderOppDocumentsTab(o){
+  const existing=o.documents;
+  const missing=DOC_TYPES.filter(t=>!existing.some(d=>d.type===t));
+  return `
+  <div class="card card-pad">
+    <div class="card-head"><h3>Documents</h3><span class="hint">${existing.length} on file</span></div>
+    ${existing.length? existing.map(d=>{
+      const via = d.source ? d.source : (d.type==='PEGA Demand Form'?'uploaded':'generated');
+      return `
+      <div class="doc-row">
+        <div class="doc-icon">${ic('doc')}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="doc-name">${esc(d.fileName)}</div>
+          <div class="doc-meta">${esc(d.type)} · ${esc(via)} by ${esc(d.by)} · ${fmtDate(d.date)}</div>
+        </div>
+        <span class="chip">${esc(d.type)}</span>
+      </div>`;
+    }).join('') : `<div class="empty-state">${ic('doc')}<div>No documents yet.</div></div>`}
+
+    ${missing.length?`
+    <div class="section-title">Generate Document</div>
+    ${missing.map(t=>`
+      <div class="doc-slot" id="genslot-${o.id}-${t.replace(/\s+/g,'')}">
+        <div class="ds-l">
+          <div class="doc-icon">${ic('doc')}</div>
+          <div><div class="ds-name">${esc(t)}</div><div class="ds-desc">${esc(DOC_DESC[t])}</div></div>
+        </div>
+        <button class="btn btn-sm" data-gendoc="${o.id}" data-doctype="${t}">${ic('spark')} Populate</button>
+      </div>`).join('')}
+    `:''}
+
+    <div class="section-title">Upload Document</div>
+    <div class="field-note" style="margin-bottom:8px;">Add any supporting file — it will appear here and be included as context for the chatbot, proposal and fit gap analysis.</div>
+    <button class="btn btn-sm" data-adddoc="${o.id}" data-doctype="Other">${ic('upload')} Upload document</button>
+  </div>
+  ${renderApprovalSection(o)}
+  `;
+}
+function generateDocument(oppId,docType){
+  const o=getOpp(oppId);
+  const c=getCustomer(o.customerId);
+  const slug=c.name.replace(/[^A-Za-z0-9]+/g,'');
+  const suffix=(o.pegaNumber||'').split('-').pop()||uid('v');
+  const fileName=`${DOC_PREFIX[docType]}_${slug}_${suffix}.${DOC_EXT[docType]}`;
+  o.documents.push({id:uid('d'),type:docType,fileName,date:appNow().toISOString(),by:CURRENT_USER.name,source:'generated'});
+  saveDB();render();
+  toast(`${docType} generated from opportunity data and added.`);
+}
+
+function generateFitGapDocx(oppId){
+  const o=getOpp(oppId);
+  const c=getCustomer(o.customerId);
+  const slug=c.name.replace(/[^A-Za-z0-9]+/g,'');
+  const suffix=(o.pegaNumber||'').split('-').pop()||uid('v');
+  const fileName=`FitGap_${slug}_${suffix}.docx`;
+  const sc=o.profile.scoring;
+  const recentComments=o.comments.slice(-5).reverse();
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+  <head><meta charset="utf-8"><title>${esc(c.name)} Fit Gap Analysis</title></head>
+  <body style="font-family:Calibri,Arial,sans-serif;">
+    <h1 style="color:#E60000;">Fit Gap Analysis</h1>
+    <h2>${esc(c.name)}</h2>
+    <p><b>PEGA Number:</b> ${esc(o.pegaNumber)}<br><b>Prepared by:</b> ${esc(CURRENT_USER.name)}<br><b>Date:</b> ${esc(fmtDate(appNow().toISOString()))}</p>
+    <h3>Problem Statement</h3>
+    <p>${esc(o.profile.problemStatement||'—')}</p>
+    <h3>Current Capability Gap</h3>
+    <p>Based on the customer's stated requirements and Vodafone Business's current solution catalogue for ${esc(c.industry)}, the following capability gap has been identified.</p>
+    <h3>Recommended Services (Fit)</h3>
+    <ul>${o.aiRecommendedServices.length? o.aiRecommendedServices.map(s=>`<li>${esc(s)}</li>`).join('') : '<li>Not yet determined</li>'}</ul>
+    <h3>Qualification Scoring</h3>
+    <p>${sc? `Overall: ${sc.overall} (${esc(sc.band)}) — `+sc.factors.map(f=>`${esc(f.label)}: ${f.score}`).join(', ') : 'Not yet scored'}</p>
+    <h3>Supporting Documents on File</h3>
+    <ul>${o.documents.length? o.documents.map(d=>`<li>${esc(d.fileName)} (${esc(d.type)})</li>`).join('') : '<li>None on file</li>'}</ul>
+    <h3>Recent Discussion</h3>
+    <ul>${recentComments.length? recentComments.map(cm=>`<li><b>${esc(cm.author)}</b> (${esc(fmtDateTime(cm.time))}): ${esc(cm.text)}</li>`).join('') : '<li>No comments yet</li>'}</ul>
+  </body></html>`;
+  const blob=new Blob(['﻿',html],{type:'application/msword'});
+  triggerDownload(blob,fileName);
+  o.documents.push({id:uid('d'),type:'Fit Gap Analysis',fileName,date:appNow().toISOString(),by:CURRENT_USER.name,source:'generated'});
+  saveDB();render();
+  toast('Fit Gap Analysis generated from opportunity data (including comments & documents) and downloaded.');
+}
+
+function openProposalFormatModal(oppId){
+  openModal(`
+  <div class="modal">
+    <div class="modal-head"><h2>Populate Customer Proposal</h2><button class="modal-close" id="mClose">${ic('x')}</button></div>
+    <div class="modal-body">
+      <div class="field-note" style="margin-bottom:16px;">Choose the file format for the auto-generated customer proposal.</div>
+      <div style="display:flex;gap:12px;">
+        <button class="btn" style="flex:1;justify-content:center;padding:16px;" id="pfDocx">${ic('doc')} Word (.docx)</button>
+        <button class="btn" style="flex:1;justify-content:center;padding:16px;" id="pfPptx">${ic('doc')} PowerPoint (.pptx)</button>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" id="mCancel">Cancel</button></div>
+  </div>`);
+  document.getElementById('mClose').onclick=closeModal;
+  document.getElementById('mCancel').onclick=closeModal;
+  document.getElementById('pfDocx').onclick=()=>{closeModal();generateProposal(oppId,'docx');};
+  document.getElementById('pfPptx').onclick=()=>{closeModal();generateProposal(oppId,'pptx');};
+}
+function generateProposal(oppId,format){
+  const o=getOpp(oppId);
+  const c=getCustomer(o.customerId);
+  const slug=c.name.replace(/[^A-Za-z0-9]+/g,'');
+  const suffix=(o.pegaNumber||'').split('-').pop()||uid('v');
+  const fileName=`Proposal_${slug}_${suffix}.${format}`;
+  toast('Generating proposal...');
+  setTimeout(()=>{
+    const ok = format==='docx' ? downloadProposalDocx(o,c,fileName) : downloadProposalPptx(o,c,fileName);
+    if(!ok) return;
+    o.documents.push({id:uid('d'),type:'Customer Proposal',fileName,date:appNow().toISOString(),by:CURRENT_USER.name,source:'generated'});
+    saveDB();render();
+    toast(`Customer Proposal (.${format}) generated and downloaded.`);
+  },900);
+}
+function downloadProposalDocx(o,c,fileName){
+  const sc=o.profile.scoring;
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+  <head><meta charset="utf-8"><title>${esc(c.name)} Proposal</title></head>
+  <body style="font-family:Calibri,Arial,sans-serif;">
+    <h1 style="color:#E60000;">Customer Proposal</h1>
+    <h2>${esc(c.name)}</h2>
+    <p><b>PEGA Number:</b> ${esc(o.pegaNumber)}<br><b>Prepared by:</b> ${esc(CURRENT_USER.name)}<br><b>Date:</b> ${esc(fmtDate(appNow().toISOString()))}</p>
+    <h3>Problem Statement</h3>
+    <p>${esc(o.profile.problemStatement||'—')}</p>
+    <h3>Recommended Services</h3>
+    <ul>${o.aiRecommendedServices.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
+    <h3>Opportunity Scoring</h3>
+    <p>Overall score: ${sc?sc.overall+' ('+esc(sc.band)+')':'—'}</p>
+    <h3>Proposed Investment</h3>
+    <p>${o.value?fmtMoney(o.value):'To be confirmed'}</p>
+    <h3>About ${esc(c.name)}</h3>
+    <p>${esc(c.overview)}</p>
+    <h3>Supporting Documents on File</h3>
+    <ul>${o.documents.length? o.documents.map(d=>`<li>${esc(d.fileName)} (${esc(d.type)})</li>`).join('') : '<li>None on file</li>'}</ul>
+    <h3>Recent Discussion</h3>
+    <ul>${o.comments.length? o.comments.slice(-5).reverse().map(cm=>`<li><b>${esc(cm.author)}</b> (${esc(fmtDateTime(cm.time))}): ${esc(cm.text)}</li>`).join('') : '<li>No comments yet</li>'}</ul>
+  </body></html>`;
+  const blob=new Blob(['﻿',html],{type:'application/msword'});
+  triggerDownload(blob,fileName);
+  return true;
+}
+function downloadProposalPptx(o,c,fileName){
+  if(typeof PptxGenJS==='undefined'){ toast('PowerPoint library failed to load — check your internet connection and try again.'); return false; }
+  const sc=o.profile.scoring;
+  const pres=new PptxGenJS();
+  const s1=pres.addSlide();
+  s1.background={color:'FFFFFF'};
+  s1.addText('Customer Proposal',{x:0.5,y:1.6,w:9,h:0.8,fontSize:30,bold:true,color:'E60000'});
+  s1.addText(c.name,{x:0.5,y:2.4,w:9,h:0.6,fontSize:20,color:'1B1B1B'});
+  s1.addText(`PEGA ${o.pegaNumber} · Prepared by ${CURRENT_USER.name}`,{x:0.5,y:3.0,w:9,h:0.4,fontSize:12,color:'5A5D5E'});
+  const s2=pres.addSlide();
+  s2.addText('Problem Statement',{x:0.5,y:0.3,w:9,h:0.5,fontSize:20,bold:true,color:'E60000'});
+  s2.addText(o.profile.problemStatement||'—',{x:0.5,y:0.9,w:9,h:2,fontSize:14});
+  const s3=pres.addSlide();
+  s3.addText('Recommended Services',{x:0.5,y:0.3,w:9,h:0.5,fontSize:20,bold:true,color:'E60000'});
+  s3.addText((o.aiRecommendedServices.length?o.aiRecommendedServices:['No services identified yet']).map(s=>({text:s+'\n',options:{bullet:true,fontSize:14}})),{x:0.5,y:0.9,w:9,h:2});
+  const s4=pres.addSlide();
+  s4.addText('Opportunity Scoring & Investment',{x:0.5,y:0.3,w:9,h:0.5,fontSize:20,bold:true,color:'E60000'});
+  s4.addText(`Overall score: ${sc?sc.overall+' ('+sc.band+')':'—'}\nProposed investment: ${o.value?fmtMoney(o.value):'TBC'}`,{x:0.5,y:0.9,w:9,h:1.2,fontSize:14});
+  const s5=pres.addSlide();
+  s5.addText('Supporting Documents & Discussion',{x:0.5,y:0.3,w:9,h:0.5,fontSize:20,bold:true,color:'E60000'});
+  const docLines=(o.documents.length?o.documents.map(d=>`${d.fileName} (${d.type})`):['None on file']);
+  const commentLines=(o.comments.length?o.comments.slice(-4).reverse().map(cm=>`${cm.author}: ${cm.text}`):['No comments yet']);
+  s5.addText(
+    [{text:'Documents on File\n',options:{bold:true,fontSize:13}}]
+    .concat(docLines.map(t=>({text:t+'\n',options:{bullet:true,fontSize:11}})))
+    .concat([{text:'\nRecent Discussion\n',options:{bold:true,fontSize:13}}])
+    .concat(commentLines.map(t=>({text:t+'\n',options:{bullet:true,fontSize:11}}))),
+    {x:0.5,y:0.9,w:9,h:4.5,valign:'top'}
+  );
+  pres.writeFile({fileName});
+  return true;
+}
+
+function renderApprovalSection(o){
+  const hasProposal=o.documents.some(d=>d.type==='Customer Proposal');
+  if(!hasProposal) return '';
+  const appr=o.approval;
+  if(!appr){
+    return `
+    <div class="card card-pad" style="margin-top:18px;">
+      <div class="card-head"><h3>Proposal Approval</h3><span class="hint">Recommended before moving to Won</span></div>
+      <div style="font-size:13px;color:var(--vf-grey);line-height:1.6;margin-bottom:14px;">Send this proposal for approval. An email will be sent to the Presales Manager and Financial Approver — the opportunity status updates automatically once both approve, and the assigned presales engineer is notified by email.</div>
+      <button class="btn btn-primary btn-sm" data-reqapproval="${o.id}">${ic('send')} Request Approval</button>
+    </div>`;
+  }
+  const allApproved=appr.approvers.every(a=>a.approved);
+  return `
+  <div class="card card-pad" style="margin-top:18px;">
+    <div class="card-head"><h3>Proposal Approval</h3><span class="hint">Requested ${fmtDate(appr.requestedAt)}</span></div>
+    ${allApproved?`
+    <div class="banner banner-info" style="margin-bottom:14px;">${ic('check')}<div><div class="b-title">Fully Approved</div><div class="b-text">Both approvers signed off. The assigned presales engineer has been notified by email and the opportunity status is now Won.</div></div></div>
+    `:`
+    <div class="banner banner-warn" style="margin-bottom:14px;">${ic('info')}<div><div class="b-title">Awaiting approval</div><div class="b-text">Emails have been sent to both approvers below. Status will update to Approved once both respond.</div></div></div>
+    `}
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${appr.approvers.map(a=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--vf-border);border-radius:9px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            ${avatarSm(a.name)}
+            <div>
+              <div style="font-weight:700;font-size:13px;">${esc(a.name)}</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">${esc(a.role)}</div>
+            </div>
+          </div>
+          ${a.approved
+            ? `<span class="pill pill-green">${ic('check')} Approved ${fmtDate(a.approvedAt)}</span>`
+            : `<button class="btn btn-sm" data-approve="${o.id}" data-approver="${esc(a.name)}">Simulate Approval-Email Click</button>`}
+        </div>`).join('')}
+    </div>
+    <div class="field-note" style="margin-top:12px;">In production, approval happens via the link emailed to each approver — the button above simulates that click for this demo.</div>
+  </div>`;
+}
+function requestApproval(oppId){
+  const o=getOpp(oppId);
+  o.approval={requestedAt:appNow().toISOString(),approvers:APPROVERS.map(a=>({name:a.name,role:a.role,approved:false,approvedAt:null}))};
+  if(!['Won','Blocked','Cancelled'].includes(o.status)){ o.status='Awaiting Approval'; o.stage='Awaiting Approval'; }
+  saveDB();render();
+  toast('Approval requested — email sent to Presales Manager and Financial Approver.');
+}
+function simulateApprove(oppId,approverName){
+  const o=getOpp(oppId);
+  if(!o||!o.approval) return;
+  const a=o.approval.approvers.find(x=>x.name===approverName);
+  if(!a||a.approved) return;
+  a.approved=true;a.approvedAt=appNow().toISOString();
+  const allApproved=o.approval.approvers.every(x=>x.approved);
+  if(allApproved){
+    o.status='Won';o.stage='Won';
+    const assignee=getTeamMember(o.assignedTo);
+    o.comments.push({id:uid('cm'),author:'System',text:`Proposal approved by ${o.approval.approvers.map(x=>x.name).join(' and ')}. Notification email sent to ${assignee.name} (assigned presales engineer). Status moved to Won.`,mentions:[],time:appNow().toISOString(),attachment:null});
+    saveDB();render();
+    toast(`Proposal fully approved — status updated to Won, email sent to ${assignee.name}.`);
+  } else {
+    saveDB();render();
+    toast(`${approverName} approved. Waiting on remaining approver.`);
+  }
+}
+
+function renderOppCommentsTab(o){
+  return `
+  <div class="card card-pad">
+    <div class="card-head"><h3>Comments</h3><span class="hint">Mention teammates with @</span></div>
+    <div style="position:relative;margin-bottom:16px;">
+      <textarea class="input" id="commentBox" placeholder="Add a comment... type @ to mention a teammate" style="min-height:80px;"></textarea>
+      <div id="mentionMenu"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <label class="btn btn-sm" style="cursor:pointer;">${ic('attach')} Attach file<input type="file" id="commentAttach" style="display:none;"></label>
+        <span id="commentAttachName" style="font-size:12px;color:var(--vf-grey-light);flex:1;margin-left:10px;"></span>
+        <button class="btn btn-primary btn-sm" id="btnPostComment" data-oppid="${o.id}">Post</button>
+      </div>
+    </div>
+    <div class="rowlist" style="border-top:1px solid var(--vf-border);padding-top:4px;">
+      ${o.comments.length? o.comments.slice().reverse().map(cm=>`
+        <div class="comment">
+          ${avatarSm(cm.author)}
+          <div class="c-body">
+            <div class="c-head"><span class="c-name">${esc(cm.author)}</span><span class="c-time">${fmtDateTime(cm.time)}</span></div>
+            <div class="c-text">${renderMentions(cm.text)}</div>
+            ${cm.attachment?`<div class="c-attach chip">${ic('clip')} ${esc(cm.attachment)}</div>`:''}
+          </div>
+        </div>`).join('') : `<div class="empty-state">No comments yet — start the conversation.</div>`}
+    </div>
+  </div>
+  `;
+}
+function renderMentions(text){
+  return esc(text).replace(/@([A-Za-z]+ ?[A-Za-z]*)/g,'<span class="mention">@$1</span>');
+}
+
+/* ================= CUSTOMERS LIST ================= */
+function renderCustomersList(){
+  return `
+  <div class="grid grid-3">
+    ${DB.customers.map(c=>{
+      const opps=oppsForCustomer(c.id);
+      const active=opps.filter(o=>!['Won','Cancelled'].includes(o.status)).length;
+      return `
+      <div class="card opp-card" data-navcust="${c.id}">
+        <div class="oc-top">
+          <div>
+            <div class="oc-name">${esc(c.name)}</div>
+            <div class="oc-cust">${esc(c.industry)} · ${esc(c.hq)}</div>
+          </div>
+          ${avatarSm(c.name)}
+        </div>
+        <div style="font-size:12.5px;color:var(--vf-grey);line-height:1.5;">${esc(c.overview.slice(0,110))}${c.overview.length>110?'…':''}</div>
+        <div class="oc-meta">
+          <span>${opps.length} opportunit${opps.length===1?'y':'ies'}</span>
+          <span>${active} active</span>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>
+  `;
+}
+
+/* ================= CUSTOMER DETAIL ================= */
+function renderCustomerDetail(id){
+  const c=getCustomer(id);
+  if(!c) return `<div class="empty-state">Customer not found.</div>`;
+  const opps=oppsForCustomer(c.id).slice().sort((a,b)=>new Date(b.created)-new Date(a.created));
+  return `
+  <div style="margin-bottom:14px;"><a data-nav="customers" class="link-btn">&larr; All customers</a></div>
+  <div class="grid grid-2" style="margin-bottom:18px;">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Company Brief</h3><span class="hint">${esc(c.industry)}</span></div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px;">${esc(c.overview)}</div>
+      <div class="kv"><div class="k">HQ</div><div class="v">${esc(c.hq)}</div></div>
+      <div class="kv"><div class="k">Employees</div><div class="v">${esc(c.employees)}</div></div>
+      <div class="kv"><div class="k">Annual Revenue</div><div class="v">${esc(c.revenue)}</div></div>
+      <div class="kv"><div class="k">Open Pipeline</div><div class="v">${fmtMoney(pipelineValue(opps))}</div></div>
+      <div class="section-title">Strategic Priorities</div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;">
+        ${c.priorities.map(p=>`<li>${esc(p)}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="card card-pad">
+      <div class="card-head"><h3>Key Contacts</h3></div>
+      ${c.contacts.map(k=>`
+        <div class="rowlist"><div class="row" style="cursor:default;">
+          ${avatarSm(k.name)}
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:13px;">${esc(k.name)}</div>
+            <div style="font-size:11.5px;color:var(--vf-grey-light);">${esc(k.title)}</div>
+          </div>
+          <div style="text-align:right;font-size:11.5px;color:var(--vf-grey);">${esc(k.email)}<br>${esc(k.phone)}</div>
+        </div></div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card card-pad">
+    <div class="card-head"><h3>Opportunity History</h3><span class="hint">${opps.length} total</span></div>
+    <div class="rowlist">
+      ${opps.length? opps.map(o=>{
+        const assignee=getTeamMember(o.assignedTo);
+        return `
+        <div class="row" data-openopp="${o.id}">
+          <div style="flex:1;min-width:0;">
+            <div style="margin-bottom:3px;">${pegaBadge(o)}</div>
+            <div style="font-size:11.5px;color:var(--vf-grey-light);">Created ${fmtDate(o.created)} · ${esc(assignee.name)}</div>
+          </div>
+          ${statusPill(o.status)}
+          <div style="width:110px;text-align:right;font-weight:700;font-size:13px;">${o.value?fmtMoney(o.value):'—'}</div>
+        </div>`;
+      }).join('') : `<div class="empty-state">No opportunities yet for this customer.</div>`}
+    </div>
+  </div>
+  `;
+}
+
+/* ================= MODALS ================= */
+function openModal(html){
+  const wrap=document.createElement('div');
+  wrap.className='modal-overlay';
+  wrap.id='modalOverlay';
+  wrap.innerHTML=html;
+  document.body.appendChild(wrap);
+  wrap.addEventListener('click',e=>{if(e.target===wrap) closeModal();});
+}
+function closeModal(){const m=document.getElementById('modalOverlay');if(m) m.remove();}
+
+function openCreateOppModal(){
+  openModal(`
+  <div class="modal">
+    <div class="modal-head"><h2>New Opportunity</h2><button class="modal-close" id="mClose">${ic('x')}</button></div>
+    <div class="modal-body">
+      <div class="banner banner-info" style="margin-bottom:18px;">
+        ${ic('info')}
+        <div><div class="b-title">PEGA Demand Form required</div><div class="b-text">An opportunity cannot be created without a PEGA Demand Form. Upload it below — the customer, PEGA Number and full profile are all populated automatically from the form.</div></div>
+      </div>
+      <div class="field">
+        <label class="field-label field-req">Assign To</label>
+        <select class="input" id="newOppAssignee">${DB.team.map(t=>`<option value="${t.id}">${t.name} — ${t.role}</option>`).join('')}</select>
+      </div>
+      <div class="field">
+        <label class="field-label field-req">PEGA Demand Form file</label>
+        <input class="input" type="file" id="newOppDemandForm">
+        <div class="field-note">Accepted: PDF, DOCX. Required to create the opportunity.</div>
+      </div>
+      <div id="createProgressArea"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="mCancel">Cancel</button>
+      <button class="btn btn-primary" id="mCreate">${ic('upload')} Create &amp; Extract</button>
+    </div>
+  </div>`);
+  document.getElementById('mClose').onclick=closeModal;
+  document.getElementById('mCancel').onclick=closeModal;
+  document.getElementById('mCreate').onclick=()=>{
+    const assignee=document.getElementById('newOppAssignee').value;
+    const file=document.getElementById('newOppDemandForm').files[0];
+    if(!file){toast('Please upload the PEGA Demand Form — it is required to create an opportunity.');return;}
+    const area=document.getElementById('createProgressArea');
+    area.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:var(--vf-grey);"><span class="spin"></span> Extracting fields from demand form...</div>`;
+    document.getElementById('mCreate').disabled=true;
+    setTimeout(()=>{
+      const newOpp=createOpportunityFromDemandForm(assignee,file.name);
+      closeModal();
+      ACTIVE_TAB='profile';
+      go('opportunity',newOpp.id);
+      toast('Opportunity created — customer, PEGA number and profile populated from the form.');
+    },1300);
+  };
+}
+
+function createOpportunityFromDemandForm(assignedTo,fileName){
+  const c=DB.customers[Math.floor(Math.random()*DB.customers.length)];
+  const customerId=c.id;
+  const pegaNumber=generatePegaNumber();
+  const contact=(c.contacts&&c.contacts[0])?`${c.contacts[0].name} (${c.contacts[0].title})`:'Primary customer contact (TBD)';
+  const value=Math.round((800000+Math.random()*4200000)/50000)*50000;
+  const newOpp={
+    id:uid('o'),pegaNumber,customerId,status:'New',stage:'New',value,
+    created:appNow().toISOString(),assignedTo,demandFormFileName:fileName,
+    profile:{
+      customerContact:contact,
+      problemStatement:`Extracted from PEGA demand form ${pegaNumber}: ${c.name} has flagged an operational gap requiring a presales-led solution. Customer highlighted this as a priority initiative for the current fiscal year.`,
+      scoring:null,internalTeam:[assignedTo]
+    },
+    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName,date:appNow().toISOString(),by:CURRENT_USER.name}],
+    comments:[],cancelReason:null,aiRecommendedServices:[],approval:null,scheduledReport:null
+  };
+  newOpp.profile.scoring=computeScoring(newOpp,c);
+  const svcs=SERVICE_CATALOG[c.industry]||[];
+  newOpp.aiRecommendedServices=shuffle(svcs).slice(0,2);
+  DB.opportunities.push(newOpp);
+  saveDB();
+  return newOpp;
+}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function openAddDocModal(oppId,docType){
+  openModal(`
+  <div class="modal">
+    <div class="modal-head"><h2>Upload Document</h2><button class="modal-close" id="mClose">${ic('x')}</button></div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label field-req">Document Type</label>
+        <select class="input" id="uploadDocType">
+          ${DOC_TYPES.map(t=>`<option value="${esc(t)}" ${t===docType?'selected':''}>${esc(t)}</option>`).join('')}
+          <option value="Other" ${docType==='Other'?'selected':''}>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label field-req">File</label>
+        <input class="input" type="file" id="docFile">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="mCancel">Cancel</button>
+      <button class="btn btn-primary" id="mUploadDoc">Upload</button>
+    </div>
+  </div>`);
+  document.getElementById('mClose').onclick=closeModal;
+  document.getElementById('mCancel').onclick=closeModal;
+  document.getElementById('mUploadDoc').onclick=()=>{
+    const file=document.getElementById('docFile').files[0];
+    if(!file){toast('Please choose a file.');return;}
+    const chosenType=document.getElementById('uploadDocType').value;
+    const o=getOpp(oppId);
+    o.documents.push({id:uid('d'),type:chosenType,fileName:file.name,date:appNow().toISOString(),by:CURRENT_USER.name,source:'uploaded'});
+    saveDB();
+    closeModal();
+    render();
+    toast(chosenType+' uploaded.');
+  };
+}
+
+const CANCEL_REASONS=['Cost','Solution proposed','Delivery time','Other'];
+function openScheduleReportModal(oppId){
+  openModal(`
+  <div class="modal">
+    <div class="modal-head"><h2>Schedule Report</h2><button class="modal-close" id="mClose">${ic('x')}</button></div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label field-req">Frequency</label>
+        <select class="input" id="schedFreq">
+          <option value="Weekly">Weekly</option>
+          <option value="Monthly">Monthly</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label field-req">Format</label>
+        <select class="input" id="schedFormat">
+          <option value="xlsx">Excel</option>
+          <option value="pptx">PowerPoint</option>
+        </select>
+      </div>
+      <div class="field-note">The assigned presales engineer will receive this report automatically by email each cycle (simulated for this demo).</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="mCancel">Cancel</button>
+      <button class="btn btn-primary" id="mSchedConfirm">${ic('check')} Confirm Schedule</button>
+    </div>
+  </div>`);
+  document.getElementById('mClose').onclick=closeModal;
+  document.getElementById('mCancel').onclick=closeModal;
+  document.getElementById('mSchedConfirm').onclick=()=>{
+    const freq=document.getElementById('schedFreq').value;
+    const format=document.getElementById('schedFormat').value;
+    closeModal();
+    scheduleReport(oppId,freq,format);
+  };
+}
+function scheduleReport(oppId,freq,format){
+  const o=getOpp(oppId);
+  const days = freq==='Weekly'?7:30;
+  const next=appNow(); next.setDate(next.getDate()+days);
+  o.scheduledReport={frequency:freq,format,createdAt:appNow().toISOString(),nextRun:next.toISOString()};
+  saveDB();render();
+  toast(`Report scheduled ${freq.toLowerCase()} as ${format==='xlsx'?'Excel':'PowerPoint'}.`);
+}
+function cancelScheduledReport(oppId){
+  const o=getOpp(oppId);
+  o.scheduledReport=null;
+  saveDB();render();
+  toast('Scheduled report cancelled.');
+}
+function runScheduledReportNow(oppId){
+  const o=getOpp(oppId);
+  if(!o||!o.scheduledReport) return;
+  downloadStatusReport(o.scheduledReport.format,'opportunity',oppId);
+  toast('Scheduled report sent (simulated) and downloaded now.');
+}
+
+function openCancelReasonModal(oppId,revertSelectEl){
+  openModal(`
+  <div class="modal">
+    <div class="modal-head"><h2>Cancel Opportunity</h2><button class="modal-close" id="mClose">${ic('x')}</button></div>
+    <div class="modal-body">
+      <div class="banner banner-warn" style="margin-bottom:16px;">${ic('warn')}<div><div class="b-title">Reason required</div><div class="b-text">Select a cancellation reason. A comment is required only when "Other" is selected.</div></div></div>
+      <div class="field">
+        <label class="field-label field-req">Cancellation Reason</label>
+        <select class="input" id="cancelReasonSelect">
+          <option value="">Select a reason...</option>
+          ${CANCEL_REASONS.map(r=>`<option value="${esc(r)}">${esc(r)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label" id="cancelCommentLabel">Comment <span id="cancelOptionalHint" style="color:var(--vf-grey-light);font-weight:400;">(optional)</span></label>
+        <textarea class="input" id="cancelReasonComment" placeholder="Add any additional detail..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="mCancelBtn">Back</button>
+      <button class="btn btn-primary" id="mConfirmCancel">Confirm Cancellation</button>
+    </div>
+  </div>`);
+  const revert=()=>{ if(revertSelectEl) revertSelectEl.value=getOpp(oppId).status; };
+  document.getElementById('mClose').onclick=()=>{revert();closeModal();};
+  document.getElementById('mCancelBtn').onclick=()=>{revert();closeModal();};
+  document.getElementById('cancelReasonSelect').onchange=(e)=>{
+    const label=document.getElementById('cancelCommentLabel');
+    const hint=document.getElementById('cancelOptionalHint');
+    if(e.target.value==='Other'){
+      label.classList.add('field-req');
+      hint.style.display='none';
+    } else {
+      label.classList.remove('field-req');
+      hint.style.display='inline';
+    }
+  };
+  document.getElementById('mConfirmCancel').onclick=()=>{
+    const sel=document.getElementById('cancelReasonSelect').value;
+    if(!sel){toast('Please select a cancellation reason.');return;}
+    const comment=document.getElementById('cancelReasonComment').value.trim();
+    if(sel==='Other' && !comment){toast('Please add a comment for "Other".');return;}
+    const reason = comment ? `${sel} — ${comment}` : sel;
+    const o=getOpp(oppId);
+    o.status='Cancelled';o.stage='Cancelled';o.cancelReason=reason;
+    saveDB();
+    closeModal();
+    render();
+    toast('Opportunity cancelled.');
+  };
+}
+
+/* ================= CHATBOT ================= */
+window.__chatOpen=false;
+window.__chatHistory=[
+  {role:'bot',text:"Hi, I'm your Presales Assistant. Ask me anything about the product database — company briefs, opportunity status by PEGA number, scoring, cancellations, team workload, internal expertise, emerging technologies — or ask me to generate a status report."}
+];
+function renderChatFab(){
+  return `<button class="chat-fab" id="chatFab" title="Presales Assistant">${ic('chat')}</button>`;
+}
+function renderChatPanel(){
+  return `
+  <div class="chat-panel">
+    <div class="chat-head">
+      <div><div class="ch-t">Presales Assistant</div><div class="ch-s">Answers based on sample company documents</div></div>
+      <button class="modal-close" id="chatClose" style="background:rgba(255,255,255,.12);color:#fff;">${ic('x')}</button>
+    </div>
+    <div class="chat-disclaim">Simulated responses for demo purposes — references mock company briefs &amp; opportunity data.</div>
+    <div class="chat-msgs" id="chatMsgs">
+      ${window.__chatHistory.map(m=>`<div class="msg ${m.role}">${m.text}</div>`).join('')}
+    </div>
+    <div class="chat-suggest">
+      <div class="sg" data-q="Find internal expert">Find Internal Expert</div>
+      <div class="sg" data-q="New technologies">New Technologies</div>
+      <div class="sg" data-q="Status report">Status Report</div>
+      <div class="sg" data-q="Customized report">Customized Report</div>
+    </div>
+    <div class="chat-input-wrap">
+      <input id="chatInput" placeholder="Ask a question...">
+      <button class="chat-send" id="chatSend">${ic('send')}</button>
+    </div>
+  </div>`;
+}
+
+function topServicesByCount(n){
+  const counts={};
+  DB.opportunities.forEach(o=>o.aiRecommendedServices.forEach(s=>{counts[s]=(counts[s]||0)+1;}));
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,n).map(e=>e[0]);
+}
+function generatePipelineReportText(){
+  const opps=DB.opportunities;
+  const byStatus=STATUS_ORDER.map(s=>`${s}: ${opps.filter(o=>o.status===s).length}`).join(', ');
+  const pipeline=pipelineValue(opps);
+  const won=opps.filter(o=>o.status==='Won').length;
+  const lost=opps.filter(o=>o.status==='Lost').length;
+  const winRate=Math.round(100*won/Math.max(1,won+lost));
+  const topValue=opps.slice().sort((a,b)=>b.value-a.value).slice(0,3);
+  const topScore=opps.filter(o=>o.profile.scoring).slice().sort((a,b)=>b.profile.scoring.overall-a.profile.scoring.overall).slice(0,3);
+  return `<b>Pipeline Status Report</b><br>`
+    +`Total opportunities: ${opps.length}. Open pipeline value: ${fmtMoney(pipeline)}. Win rate: ${winRate}%.<br>`
+    +`By status — ${esc(byStatus)}.<br>`
+    +`Top by value: ${topValue.map(o=>`${esc(oppLabel(o))} (${esc(getCustomer(o.customerId).name)}, ${fmtMoney(o.value)})`).join('; ')}.<br>`
+    +`Top by score: ${topScore.map(o=>`${esc(oppLabel(o))} (${esc(getCustomer(o.customerId).name)}, score ${o.profile.scoring.overall})`).join('; ')}.`;
+}
+function generateCustomerReportText(c){
+  const opps=oppsForCustomer(c.id);
+  return `<b>${esc(c.name)} — Status Report</b><br>`
+    +`${opps.length} opportunit${opps.length===1?'y':'ies'} on record. Open pipeline: ${fmtMoney(pipelineValue(opps))}.<br>`
+    +(opps.length? opps.map(o=>`${esc(oppLabel(o))}: ${esc(o.status)}${o.profile.scoring?` (score ${o.profile.scoring.overall}, ${esc(o.profile.scoring.band)})`:''} — ${o.value?fmtMoney(o.value):'—'}`).join('<br>') : 'No opportunities yet.');
+}
+function generateOppReportText(o){
+  const c=getCustomer(o.customerId);
+  const assignee=getTeamMember(o.assignedTo);
+  const lastComment=o.comments.length? o.comments[o.comments.length-1] : null;
+  return `<b>${esc(o.pegaNumber)} — Status Report</b><br>`
+    +`Customer: ${esc(c.name)}. Status: ${esc(o.status)}. Value: ${o.value?fmtMoney(o.value):'—'}.<br>`
+    +(o.profile.scoring?`Score: ${o.profile.scoring.overall} (${esc(o.profile.scoring.band)}).<br>`:'')
+    +`Assigned to: ${esc(assignee.name)} (${esc(assignee.role)}).<br>`
+    +`Documents on file (${o.documents.length}): ${o.documents.length?o.documents.map(d=>esc(d.fileName)).join(', '):'none'}.<br>`
+    +`Latest comment: ${lastComment? `${esc(lastComment.author)} — "${esc(lastComment.text)}"` : 'none yet'}.`
+    +(o.cancelReason?`<br>Cancellation reason: ${esc(o.cancelReason)}.`:'');
+}
+
+/* ---- Report export (Excel / PowerPoint) ---- */
+function reportFormatButtons(scope,customerId){
+  const scopeAttr = customerId? ` data-dlscope="${esc(customerId)}"` : '';
+  return `<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+    <button class="btn btn-sm" data-dlreport="xlsx" data-dlreporttype="${esc(scope)}"${scopeAttr}>${ic('doc')} Excel</button>
+    <button class="btn btn-sm" data-dlreport="pptx" data-dlreporttype="${esc(scope)}"${scopeAttr}>${ic('doc')} PowerPoint</button>
+  </div>`;
+}
+function buildReportRows(scope,refId){
+  let list, titleName=null;
+  if(scope==='customer' && refId){ list=oppsForCustomer(refId); titleName=getCustomer(refId).name; }
+  else if(scope==='opportunity' && refId){ const o=getOpp(refId); list=o?[o]:[]; titleName=o?o.pegaNumber:null; }
+  else { list=DB.opportunities; }
+  return {
+    title: titleName? `${titleName} Status Report` : 'Pipeline Status Report',
+    generated: appNow().toISOString(),
+    summary:{
+      total:list.length,
+      openPipelineValue:pipelineValue(list),
+      won:list.filter(o=>o.status==='Won').length,
+      cancelled:list.filter(o=>o.status==='Cancelled').length,
+    },
+    rows:list.map(o=>({
+      pega:o.pegaNumber||'—', customer:getCustomer(o.customerId).name, status:o.status,
+      assignedTo:getTeamMember(o.assignedTo).name, value:o.value,
+      score:o.profile.scoring?o.profile.scoring.overall:'', band:o.profile.scoring?o.profile.scoring.band:'',
+      created:fmtDate(o.created),
+    }))
+  };
+}
+function sanitizeFileName(s){return s.replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'');}
+function downloadStatusReport(fmt,scope,custId){
+  const data=buildReportRows(scope,custId);
+  if(fmt==='xlsx'){
+    if(typeof XLSX==='undefined'){ toast('Excel export library failed to load — check your internet connection and try again.'); return; }
+    const wsSummary=XLSX.utils.json_to_sheet([
+      {Metric:'Total Opportunities',Value:data.summary.total},
+      {Metric:'Open Pipeline Value (EUR)',Value:data.summary.openPipelineValue},
+      {Metric:'Won',Value:data.summary.won},
+      {Metric:'Cancelled',Value:data.summary.cancelled},
+    ]);
+    const wsRows=XLSX.utils.json_to_sheet(data.rows.map(r=>({
+      'PEGA Number':r.pega,'Customer':r.customer,'Status':r.status,'Assigned To':r.assignedTo,
+      'Value (EUR)':r.value||0,'Score':r.score,'Band':r.band,'Created':r.created
+    })));
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,wsSummary,'Summary');
+    XLSX.utils.book_append_sheet(wb,wsRows,'Opportunities');
+    XLSX.writeFile(wb,sanitizeFileName(data.title)+'.xlsx');
+    toast('Excel status report downloaded.');
+  } else if(fmt==='pptx'){
+    if(typeof PptxGenJS==='undefined'){ toast('PowerPoint export library failed to load — check your internet connection and try again.'); return; }
+    const pres=new PptxGenJS();
+    const s1=pres.addSlide();
+    s1.background={color:'FFFFFF'};
+    s1.addText(data.title,{x:0.5,y:0.4,w:9,h:0.8,fontSize:26,bold:true,color:'E60000'});
+    s1.addText(`Generated ${fmtDate(data.generated)}`,{x:0.5,y:1.1,w:9,h:0.4,fontSize:12,color:'5A5D5E'});
+    s1.addText(
+      `Total Opportunities: ${data.summary.total}\nOpen Pipeline Value: ${fmtMoney(data.summary.openPipelineValue)}\nWon: ${data.summary.won}    Cancelled: ${data.summary.cancelled}`,
+      {x:0.5,y:1.8,w:9,h:1.5,fontSize:14,valign:'top'}
+    );
+    const s2=pres.addSlide();
+    s2.addText('Opportunity Detail',{x:0.5,y:0.3,w:9,h:0.5,fontSize:20,bold:true,color:'E60000'});
+    const tableRows=[[
+      {text:'PEGA #',options:{bold:true,fill:{color:'F0F1F2'}}},
+      {text:'Customer',options:{bold:true,fill:{color:'F0F1F2'}}},
+      {text:'Status',options:{bold:true,fill:{color:'F0F1F2'}}},
+      {text:'Assigned To',options:{bold:true,fill:{color:'F0F1F2'}}},
+      {text:'Value',options:{bold:true,fill:{color:'F0F1F2'}}},
+    ]];
+    data.rows.forEach(r=>tableRows.push([r.pega,r.customer,r.status,r.assignedTo,r.value?fmtMoney(r.value):'—']));
+    s2.addTable(tableRows,{x:0.4,y:0.9,w:9.2,fontSize:9,autoPage:true});
+    pres.writeFile({fileName:sanitizeFileName(data.title)+'.pptx'});
+    toast('PowerPoint status report downloaded.');
+  }
+}
+function triggerDownload(blob,fileName){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=fileName;
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},200);
+}
+
+/* ---- Find Internal Expert clarify-flow ---- */
+function findExpertForDomain(domain){
+  const dl=domain.toLowerCase();
+  const allTags=[];
+  DB.team.forEach(t=>(t.expertise||[]).forEach(e=>allTags.push({tag:e,member:t})));
+  const found=allTags.filter(x=>x.tag.toLowerCase().includes(dl)||dl.includes(x.tag.toLowerCase()));
+  if(found.length){
+    const lines=[...new Set(found.map(f=>`${f.member.name} (${f.member.role} — ${f.tag})`))];
+    return `Best-matching internal experts for "${esc(domain)}": ${lines.map(esc).join(', ')}.`;
+  }
+  return `I couldn't find a direct expertise match for "${esc(domain)}". Full expertise directory: ${DB.team.map(t=>`${esc(t.name)} (${esc(t.role)}) — ${(t.expertise||[]).map(esc).join(', ')}`).join(' | ')}.`;
+}
+function askExpertDomain(){
+  window.__chatHistory.push({role:'user',text:'Find Internal Expert'});
+  window.__chatHistory.push({role:'bot',text:'Sure — which domain or project type are you looking for an expert in? (e.g. 5G, Retail Analytics, Healthcare Compliance, Fleet IoT, Predictive Maintenance)'});
+  window.__chatPending='expert_domain';
+  render();
+  const ci=document.getElementById('chatInput');
+  if(ci) ci.focus();
+  const msgs=document.getElementById('chatMsgs');
+  if(msgs) msgs.scrollTop=msgs.scrollHeight;
+}
+
+/* ---- Customized Report clarify-flow ---- */
+function askCustomReport(){
+  window.__chatHistory.push({role:'user',text:'Customized Report'});
+  window.__chatHistory.push({role:'bot',text:`Sure — tell me the customer name or PEGA Demand Number, and what you'd like included (e.g. scoring, documents, comments, or "full details"). For example: "${esc(DB.customers[0].name)}, include scoring and documents" or "${esc(DB.opportunities[0].pegaNumber)}, full details".`});
+  window.__chatPending='custom_report';
+  render();
+  const ci=document.getElementById('chatInput');
+  if(ci) ci.focus();
+  const msgs=document.getElementById('chatMsgs');
+  if(msgs) msgs.scrollTop=msgs.scrollHeight;
+}
+function buildOppCustomReportText(o,flags){
+  const c=getCustomer(o.customerId);
+  const assignee=getTeamMember(o.assignedTo);
+  let out=`<b>Customized Report — ${esc(o.pegaNumber)} (${esc(c.name)})</b><br>`
+    +`Status: ${esc(o.status)}. Value: ${o.value?fmtMoney(o.value):'—'}. Assigned to: ${esc(assignee.name)}.<br>`;
+  if(flags.scoring){
+    out += o.profile.scoring? `Scoring: ${o.profile.scoring.overall} (${esc(o.profile.scoring.band)}) — `+o.profile.scoring.factors.map(f=>`${esc(f.label)}: ${f.score}`).join(', ')+'.<br>' : 'Scoring: not yet available.<br>';
+  }
+  if(flags.documents){
+    out += `Documents (${o.documents.length}): `+(o.documents.length? o.documents.map(d=>`${esc(d.fileName)} (${esc(d.type)})`).join(', ') : 'none')+'.<br>';
+  }
+  if(flags.comments){
+    out += `Comments (${o.comments.length}): `+(o.comments.length? o.comments.map(cm=>`${esc(cm.author)}: "${esc(cm.text)}"`).join(' | ') : 'none')+'.<br>';
+  }
+  return out;
+}
+function buildCustomerCustomReportText(c,flags){
+  const opps=oppsForCustomer(c.id);
+  let out=`<b>Customized Report — ${esc(c.name)}</b><br>`
+    +`${opps.length} opportunit${opps.length===1?'y':'ies'} on record. Open pipeline: ${fmtMoney(pipelineValue(opps))}.<br>`;
+  opps.forEach(o=>{
+    let line=`${esc(oppLabel(o))}: ${esc(o.status)}`;
+    if(flags.scoring && o.profile.scoring) line+=` — score ${o.profile.scoring.overall} (${esc(o.profile.scoring.band)})`;
+    out += line+'.<br>';
+    if(flags.documents) out += `&nbsp;&nbsp;Documents: ${o.documents.length? o.documents.map(d=>esc(d.fileName)).join(', ') : 'none'}.<br>`;
+    if(flags.comments) out += `&nbsp;&nbsp;Comments: ${o.comments.length? o.comments.map(cm=>esc(cm.author)+': "'+esc(cm.text)+'"').join(' | ') : 'none'}.<br>`;
+  });
+  return out;
+}
+function buildCustomReportReply(text){
+  const ql=text.toLowerCase();
+  const wantsScoring=/scor/i.test(text);
+  const wantsDocuments=/document/i.test(text);
+  const wantsComments=/comment/i.test(text);
+  const wantsAll=/full|everything|all details|complete/i.test(text) || (!wantsScoring&&!wantsDocuments&&!wantsComments);
+  const flags={scoring:wantsAll||wantsScoring, documents:wantsAll||wantsDocuments, comments:wantsAll||wantsComments};
+
+  const pegaMatch=text.match(/PEGA-\d{4}-\d+/i);
+  if(pegaMatch){
+    const o=DB.opportunities.find(x=>x.pegaNumber && x.pegaNumber.toLowerCase()===pegaMatch[0].toLowerCase());
+    if(!o) return `I couldn't find an opportunity with PEGA number ${esc(pegaMatch[0])}.`;
+    return buildOppCustomReportText(o,flags)+reportFormatButtons('opportunity',o.id);
+  }
+  const custMatch=DB.customers.find(c=>ql.includes(c.name.toLowerCase()));
+  if(custMatch){
+    return buildCustomerCustomReportText(custMatch,flags)+reportFormatButtons('customer',custMatch.id);
+  }
+  return `I couldn't match that to a customer or PEGA number. Try including the exact customer name (e.g. "${esc(DB.customers[0].name)}") or a PEGA number (e.g. "${esc(DB.opportunities[0].pegaNumber)}").`;
+}
+
+function chatRespond(q){
+  const ql=q.toLowerCase();
+
+  // direct PEGA number lookup, e.g. "PEGA-2025-10432"
+  const pegaMatch=q.match(/PEGA-\d{4}-\d+/i);
+  if(pegaMatch){
+    const o=DB.opportunities.find(x=>x.pegaNumber && x.pegaNumber.toLowerCase()===pegaMatch[0].toLowerCase());
+    return o? generateOppReportText(o) : `I couldn't find an opportunity with PEGA number ${esc(pegaMatch[0])}.`;
+  }
+
+  const custMatch=DB.customers.find(c=>ql.includes(c.name.toLowerCase()));
+
+  if(custMatch && /report|summary|status/.test(ql)){
+    return generateCustomerReportText(custMatch)+reportFormatButtons('customer',custMatch.id);
+  }
+  if(custMatch && /brief|overview|about|priorit|contact/.test(ql)){
+    return `<b>${esc(custMatch.name)}</b> (${esc(custMatch.industry)}) — ${esc(custMatch.overview)} Strategic priorities: ${custMatch.priorities.map(esc).join('; ')||'not documented yet'}.`;
+  }
+  if(custMatch && /recommend|service/.test(ql)){
+    const svcs=SERVICE_CATALOG[custMatch.industry]||[];
+    return `Based on ${esc(custMatch.name)}'s industry (${esc(custMatch.industry)}) and company brief, recommended services include: ${svcs.map(esc).join(', ')}.`;
+  }
+  if(custMatch){
+    const opps=oppsForCustomer(custMatch.id);
+    return `${esc(custMatch.name)} has ${opps.length} opportunit${opps.length===1?'y':'ies'} on record: ${opps.map(o=>`"${esc(oppLabel(o))}" (${esc(o.status)})`).join(', ')||'none yet'}.`;
+  }
+
+  // general pipeline / status report
+  if(/report|summary/.test(ql)){
+    return generatePipelineReportText()+reportFormatButtons('pipeline');
+  }
+
+  // internal expert finder
+  if(/expert|specialist|who knows/.test(ql)){
+    const allTags=[];
+    DB.team.forEach(t=>(t.expertise||[]).forEach(e=>allTags.push({tag:e,member:t})));
+    const found=allTags.filter(x=>ql.includes(x.tag.toLowerCase()));
+    if(found.length){
+      const lines=[...new Set(found.map(f=>`${f.member.name} (${f.member.role} — ${f.tag})`))];
+      return `Internal experts matching your query: ${lines.map(esc).join(', ')}.`;
+    }
+    return `Internal expertise directory: ${DB.team.map(t=>`${esc(t.name)} (${esc(t.role)}) — ${(t.expertise||[]).map(esc).join(', ')}`).join(' | ')}. Try "Find an internal expert for 5G" or "...for Healthcare".`;
+  }
+
+  // new / emerging technologies
+  if(/new tech|latest tech|emerging|trending|technolog/.test(ql)){
+    const top=topServicesByCount(5);
+    return top.length? `Emerging services gaining traction across current opportunities: ${top.map(esc).join(', ')}. These reflect the top demand trends on the dashboard.` : 'No service trend data available yet.';
+  }
+
+  if(/hot|high scoring|best fit/.test(ql)){
+    const list=DB.opportunities.filter(o=>o.profile.scoring&&o.profile.scoring.band==='Hot');
+    return list.length? `Hot opportunities (highest scoring): ${list.map(o=>`"${esc(oppLabel(o))}" (${esc(getCustomer(o.customerId).name)}, score ${o.profile.scoring.overall})`).join(', ')}.` : 'No Hot-scored opportunities currently.';
+  }
+  if(/cancel/.test(ql)){
+    const list=DB.opportunities.filter(o=>o.status==='Cancelled');
+    return list.length? list.map(o=>`"${esc(oppLabel(o))}" was cancelled — reason: ${esc(o.cancelReason)}`).join(' ') : 'No cancelled opportunities on record.';
+  }
+  if(/approv/.test(ql)){
+    const pending=DB.opportunities.filter(o=>o.approval && !o.approval.approvers.every(a=>a.approved));
+    const approved=DB.opportunities.filter(o=>o.approval && o.approval.approvers.every(a=>a.approved));
+    return `Pending approval: ${pending.length? pending.map(o=>`"${esc(oppLabel(o))}"`).join(', ') : 'none'}. Fully approved: ${approved.length? approved.map(o=>`"${esc(oppLabel(o))}"`).join(', ') : 'none'}.`;
+  }
+  if(/win rate|won|pipeline|value/.test(ql)){
+    const won=DB.opportunities.filter(o=>o.status==='Won').length;
+    const blocked=DB.opportunities.filter(o=>o.status==='Blocked').length;
+    const cancelled=DB.opportunities.filter(o=>o.status==='Cancelled').length;
+    return `Current pipeline value is ${fmtMoney(pipelineValue(DB.opportunities))} across ${DB.opportunities.filter(o=>!['Won','Cancelled'].includes(o.status)).length} open opportunities. Won: ${won}, Blocked: ${blocked}, Cancelled: ${cancelled}.`;
+  }
+  if(/team|assigned|workload/.test(ql)){
+    return `Team members: ${DB.team.map(t=>`${esc(t.name)} (${esc(t.role)})`).join(', ')}. Ask me "who is working on [customer]?" for specifics.`;
+  }
+  const whoMatch=DB.team.find(t=>ql.includes(t.name.toLowerCase().split(' ')[0]));
+  if(whoMatch){
+    const mine=DB.opportunities.filter(o=>o.assignedTo===whoMatch.id);
+    return `${esc(whoMatch.name)} (${esc(whoMatch.role)}) is assigned to ${mine.length} opportunit${mine.length===1?'y':'ies'}: ${mine.map(o=>`"${esc(oppLabel(o))}"`).join(', ')||'none currently'}.`;
+  }
+  return `I can help with company briefs, opportunity status (by name or PEGA number), scoring, cancellations, approvals, team workload, internal expertise, emerging technologies, or a full pipeline/customer status report. Try "Generate a status report", "Find an internal expert for Healthcare", or "What's the status of Albion Merchant Bank opportunities?"`;
+}
+
+function chatSend(text){
+  if(!text.trim()) return;
+  window.__chatHistory.push({role:'user',text:esc(text)});
+  let reply;
+  if(window.__chatPending==='expert_domain'){
+    reply=findExpertForDomain(text.trim());
+    window.__chatPending=null;
+  } else if(window.__chatPending==='custom_report'){
+    reply=buildCustomReportReply(text.trim());
+    window.__chatPending=null;
+  } else {
+    reply=chatRespond(text);
+  }
+  window.__chatHistory.push({role:'bot',text:reply});
+  render();
+  const chatInput=document.getElementById('chatInput');
+  if(chatInput) chatInput.focus();
+  const msgs=document.getElementById('chatMsgs');
+  if(msgs) msgs.scrollTop=msgs.scrollHeight;
+}
+
+/* ================= EVENT WIRING ================= */
+function attachGlobalHandlers(){
+  document.querySelectorAll('[data-nav]').forEach(el=>{
+    el.onclick=()=>go(el.getAttribute('data-nav'));
+  });
+  document.querySelectorAll('[data-nav-customer]').forEach(el=>{
+    el.onclick=(e)=>{e.stopPropagation();go('customer',el.getAttribute('data-nav-customer'));};
+  });
+  document.querySelectorAll('[data-navcust]').forEach(el=>{
+    el.onclick=()=>go('customer',el.getAttribute('data-navcust'));
+  });
+  document.querySelectorAll('[data-openopp]').forEach(el=>{
+    el.onclick=()=>{ACTIVE_TAB='profile';go('opportunity',el.getAttribute('data-openopp'));};
+  });
+
+  const btnNewOpp=document.getElementById('btnNewOpp');
+  if(btnNewOpp) btnNewOpp.onclick=openCreateOppModal;
+
+  document.querySelectorAll('[data-tab]').forEach(el=>{
+    el.onclick=()=>{ ACTIVE_TAB=el.getAttribute('data-tab'); render(); };
+  });
+
+  document.querySelectorAll('[data-adddoc]').forEach(el=>{
+    el.onclick=()=>openAddDocModal(el.getAttribute('data-adddoc'),el.getAttribute('data-doctype'));
+  });
+  document.querySelectorAll('[data-gendoc]').forEach(el=>{
+    el.onclick=()=>{
+      const oppId=el.getAttribute('data-gendoc');
+      const docType=el.getAttribute('data-doctype');
+      if(docType==='Customer Proposal'){ openProposalFormatModal(oppId); return; }
+      el.disabled=true;
+      el.innerHTML=`<span class="spin"></span> Populating...`;
+      if(docType==='Fit Gap Analysis'){
+        setTimeout(()=>{ generateFitGapDocx(oppId); },1100);
+        return;
+      }
+      setTimeout(()=>{ generateDocument(oppId,docType); },1100);
+    };
+  });
+  document.querySelectorAll('[data-dlreport]').forEach(el=>{
+    el.onclick=()=>{
+      const fmt=el.getAttribute('data-dlreport');
+      const scope=el.getAttribute('data-dlreporttype');
+      const custId=el.getAttribute('data-dlscope');
+      downloadStatusReport(fmt,scope,custId);
+    };
+  });
+
+  document.querySelectorAll('[data-reqapproval]').forEach(el=>{
+    el.onclick=()=>requestApproval(el.getAttribute('data-reqapproval'));
+  });
+  document.querySelectorAll('[data-approve]').forEach(el=>{
+    el.onclick=()=>simulateApprove(el.getAttribute('data-approve'),el.getAttribute('data-approver'));
+  });
+  document.querySelectorAll('[data-schedulereport]').forEach(el=>{
+    el.onclick=()=>openScheduleReportModal(el.getAttribute('data-schedulereport'));
+  });
+  document.querySelectorAll('[data-cancelschedule]').forEach(el=>{
+    el.onclick=()=>cancelScheduledReport(el.getAttribute('data-cancelschedule'));
+  });
+  document.querySelectorAll('[data-runschedulenow]').forEach(el=>{
+    el.onclick=()=>runScheduledReportNow(el.getAttribute('data-runschedulenow'));
+  });
+
+  const assignSelect=document.getElementById('assignSelect');
+  if(assignSelect) assignSelect.onchange=()=>{
+    const o=getOpp(assignSelect.getAttribute('data-oppid'));
+    o.assignedTo=assignSelect.value;saveDB();render();toast('Assignee updated.');
+  };
+  const statusSelect=document.getElementById('statusSelect');
+  if(statusSelect) statusSelect.onchange=()=>{
+    const oppId=statusSelect.getAttribute('data-oppid');
+    const val=statusSelect.value;
+    if(val==='Cancelled'){ openCancelReasonModal(oppId,statusSelect); return; }
+    const o=getOpp(oppId);
+    o.status=val;o.stage=val;
+    if(val!=='Cancelled') o.cancelReason=null;
+    saveDB();render();toast('Status updated to '+val+'.');
+  };
+
+  const btnPostComment=document.getElementById('btnPostComment');
+  if(btnPostComment) btnPostComment.onclick=()=>{
+    const box=document.getElementById('commentBox');
+    const text=box.value.trim();
+    if(!text){toast('Write a comment first.');return;}
+    const fileInput=document.getElementById('commentAttach');
+    const file=fileInput&&fileInput.files[0];
+    const o=getOpp(btnPostComment.getAttribute('data-oppid'));
+    const mentions=(text.match(/@([A-Za-z]+ ?[A-Za-z]*)/g)||[]).map(m=>m.slice(1).trim());
+    o.comments.push({id:uid('cm'),author:CURRENT_USER.name,text,mentions,time:appNow().toISOString(),attachment:file?file.name:null});
+    if(file){
+      o.documents.push({id:uid('d'),type:'Comment Attachment',fileName:file.name,date:appNow().toISOString(),by:CURRENT_USER.name,source:'uploaded'});
+    }
+    saveDB();render();
+    toast('Comment posted.'+(mentions.length?` Notified: ${mentions.join(', ')}`:'')+(file?' Attachment also added to Documents.':''));
+  };
+  const commentBox=document.getElementById('commentBox');
+  if(commentBox){
+    commentBox.addEventListener('input',()=>{
+      const val=commentBox.value;
+      const caret=commentBox.selectionStart;
+      const upto=val.slice(0,caret);
+      const m=upto.match(/@([A-Za-z]*)$/);
+      const menu=document.getElementById('mentionMenu');
+      if(m){
+        const term=m[1].toLowerCase();
+        const matches=DB.team.filter(t=>t.name.toLowerCase().includes(term));
+        if(matches.length){
+          menu.innerHTML=`<div class="mention-menu" style="top:4px;left:0;">${matches.map(t=>`<div class="mm-item" data-mname="${esc(t.name)}">${avatarSm(t.name)} ${esc(t.name)}</div>`).join('')}</div>`;
+          menu.style.position='relative';
+          menu.querySelectorAll('[data-mname]').forEach(mm=>{
+            mm.onclick=()=>{
+              const name=mm.getAttribute('data-mname');
+              commentBox.value=val.slice(0,caret-m[0].length)+'@'+name+' '+val.slice(caret);
+              menu.innerHTML='';
+              commentBox.focus();
+            };
+          });
+        } else { menu.innerHTML=''; }
+      } else { menu.innerHTML=''; }
+    });
+  }
+  const commentAttach=document.getElementById('commentAttach');
+  if(commentAttach) commentAttach.onchange=()=>{
+    const nameEl=document.getElementById('commentAttachName');
+    if(commentAttach.files[0]) nameEl.textContent=commentAttach.files[0].name;
+  };
+
+  // opportunities page: segmented status tabs
+  document.querySelectorAll('[data-setstatus]').forEach(el=>{
+    el.onclick=()=>{
+      window.__oppFilter=Object.assign({},window.__oppFilter,{status:el.getAttribute('data-setstatus')||''});
+      render();
+    };
+  });
+  const btnClearFilters=document.getElementById('btnClearFilters');
+  if(btnClearFilters) btnClearFilters.onclick=()=>{ window.__oppFilter={}; render(); };
+
+  // dashboard: clickable cards / rows drilling into a filtered Opportunities view
+  document.querySelectorAll('[data-goactive]').forEach(el=>{
+    el.onclick=()=>{ window.__oppFilter={excludeStatuses:['Won','Cancelled']}; go('opportunities'); };
+  });
+  document.querySelectorAll('[data-goclosed]').forEach(el=>{
+    el.onclick=()=>{ window.__oppFilter={statusIn:['Won','Cancelled']}; go('opportunities'); };
+  });
+  document.querySelectorAll('[data-goscore]').forEach(el=>{
+    el.onclick=()=>{ window.__oppFilter={scoreBand:el.getAttribute('data-goscore')}; go('opportunities'); };
+  });
+  document.querySelectorAll('[data-goassignee]').forEach(el=>{
+    el.onclick=()=>{ window.__oppFilter={assignedTo:el.getAttribute('data-goassignee')}; go('opportunities'); };
+  });
+  document.querySelectorAll('[data-gostatus]').forEach(el=>{
+    el.onclick=()=>{ window.__oppFilter={status:el.getAttribute('data-gostatus')}; go('opportunities'); };
+  });
+  document.querySelectorAll('[data-goservice]').forEach(el=>{
+    el.onclick=()=>{ window.__oppFilter={service:el.getAttribute('data-goservice')}; go('opportunities'); };
+  });
+
+  // opportunities page: assignee filter
+  const fAssignee=document.getElementById('fAssignee');
+  if(fAssignee) fAssignee.onchange=()=>{window.__oppFilter=Object.assign({},window.__oppFilter,{assignedTo:fAssignee.value});render();};
+  // opportunities page: local search (preserves caret across re-render)
+  const oppSearch=document.getElementById('oppSearch');
+  if(oppSearch) oppSearch.oninput=()=>{
+    const caret=oppSearch.selectionStart;
+    window.__oppFilter=Object.assign({},window.__oppFilter,{text:oppSearch.value});
+    render();
+    const ns=document.getElementById('oppSearch');
+    if(ns){ns.focus();ns.setSelectionRange(caret,caret);}
+  };
+  // opportunities page: sortable columns
+  document.querySelectorAll('.opp-table thead th.sortable').forEach(th=>{
+    th.onclick=()=>{
+      const key=th.getAttribute('data-sort');
+      const cur=window.__oppSort||{key:'created',dir:'desc'};
+      const dir = cur.key===key ? (cur.dir==='asc'?'desc':'asc') : 'desc';
+      window.__oppSort={key,dir};
+      render();
+    };
+  });
+
+  // global search (top nav) -> jumps to Opportunities with filter applied
+  const gs=document.getElementById('globalSearch');
+  if(gs) gs.onkeydown=(e)=>{
+    if(e.key==='Enter'){
+      window.__oppFilter=Object.assign({},window.__oppFilter,{text:gs.value});
+      go('opportunities');
+    }
+  };
+
+  // chatbot
+  const chatFab=document.getElementById('chatFab');
+  if(chatFab) chatFab.onclick=()=>{window.__chatOpen=!window.__chatOpen;render();
+    setTimeout(()=>{const i=document.getElementById('chatInput');if(i)i.focus();
+      const msgs=document.getElementById('chatMsgs');if(msgs) msgs.scrollTop=msgs.scrollHeight;},0);
+  };
+  const chatClose=document.getElementById('chatClose');
+  if(chatClose) chatClose.onclick=(e)=>{e.stopPropagation();window.__chatOpen=false;render();};
+  const chatSendBtn=document.getElementById('chatSend');
+  const chatInput=document.getElementById('chatInput');
+  if(chatSendBtn) chatSendBtn.onclick=()=>{chatSend(chatInput.value);chatInput.value='';};
+  if(chatInput) chatInput.onkeydown=(e)=>{if(e.key==='Enter'){chatSend(chatInput.value);chatInput.value='';}};
+  document.querySelectorAll('.sg').forEach(el=>{
+    el.onclick=()=>{
+      const q=el.getAttribute('data-q');
+      if(q==='Find internal expert'){ askExpertDomain(); }
+      else if(q==='Customized report'){ askCustomReport(); }
+      else { chatSend(q); }
+    };
+  });
+}
+
+/* ================= INIT ================= */
+render();
+</script>
+</body>
+</html>
