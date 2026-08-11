@@ -214,6 +214,7 @@ textarea.input{resize:vertical;min-height:70px;}
 .banner-warn{background:var(--vf-amber-bg);border:1px solid #F5D999;}
 .banner-red{background:var(--vf-red-light);border:1px solid #F0B7B7;}
 .banner-info{background:var(--vf-blue-bg);border:1px solid #B9DEF0;}
+.banner-green{background:var(--vf-green-bg);border:1px solid #BFE8CE;}
 .banner .b-title{font-weight:700;font-size:13.5px;}
 .banner .b-text{font-size:12.5px;color:var(--vf-grey);margin-top:2px;}
 .banner svg{width:20px;height:20px;flex-shrink:0;margin-top:1px;}
@@ -423,6 +424,10 @@ const CUSTOMERS = [
    overview:'Midland Manufacturing Group produces industrial equipment across 3 factories in the Midlands. Exploring Industry 4.0 investments to reduce downtime and improve production visibility.',
    priorities:['Reduce unplanned downtime via predictive maintenance','Improve factory floor connectivity','Centralise production data'],
    contacts:[{name:'Christopher Hall',title:'Head of Operations',email:'christopher.hall@midlandmfg.co.uk',phone:'+44 121 496 0445'}]},
+  {id:'c6',name:'SCIT Group',industry:'Aviation & Connectivity',hq:'Riyadh, Saudi Arabia',employees:'—',revenue:'—',
+   overview:'SCIT Group is a Saudi-based technology investment fund established May 2022, founded by Sheikh Saad Al-Otaibi. Focused on space, end-to-end security and aviation through advanced communications and emerging technologies, with a strategic focus on the Middle East, Africa and Turkey — explicitly aligned with Saudi Vision 2030. SCIT owns/backs a ~300-site private mobile network delivering Europe Inflight Connectivity, currently served by T-Mobile, and its IFC subsidiary SKYFive Arabia is already expanding A2G connectivity into South Africa.',
+   priorities:['Reduce annual managed-service cost vs. the current T-Mobile contract','Modernize ~100 sites approaching Nokia hardware end-of-support','Secure a new 10-year managed-service agreement','Resolve multi-jurisdiction spectrum licensing continuity across 41 countries'],
+   contacts:[{name:'Markus Feldmann',title:'Head of Network Services (Sponsor)',email:'markus.feldmann@scitgroup-demo.com',phone:'+966 11 496 0210'},{name:'Dr. Amina Rashid',title:'Director of Infrastructure Partnerships',email:'amina.rashid@scitgroup-demo.com',phone:'+966 11 496 0388'},{name:'Petra Lindqvist',title:'NOC Lead',email:'petra.lindqvist@scitgroup-demo.com',phone:'+49 30 496 0122'}]},
 ];
 
 /* Fixed "current" reference date so the whole app reads as 2025 (seed data and anything
@@ -546,6 +551,88 @@ const OPPORTUNITIES = [
      internalTeam:['t2']},
    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Midland_5G.pdf',date:daysAgo(14),by:'James Carter'}],
    comments:[], cancelReason:null, aiRecommendedServices:['Private 5G for Factory Floor','Industrial IoT Sensors Platform']},
+
+  {id:'o11',pegaNumber:'PEGA-91042',customerId:'c6',status:'Discovery',stage:'Discovery',value:9000000,
+   created:daysAgo(24),assignedTo:'t2',demandFormFileName:'PEGA_DemandForm_SCIT_EuropeIFC.pdf',
+   profile:{customerContact:'Markus Feldmann (Head of Network Services)',
+     problemStatement:'Re-tendering the managed-service contract for a ~300-site European Air-to-Ground In-Flight Connectivity network across 41 countries — cost-driven, with recurring handover incidents and ~100 sites approaching Nokia hardware end-of-support within 18 months.',
+     scoring:{overall:78,band:'Hot',factors:[{label:'Strategic Fit',score:88},{label:'Budget Confirmed',score:75},{label:'Technical Fit',score:80},{label:'Competitive Position',score:70},{label:'Urgency',score:78}]},
+     internalTeam:['t2']},
+   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_SCIT_EuropeIFC.pdf',date:daysAgo(24),by:'James Carter'}],
+   comments:[{id:uid('cm'),author:'James Carter',text:'Discovery call complete — MEDDPICC now 6/8 evidenced. Recommend we lead the proposal with the targeted ~100-site modernization narrative.',mentions:[],time:daysAgo(8)}],
+   cancelReason:null,
+   aiRecommendedServices:['Managed Private Network (Hybrid MPN)','Managed Network Operations (NOC-as-a-Service)','Solution Delivery & Migration Services','Network Strategic Planning & Capacity Management','Spectrum & Market Advisory'],
+   insights:{
+     meddpiccStarted:true,
+     brief:{
+       whoTheyAre:[
+         'SCIT Group — a Saudi-based technology investment fund established May 2022, founded by Sheikh Saad Al-Otaibi.',
+         'Focused on space, end-to-end security and aviation through advanced communications, information and emerging technologies.',
+         'Strategic focus on the Middle East, Africa and Turkey — direct investments and commercialization partnerships.',
+         "Explicitly aligned with Saudi Vision 2030 — economic diversification and regional digital sovereignty."
+       ],
+       whyNow:[
+         'Owns/backs a ~300-site private mobile network delivering Europe Inflight Connectivity, currently served by T-Mobile.',
+         'Current managed-service contract expires 2029 — re-tendering well ahead of that date.',
+         'Explicit mandate to reduce annual service cost and secure a new 10-year agreement.',
+         "SKYFive Arabia (SCIT's IFC subsidiary) announced an MoU in Feb 2025 to bring A2G connectivity to South Africa — this European re-tender likely sits inside a broader multi-region A2G/IFC build-out."
+       ],
+       technicalAsk:"A new Managed Network Services provider for a ~300-site Mobile Private Network spanning 41 EU countries, delivering In-Flight Connectivity (IFC) to aircraft via Air-to-Ground (A2G) technology. Discovery confirmed this is very likely the actual European Aviation Network (EAN) ground infrastructure — built and operated by Deutsche Telekom (T-Mobile's parent) on dedicated LTE Band 65 — making this a take-over-and-modernize engagement, not a green-field build.",
+       ecosystem:[
+         {name:'Deutsche Telekom',desc:'Builds and operates EAN\'s ground network — the likely current operator behind "T-Mobile" in this deal.'},
+         {name:'Nokia',desc:"EAN's LTE network equipment vendor — explains the required hardware refresh."},
+         {name:'Inmarsat',desc:"Owns EAN's satellite (S-band) component, kept separate from the ground network — this RFP is ground-only."},
+         {name:'Thales',desc:'Builds EAN\'s onboard aircraft equipment (Complementary Ground Component terminal) — relevant only if OBU scope is discussed.'}
+       ]
+     },
+     champ:{
+       challenges:{status:'confirmed',text:"Primarily cost — enterprise-rate pricing hasn't scaled with growth. Also real but non-critical: 14–18 handover-related incidents per month on older ground sites (Germany, France, UK), and ~100 sites approaching Nokia hardware end-of-support within 18 months."},
+       authority:{status:'confirmed',text:'Markus Feldmann (Head of Network Services) owns day-to-day vendor relationship and technical evaluation, with signing authority to €2M. Above that, a named 3-person board: CFO (cost), CTO (technical risk), Dr. Amina Rashid (strategic tiebreaker).'},
+       money:{status:'confirmed',text:'€9M/year confirmed as a flexible target, not a hard ceiling. Hardware-refresh capex now bounded to a targeted ~100-site modernization, not a fleet-wide replacement — a materially smaller, more fundable scope.'},
+       prioritization:{status:'confirmed',text:'High, with a firm board-cycle deadline: shortlist to two vendors by end-September, technical deep-dive in October, board decision in November, signature in December.'}
+     },
+     meddpicc:{
+       metrics:{status:'evidenced',text:'Cost below the T-Mobile baseline; reduction from the 14–18/month handover-incident baseline; a costed modernization path for the ~100-site tier.'},
+       economicBuyer:{status:'evidenced',text:'3-person board named by role — CFO (cost), CTO (technical risk), Dr. Amina Rashid (strategic tiebreaker) — with a €2M sign-off threshold confirmed.'},
+       decisionCriteria:{status:'evidenced',text:'Cost and technical risk weighted equally by the board; the strategic angle acts as tiebreaker between close proposals.'},
+       decisionProcess:{status:'evidenced',text:'Shortlist to two vendors (Sept) → technical deep-dive (Oct) → board decision (Nov) → signature (Dec).'},
+       paperProcess:{status:'partial',text:'Standard commercial contract confirmed; a separate spectrum risk-allocation side-letter is likely, but its timeline isn\'t fixed yet ("could add a few weeks").'},
+       identifyPain:{status:'evidenced',text:'Quantified: 14–18 monthly handover incidents, ~100 sites at hardware risk, and no structured capacity-planning discipline today.'},
+       champion:{status:'partial',text:'Markus is explicitly neutral until proposals land, but has stated he will advocate internally for a strong, specialist technical response.'},
+       competition:{status:'evidenced',text:'Two named-by-type competitors identified: an incumbent telecom vendor (broad scale, low aviation specificity) and a specialist aviation connectivity player (deep aviation credibility, board-flagged funding concern for the hardware refresh).'}
+     },
+     rtm:[
+       {id:'R-001',requirement:'Ground A2G site management, dedicated PLMN (~300 sites, 41 countries)',fitGap:'CONFIGURATION',catalogue:'Managed Private Network (Hybrid MPN)',status:'Answered'},
+       {id:'R-002',requirement:'24/7 NOC monitoring & incident management, flexible first/second-line scope',fitGap:'FIT',catalogue:'Managed Network Operations (NOC-as-a-Service)',status:'Answered'},
+       {id:'R-003',requirement:'Targeted hardware modernization (~100 sites, Nokia EOL within 18mo)',fitGap:'FIT',catalogue:'Solution Delivery & Migration Services',status:'Answered'},
+       {id:'R-004',requirement:'Vendor/RFQ management for hardware procurement',fitGap:'FIT',catalogue:'Vendor & RFQ Management Services',status:'Answered'},
+       {id:'R-005',requirement:'Capacity planning / traffic forecasting (replacing manual process)',fitGap:'FIT',catalogue:'Network Strategic Planning & Capacity Management',status:'Answered'},
+       {id:'R-006',requirement:'SLA/service quality governance, incident & change management',fitGap:'FIT',catalogue:'Business Continuity & Service Quality Management',status:'Answered'},
+       {id:'R-007',requirement:'Inherited (EAN-origin) architecture validation & evolution roadmap',fitGap:'FIT',catalogue:'Network Strategy & Architecture Advisory',status:'Answered'},
+       {id:'R-008',requirement:'Spectrum continuity across 41 jurisdictions (legacy consortium licensing)',fitGap:'CONFIGURATION',catalogue:'Spectrum & Market Advisory',status:'Answered'},
+       {id:'R-009',requirement:'Contractual risk allocation for spectrum (legal side-letter/schedule)',fitGap:'CUSTOMIZATION',catalogue:"Bespoke contract schedule + Spectrum & Market Advisory",status:'Answered'},
+       {id:'R-010',requirement:'A2G-specific RAN engineering (fast handover, Doppler, Band 65 aviation profile)',fitGap:'GAP',catalogue:'Not in current RAN catalogue — routed to Product',status:'At Risk'},
+       {id:'R-011',requirement:'Aircraft-side OBU integration boundary',fitGap:'PARTNER',catalogue:"Interface definition with customer's aircraft integrator — ground-only scope confirmed",status:'At Risk'}
+     ],
+     competitors:[
+       {name:'Incumbent Telecom Vendor',strength:'Broad operational scale — "we operate networks this size elsewhere."',weakness:'Low aviation-specific specificity in technical response so far.',howWeWin:"Lead with A2G/EAN-specific technical depth — Band 65, Doppler-compensated handover, hybrid satellite/ground architecture — that a generic response can't match."},
+       {name:'Specialist Aviation Connectivity Player',strength:'Deep aviation credibility and domain expertise.',weakness:'Board-flagged concern over financial capacity to fund the ~100-site hardware refresh.',howWeWin:'Pair telecom-scale financial strength with a credible, specific aviation technical plan.'}
+     ],
+     openItems:[
+       'Spectrum licensing continuity across all 41 jurisdictions — board-flagged, customer-acknowledged, unresolved. Position as a proposal differentiator, not a footnote.',
+       'Confirm exact current site count with NOC lead Petra Lindqvist (some sites decommissioned) before finalizing the commercial model.',
+       'Route R-010 (A2G RAN engineering) and R-011 (aircraft OBU boundary) to a parallel Product/Partner conversation — do not let them block proposal drafting.',
+       'Firm up Champion status — Markus is persuadable but uncommitted; a fast, strong technical response is the highest-leverage action before the September shortlist.'
+     ],
+     gate:{stage:'Qualification',signal:'Proceed to Proposal Development',confidence:'6 / 8 MEDDPICC evidenced · CHAMP fully confirmed',
+       recommendation:'9 of 11 mapped requirements are Answered against the existing NSE Product Catalogue — a strong, largely off-the-shelf scope. Lead with the targeted ~100-site modernization narrative (reframed in Discovery from an assumed fleet-wide replacement) as the key differentiator against the incumbent\'s generic "scale" positioning.',
+       nextStep:'Draft Technical Proposal using the 9 Answered requirements as the core scope'},
+     log:[
+       {time:daysAgo(8),source:'Discovery call with NOC lead Petra Lindqvist',note:'MEDDPICC evidenced 6/8 — Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain and Competition confirmed. RTM mapped: 9/11 requirements Answered, 2 At Risk (routed to Product/Partner). CHAMP fully confirmed, including Money resolved to a bounded ~100-site hardware scope.'},
+       {time:daysAgo(17),source:'Kick-off call with Markus Feldmann',note:'CHAMP confidence reached 3.5/4 — Challenges, Authority and Prioritization confirmed; Money confirmed as a flexible €9M/year target (hardware capex still unscoped at this point). Confirmed the EAN/Deutsche Telekom origin hypothesis and that Vodafone is 1 of 3 shortlisted bidders.'},
+       {time:daysAgo(24),source:'PEGA ticket PEGA-91042 created (RFP re-tender)',note:'Initial customer & technical brief generated from the demand form and public company data — EAN ground-network hypothesis flagged for validation on the kick-off call.'}
+     ]
+   }},
 ];
 
 const STATUS_ORDER=['New','Discovery','Awaiting Approval','Blocked','Won','Cancelled'];
@@ -977,11 +1064,13 @@ function renderOpportunityDetail(id){
 
   <div class="tabs">
     <div class="tab ${ACTIVE_TAB==='profile'?'active':''}" data-tab="profile">Profile</div>
+    <div class="tab ${ACTIVE_TAB==='insights'?'active':''}" data-tab="insights">Insights</div>
     <div class="tab ${ACTIVE_TAB==='documents'?'active':''}" data-tab="documents">Documents</div>
     <div class="tab ${ACTIVE_TAB==='comments'?'active':''}" data-tab="comments">Comments</div>
   </div>
 
   ${ACTIVE_TAB==='profile'?renderOppProfileTab(o,c):''}
+  ${ACTIVE_TAB==='insights'?renderOppInsightsTab(o,c):''}
   ${ACTIVE_TAB==='documents'?renderOppDocumentsTab(o):''}
   ${ACTIVE_TAB==='comments'?renderOppCommentsTab(o):''}
   `;
@@ -1058,14 +1147,294 @@ function renderScheduledReportCard(o){
   </div>`;
 }
 
-const DOC_TYPES=['Fit Gap Analysis','Customer Proposal','Initial Solution Architecture'];
+/* ================= INSIGHTS ================= */
+/* Every new input on an opportunity (an uploaded document, a posted comment) feeds this
+   living picture — CHAMP, then MEDDPICC, a fit-gap view of requirements, and a running
+   feed of what changed and why. It replaces "generate a doc, download it, read it later"
+   with something that's always current and never has to leave the app to be read. */
+const CHAMP_ORDER=['challenges','authority','money','prioritization'];
+const CHAMP_LABELS={challenges:'Challenges',authority:'Authority',money:'Money',prioritization:'Prioritization'};
+const MEDDPICC_ORDER=['metrics','economicBuyer','decisionCriteria','decisionProcess','paperProcess','identifyPain','champion','competition'];
+const MEDDPICC_LABELS={metrics:'Metrics',economicBuyer:'Economic Buyer',decisionCriteria:'Decision Criteria',decisionProcess:'Decision Process',paperProcess:'Paper Process',identifyPain:'Identify Pain',champion:'Champion',competition:'Competition'};
+
+function ensureInsights(o,c){
+  if(!o.insights) o.insights=buildLiteInsights(o,c||getCustomer(o.customerId));
+  return o.insights;
+}
+function buildLiteInsights(o,c){
+  const sc=o.profile.scoring;
+  const budgetScore=sc?(sc.factors.find(f=>f.label==='Budget Confirmed')||{}).score:null;
+  const urgencyScore=sc?(sc.factors.find(f=>f.label==='Urgency')||{}).score:null;
+  return {
+    meddpiccStarted:false,
+    brief:{
+      whoTheyAre:[c.overview],
+      whyNow:[o.profile.problemStatement||'Not yet captured.'],
+      technicalAsk:o.profile.problemStatement||'Not yet captured — pending discovery.',
+      ecosystem:[]
+    },
+    champ:{
+      challenges:{status:o.profile.problemStatement?'confirmed':'none',text:o.profile.problemStatement||'Not yet captured.'},
+      authority:{status:o.profile.customerContact?'partial':'none',text:o.profile.customerContact?`${o.profile.customerContact} is the known contact; full approval chain not yet confirmed.`:'Not yet identified.'},
+      money:{status:budgetScore>=70?'confirmed':(budgetScore?'partial':'none'),text:o.value?`${fmtMoney(o.value)} indicative opportunity value.${budgetScore>=70?' Budget confirmed by customer.':' Budget not yet formally confirmed.'}`:'Not yet scoped.'},
+      prioritization:{status:urgencyScore>=70?'confirmed':(urgencyScore?'partial':'none'),text:urgencyScore?`Urgency signal at ${urgencyScore}/100 based on qualification scoring.`:'Not yet assessed.'}
+    },
+    meddpicc:{metrics:{status:'none',text:''},economicBuyer:{status:'none',text:''},decisionCriteria:{status:'none',text:''},
+      decisionProcess:{status:'none',text:''},paperProcess:{status:'none',text:''},identifyPain:{status:'none',text:''},
+      champion:{status:'none',text:''},competition:{status:'none',text:''}},
+    rtm:[],competitors:[],openItems:[],
+    gate:{stage:'Kick-off',signal:(o.profile.problemStatement&&o.profile.customerContact)?'Gather CHAMP':'New',confidence:'CHAMP still forming',
+      recommendation:'Not enough signal yet to recommend proceeding to Discovery — keep capturing inputs (comments, uploaded documents) to build the CHAMP picture.',
+      nextStep:'Capture inputs to build CHAMP'},
+    log:[{time:o.created,source:`PEGA ticket ${o.pegaNumber||''} created`,note:'Initial profile extracted from the demand form.'}]
+  };
+}
+function statusRank(s){return {none:0,partial:1,confirmed:2,evidenced:2}[s]||0;}
+function recomputeGate(o){
+  const ins=o.insights;
+  const champConfirmed=CHAMP_ORDER.filter(k=>ins.champ[k].status==='confirmed').length;
+  if(!ins.meddpiccStarted){
+    ins.gate={stage:'Kick-off',signal:champConfirmed>=3?'Proceed to Discovery':'Gather CHAMP',
+      confidence:`${champConfirmed}/4 CHAMP confirmed`,
+      recommendation:champConfirmed>=3?'Strong CHAMP read — proceed to Discovery.':'CHAMP signals still forming — keep capturing inputs before Discovery.',
+      nextStep:'Discovery Call'};
+  } else {
+    const meddEvidenced=MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status==='evidenced').length;
+    ins.gate={stage:'Qualification',signal:meddEvidenced>=6?'Proceed to Proposal Development':'Continue Qualifying',
+      confidence:`${meddEvidenced}/8 MEDDPICC evidenced`,
+      recommendation:meddEvidenced>=6?'Strong qualification picture — proceed to Proposal Development.':'Keep gathering MEDDPICC evidence before drafting a proposal.',
+      nextStep:meddEvidenced>=6?'Draft Customer Proposal':'Continue Discovery'};
+  }
+}
+function addInsightFromInput(o,input){
+  const ins=ensureInsights(o);
+  let target=null,section=null;
+  for(const k of CHAMP_ORDER){ if(statusRank(ins.champ[k].status)<2){ target=k;section='champ';break; } }
+  if(!target && ins.meddpiccStarted){
+    for(const k of MEDDPICC_ORDER){ if(statusRank(ins.meddpicc[k].status)<2){ target=k;section='meddpicc';break; } }
+  }
+  let note;
+  if(target){
+    const obj=ins[section][target];
+    const wasNone=statusRank(obj.status)===0;
+    obj.status=section==='champ'?(wasNone?'partial':'confirmed'):(wasNone?'partial':'evidenced');
+    obj.text=obj.text?obj.text+` Updated based on ${input.label}.`:`Signal captured from ${input.label}.`;
+    const labels=section==='champ'?CHAMP_LABELS:MEDDPICC_LABELS;
+    note=`${section==='champ'?'CHAMP':'MEDDPICC'} · ${labels[target]} → ${obj.status}`;
+  } else {
+    note='Logged for context — no new qualification signal detected yet.';
+  }
+  ins.log.unshift({time:appNow().toISOString(),source:input.kind==='upload'?`Document uploaded — ${input.label}`:`Comment posted — "${input.label.length>60?input.label.slice(0,60)+'…':input.label}"`,note});
+  recomputeGate(o);
+  return note;
+}
+function insightStatusPill(status){
+  const map={confirmed:['pill-green','Confirmed'],evidenced:['pill-green','Evidenced'],partial:['pill-amber','Partial'],none:['pill-grey','Not yet']};
+  const [cls,label]=map[status]||map.none;
+  return `<span class="pill ${cls}">${label}</span>`;
+}
+function fitGapPill(v){
+  const map={FIT:'pill-green',CONFIGURATION:'pill-blue',CUSTOMIZATION:'pill-amber',GAP:'pill-red',PARTNER:'pill-orange'};
+  return `<span class="pill ${map[v]||'pill-grey'}">${esc(v)}</span>`;
+}
+function rtmStatusPill(v){
+  return v==='Answered' ? `<span class="pill pill-green">${ic('check')} Answered</span>` : `<span class="pill pill-amber">${ic('warn')} At Risk</span>`;
+}
+function buildRequestSummaryText(o,c,ins){
+  const lines=[];
+  lines.push(`${c.name} — ${o.pegaNumber||'Pending PEGA Number'}`);
+  lines.push(`Stage: ${ins.gate.stage} · ${ins.gate.signal}`);
+  lines.push('');
+  lines.push('Why now:');
+  ins.brief.whyNow.forEach(t=>lines.push('• '+t));
+  lines.push('');
+  lines.push('Ask:');
+  lines.push(ins.brief.technicalAsk||o.profile.problemStatement||'Not yet captured.');
+  lines.push('');
+  lines.push('CHAMP:');
+  CHAMP_ORDER.forEach(k=>lines.push(`• ${CHAMP_LABELS[k]} (${ins.champ[k].status}): ${ins.champ[k].text}`));
+  if(ins.meddpiccStarted){
+    lines.push('');
+    lines.push('MEDDPICC:');
+    MEDDPICC_ORDER.forEach(k=>lines.push(`• ${MEDDPICC_LABELS[k]} (${ins.meddpicc[k].status}): ${ins.meddpicc[k].text||'—'}`));
+  }
+  if(ins.rtm.length){
+    lines.push('');
+    lines.push(`Fit-Gap: ${ins.rtm.filter(r=>r.status==='Answered').length}/${ins.rtm.length} requirements answered against the catalogue.`);
+  }
+  if(ins.openItems.length){
+    lines.push('');
+    lines.push('Open items:');
+    ins.openItems.forEach(t=>lines.push('• '+t));
+  }
+  lines.push('');
+  lines.push(`Recommendation: ${ins.gate.recommendation} Next step: ${ins.gate.nextStep}.`);
+  return lines.join('\n');
+}
+function openRequestSummaryModal(oppId){
+  const o=getOpp(oppId),c=getCustomer(o.customerId);
+  const ins=ensureInsights(o,c);
+  const summaryText=buildRequestSummaryText(o,c,ins);
+  openModal(`
+  <div class="modal" style="width:640px;">
+    <div class="modal-head"><h2>Request Summary</h2><button class="modal-close" id="mClose">${ic('x')}</button></div>
+    <div class="modal-body">
+      <div class="field-note" style="margin-bottom:14px;">Synthesized from every input on file — demand form, calls, documents and comments.</div>
+      <div style="font-size:12.5px;line-height:1.7;white-space:pre-wrap;background:var(--vf-grey-bg);border-radius:10px;padding:16px;max-height:50vh;overflow-y:auto;">${esc(summaryText)}</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="mCancel">Close</button>
+      <button class="btn btn-primary" id="mCopySummary">${ic('clip')} Copy to clipboard</button>
+    </div>
+  </div>`);
+  document.getElementById('mClose').onclick=closeModal;
+  document.getElementById('mCancel').onclick=closeModal;
+  document.getElementById('mCopySummary').onclick=()=>{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(summaryText).then(()=>toast('Request summary copied to clipboard.')).catch(()=>toast('Could not copy — select and copy manually.'));
+    } else { toast('Clipboard unavailable — select and copy manually.'); }
+  };
+}
+
+function renderOppInsightsTab(o,c){
+  const ins=ensureInsights(o,c);
+  const champConfirmed=CHAMP_ORDER.filter(k=>ins.champ[k].status==='confirmed').length;
+  const meddEvidenced=ins.meddpiccStarted?MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status==='evidenced').length:0;
+  const proceedSignal=/proceed/i.test(ins.gate.signal);
+  return `
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>${ic('spark')} Opportunity Insights</h3><button class="btn btn-sm" data-reqsummary="${o.id}">${ic('clip')} Extract Request Summary</button></div>
+    <div class="banner ${proceedSignal?'banner-green':'banner-warn'}" style="margin-bottom:0;">
+      ${ic(proceedSignal?'trend':'info')}
+      <div>
+        <div class="b-title">${esc(ins.gate.stage)} · ${esc(ins.gate.signal)}</div>
+        <div class="b-text">${esc(ins.gate.confidence)} — ${esc(ins.gate.recommendation)}</div>
+        <div class="b-text" style="margin-top:4px;"><b>Next step:</b> ${esc(ins.gate.nextStep)}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:18px;align-items:start;">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Customer &amp; Technical Brief</h3><span class="hint">Who they are · why now</span></div>
+      <div class="section-title" style="margin-top:0;">Who They Are</div>
+      <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whoTheyAre.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
+      <div class="section-title">Why Now</div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whyNow.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
+      ${ins.brief.technicalAsk?`<div class="section-title">Technical Ask</div><div style="font-size:13px;line-height:1.7;">${esc(ins.brief.technicalAsk)}</div>`:''}
+      ${ins.brief.ecosystem&&ins.brief.ecosystem.length?`
+      <div class="section-title">Key Ecosystem Players</div>
+      <div class="grid grid-2" style="gap:10px;">
+        ${ins.brief.ecosystem.map(e=>`
+        <div style="border:1px solid var(--vf-border);border-radius:9px;padding:10px 12px;">
+          <div style="font-weight:700;font-size:12.5px;color:var(--vf-blue);">${esc(e.name)}</div>
+          <div style="font-size:12px;color:var(--vf-grey);margin-top:3px;line-height:1.5;">${esc(e.desc)}</div>
+        </div>`).join('')}
+      </div>`:''}
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-head"><h3>CHAMP</h3><span class="hint">${champConfirmed}/4 confirmed</span></div>
+      <div class="grid grid-2" style="gap:12px;">
+        ${CHAMP_ORDER.map(k=>{const f=ins.champ[k];return `
+        <div style="border:1px solid var(--vf-border);border-radius:10px;padding:12px 14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-weight:700;font-size:12.5px;">${CHAMP_LABELS[k]}</span>${insightStatusPill(f.status)}
+          </div>
+          <div style="font-size:12px;color:var(--vf-grey);line-height:1.55;">${esc(f.text||'Not yet captured.')}</div>
+        </div>`;}).join('')}
+      </div>
+    </div>
+  </div>
+
+  ${ins.meddpiccStarted?`
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>MEDDPICC</h3><span class="hint">${meddEvidenced}/8 evidenced</span></div>
+    <div class="grid grid-2" style="gap:10px;">
+      ${MEDDPICC_ORDER.map(k=>{const f=ins.meddpicc[k];return `
+      <div style="border-left:3px solid ${f.status==='evidenced'?'var(--vf-green)':f.status==='partial'?'var(--vf-amber)':'var(--vf-border)'};padding:4px 0 4px 12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-weight:700;font-size:12.5px;">${MEDDPICC_LABELS[k]}</span>${insightStatusPill(f.status)}
+        </div>
+        <div style="font-size:12px;color:var(--vf-grey);margin-top:3px;line-height:1.5;">${esc(f.text||'—')}</div>
+      </div>`;}).join('')}
+    </div>
+  </div>`:`
+  <div class="banner banner-warn" style="margin-bottom:18px;">
+    ${ic('info')}
+    <div><div class="b-title">MEDDPICC not assessed yet</div><div class="b-text">Discovery hasn't happened, so there's no evidence yet for Metrics, Decision Criteria, Identify Pain, etc. This fills in automatically as Discovery inputs (call notes, documents) come in.</div></div>
+  </div>`}
+
+  ${ins.rtm.length?`
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>Requirements Fit-Gap</h3><span class="hint">${ins.rtm.filter(r=>r.status==='Answered').length}/${ins.rtm.length} answered against the catalogue</span></div>
+    <div style="overflow-x:auto;">
+    <table class="opp-table">
+      <thead><tr><th>ID</th><th>Requirement</th><th>Fit / Gap</th><th>Catalogue Product</th><th>Status</th></tr></thead>
+      <tbody>
+        ${ins.rtm.map(r=>`
+        <tr>
+          <td style="font-family:'SF Mono',Consolas,monospace;font-size:11.5px;color:var(--vf-grey-light);">${esc(r.id)}</td>
+          <td style="max-width:260px;">${esc(r.requirement)}</td>
+          <td>${fitGapPill(r.fitGap)}</td>
+          <td style="color:var(--vf-grey);">${esc(r.catalogue)}</td>
+          <td>${rtmStatusPill(r.status)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>`:''}
+
+  ${ins.competitors.length?`
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>Competitive Battlecards</h3></div>
+    <div class="grid grid-2" style="gap:14px;">
+      ${ins.competitors.map(cp=>`
+      <div style="border:1px solid var(--vf-border);border-radius:10px;padding:14px 16px;">
+        <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;">${esc(cp.name)}</div>
+        <div style="font-size:11px;font-weight:700;color:var(--vf-green);text-transform:uppercase;letter-spacing:.03em;">Strength</div>
+        <div style="font-size:12.5px;margin-bottom:8px;">${esc(cp.strength)}</div>
+        <div style="font-size:11px;font-weight:700;color:var(--vf-red-dark);text-transform:uppercase;letter-spacing:.03em;">Weakness</div>
+        <div style="font-size:12.5px;margin-bottom:8px;">${esc(cp.weakness)}</div>
+        <div style="font-size:11px;font-weight:700;color:var(--vf-blue);text-transform:uppercase;letter-spacing:.03em;">How We Win</div>
+        <div style="font-size:12.5px;">${esc(cp.howWeWin)}</div>
+      </div>`).join('')}
+    </div>
+  </div>`:''}
+
+  ${ins.openItems.length?`
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>Open Items</h3></div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${ins.openItems.map(t=>`<div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;"><span style="color:var(--vf-red);flex-shrink:0;margin-top:1px;">${ic('arrowr')}</span>${esc(t)}</div>`).join('')}
+    </div>
+  </div>`:''}
+
+  <div class="card card-pad">
+    <div class="card-head"><h3>Insights Feed</h3><span class="hint">Every new input — a document, a comment — adds to this picture</span></div>
+    <div>
+      ${ins.log.map(l=>`
+      <div style="display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--vf-border);">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--vf-red);margin-top:6px;flex-shrink:0;"></div>
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+            <span style="font-weight:700;font-size:12.5px;">${esc(l.source)}</span>
+            <span style="font-size:11px;color:var(--vf-grey-light);">${fmtDateTime(l.time)}</span>
+          </div>
+          <div style="font-size:12px;color:var(--vf-grey);margin-top:3px;line-height:1.55;">${esc(l.note)}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+  `;
+}
+
+const DOC_TYPES=['Customer Proposal'];
 const DOC_DESC={
-  'Fit Gap Analysis':'Auto-generated comparison of customer requirements against current capability set.',
   'Customer Proposal':'Auto-generated client-facing proposal document for this opportunity.',
-  'Initial Solution Architecture':'Auto-generated draft technical architecture for the proposed solution.',
 };
-const DOC_EXT={'Fit Gap Analysis':'docx','Customer Proposal':'pptx','Initial Solution Architecture':'vsdx'};
-const DOC_PREFIX={'Fit Gap Analysis':'FitGap','Customer Proposal':'Proposal','Initial Solution Architecture':'SolutionArch'};
+const DOC_EXT={'Customer Proposal':'pptx'};
+const DOC_PREFIX={'Customer Proposal':'Proposal'};
 function renderOppDocumentsTab(o){
   const existing=o.documents;
   const missing=DOC_TYPES.filter(t=>!existing.some(d=>d.type===t));
@@ -1098,57 +1467,12 @@ function renderOppDocumentsTab(o){
     `:''}
 
     <div class="section-title">Upload Document</div>
-    <div class="field-note" style="margin-bottom:8px;">Add any supporting file — it will appear here and be included as context for the chatbot, proposal and fit gap analysis.</div>
+    <div class="field-note" style="margin-bottom:8px;">Add any supporting file — call notes, RFP documents, anything relevant. It appears here, feeds the Insights tab, and is used as context for the chatbot and proposal.</div>
     <button class="btn btn-sm" data-adddoc="${o.id}" data-doctype="Other">${ic('upload')} Upload document</button>
   </div>
   ${renderApprovalSection(o)}
   `;
 }
-function generateDocument(oppId,docType){
-  const o=getOpp(oppId);
-  const c=getCustomer(o.customerId);
-  const slug=c.name.replace(/[^A-Za-z0-9]+/g,'');
-  const suffix=(o.pegaNumber||'').split('-').pop()||uid('v');
-  const fileName=`${DOC_PREFIX[docType]}_${slug}_${suffix}.${DOC_EXT[docType]}`;
-  o.documents.push({id:uid('d'),type:docType,fileName,date:appNow().toISOString(),by:CURRENT_USER.name,source:'generated'});
-  saveDB();render();
-  toast(`${docType} generated from opportunity data and added.`);
-}
-
-function generateFitGapDocx(oppId){
-  const o=getOpp(oppId);
-  const c=getCustomer(o.customerId);
-  const slug=c.name.replace(/[^A-Za-z0-9]+/g,'');
-  const suffix=(o.pegaNumber||'').split('-').pop()||uid('v');
-  const fileName=`FitGap_${slug}_${suffix}.docx`;
-  const sc=o.profile.scoring;
-  const recentComments=o.comments.slice(-5).reverse();
-  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-  <head><meta charset="utf-8"><title>${esc(c.name)} Fit Gap Analysis</title></head>
-  <body style="font-family:Calibri,Arial,sans-serif;">
-    <h1 style="color:#E60000;">Fit Gap Analysis</h1>
-    <h2>${esc(c.name)}</h2>
-    <p><b>PEGA Number:</b> ${esc(o.pegaNumber)}<br><b>Prepared by:</b> ${esc(CURRENT_USER.name)}<br><b>Date:</b> ${esc(fmtDate(appNow().toISOString()))}</p>
-    <h3>Problem Statement</h3>
-    <p>${esc(o.profile.problemStatement||'—')}</p>
-    <h3>Current Capability Gap</h3>
-    <p>Based on the customer's stated requirements and Vodafone Business's current solution catalogue for ${esc(c.industry)}, the following capability gap has been identified.</p>
-    <h3>Recommended Services (Fit)</h3>
-    <ul>${o.aiRecommendedServices.length? o.aiRecommendedServices.map(s=>`<li>${esc(s)}</li>`).join('') : '<li>Not yet determined</li>'}</ul>
-    <h3>Qualification Scoring</h3>
-    <p>${sc? `Overall: ${sc.overall} (${esc(sc.band)}) — `+sc.factors.map(f=>`${esc(f.label)}: ${f.score}`).join(', ') : 'Not yet scored'}</p>
-    <h3>Supporting Documents on File</h3>
-    <ul>${o.documents.length? o.documents.map(d=>`<li>${esc(d.fileName)} (${esc(d.type)})</li>`).join('') : '<li>None on file</li>'}</ul>
-    <h3>Recent Discussion</h3>
-    <ul>${recentComments.length? recentComments.map(cm=>`<li><b>${esc(cm.author)}</b> (${esc(fmtDateTime(cm.time))}): ${esc(cm.text)}</li>`).join('') : '<li>No comments yet</li>'}</ul>
-  </body></html>`;
-  const blob=new Blob(['﻿',html],{type:'application/msword'});
-  triggerDownload(blob,fileName);
-  o.documents.push({id:uid('d'),type:'Fit Gap Analysis',fileName,date:appNow().toISOString(),by:CURRENT_USER.name,source:'generated'});
-  saveDB();render();
-  toast('Fit Gap Analysis generated from opportunity data (including comments & documents) and downloaded.');
-}
-
 function openProposalFormatModal(oppId){
   openModal(`
   <div class="modal">
@@ -1494,6 +1818,7 @@ function createOpportunityFromDemandForm(assignedTo,fileName){
   newOpp.profile.scoring=computeScoring(newOpp,c);
   const svcs=SERVICE_CATALOG[c.industry]||[];
   newOpp.aiRecommendedServices=shuffle(svcs).slice(0,2);
+  newOpp.insights=buildLiteInsights(newOpp,c);
   DB.opportunities.push(newOpp);
   saveDB();
   return newOpp;
@@ -1530,10 +1855,11 @@ function openAddDocModal(oppId,docType){
     const chosenType=document.getElementById('uploadDocType').value;
     const o=getOpp(oppId);
     o.documents.push({id:uid('d'),type:chosenType,fileName:file.name,date:appNow().toISOString(),by:CURRENT_USER.name,source:'uploaded'});
+    addInsightFromInput(o,{kind:'upload',label:`${chosenType}: ${file.name}`});
     saveDB();
     closeModal();
     render();
-    toast(chosenType+' uploaded.');
+    toast(chosenType+' uploaded — Insights updated.');
   };
 }
 
@@ -2012,18 +2338,7 @@ function attachGlobalHandlers(){
     el.onclick=()=>openAddDocModal(el.getAttribute('data-adddoc'),el.getAttribute('data-doctype'));
   });
   document.querySelectorAll('[data-gendoc]').forEach(el=>{
-    el.onclick=()=>{
-      const oppId=el.getAttribute('data-gendoc');
-      const docType=el.getAttribute('data-doctype');
-      if(docType==='Customer Proposal'){ openProposalFormatModal(oppId); return; }
-      el.disabled=true;
-      el.innerHTML=`<span class="spin"></span> Populating...`;
-      if(docType==='Fit Gap Analysis'){
-        setTimeout(()=>{ generateFitGapDocx(oppId); },1100);
-        return;
-      }
-      setTimeout(()=>{ generateDocument(oppId,docType); },1100);
-    };
+    el.onclick=()=>{ openProposalFormatModal(el.getAttribute('data-gendoc')); };
   });
   document.querySelectorAll('[data-dlreport]').forEach(el=>{
     el.onclick=()=>{
@@ -2039,6 +2354,9 @@ function attachGlobalHandlers(){
   });
   document.querySelectorAll('[data-approve]').forEach(el=>{
     el.onclick=()=>simulateApprove(el.getAttribute('data-approve'),el.getAttribute('data-approver'));
+  });
+  document.querySelectorAll('[data-reqsummary]').forEach(el=>{
+    el.onclick=()=>openRequestSummaryModal(el.getAttribute('data-reqsummary'));
   });
   document.querySelectorAll('[data-schedulereport]').forEach(el=>{
     el.onclick=()=>openScheduleReportModal(el.getAttribute('data-schedulereport'));
@@ -2079,8 +2397,9 @@ function attachGlobalHandlers(){
     if(file){
       o.documents.push({id:uid('d'),type:'Comment Attachment',fileName:file.name,date:appNow().toISOString(),by:CURRENT_USER.name,source:'uploaded'});
     }
+    addInsightFromInput(o,{kind:'comment',label:text});
     saveDB();render();
-    toast('Comment posted.'+(mentions.length?` Notified: ${mentions.join(', ')}`:'')+(file?' Attachment also added to Documents.':''));
+    toast('Comment posted — Insights updated.'+(mentions.length?` Notified: ${mentions.join(', ')}`:'')+(file?' Attachment also added to Documents.':''));
   };
   const commentBox=document.getElementById('commentBox');
   if(commentBox){
