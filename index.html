@@ -1447,13 +1447,16 @@ function buildAssessmentPackHTML(o,c,ins){
     ['Sector',esc(c.industry)],
     ['Opportunity type',esc(o.requestType||'—')+(o.tier?' · '+esc(o.tier):'')],
     ['Strategic value',esc(strategicValue)],
+    ['Delivery stream','Advisory / Delivery'],
+    ['Delivery model','Workshop / SME / Consultancy / PoC / MVP / Full support'],
     ['Revenue potential',o.value?fmtMoney(o.value):'—'],
     ['Win probability',esc(winProb)],
     ['Risk rating',esc(riskWord)],
+    ['Duration','—'],
     ['Recommended decision',esc(decision.label)],
   ].map(([k,v])=>`
     <div style="font-size:12.5px;color:#6B7280;white-space:nowrap;padding:11px 14px 11px 0;border-top:1px solid #EDEDEF;">${esc(k)}</div>
-    <div style="font-size:12.5px;font-weight:500;color:#0B0C0E;text-align:right;padding:11px 0;border-top:1px solid #EDEDEF;">${v}</div>`).join('');
+    <div style="font-size:12.5px;font-weight:500;color:#0B0C0E;text-align:right;padding:11px 0;border-top:1px solid #EDEDEF;line-height:1.4;">${v}</div>`).join('');
 
   const kpiTiles=[
     ['REVENUE','#E60000',o.value?fmtMoney(o.value):'—','Potential value'],
@@ -1556,19 +1559,36 @@ function buildAssessmentPackHTML(o,c,ins){
     ['Stakeholder / approval risk',packStatusColor(ins.champ.authority.status)],
   ].map(([label,color])=>`<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#4B5563;border-top:1px solid #EDEDEF;padding-top:11px;"><span style="flex:1;">${esc(label)}</span><span style="width:11px;height:11px;border-radius:999px;background:${color};"></span></div>`).join('');
 
-  const FIT_COLOR={Strong:'#0F8A8A',Good:'#C2670B',Partial:'#E60000'};
-  const solutionRows=(ins.solutionOptions||[]).length? ins.solutionOptions.map(op=>
-    `<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#4B5563;border-top:1px solid #EDEDEF;padding-top:11px;"><span style="flex:1;">${esc(op.name)}</span><span style="width:11px;height:11px;border-radius:999px;background:${FIT_COLOR[op.fit]||'#9CA3AF'};"></span></div>`
-  ).join('') : `<div style="font-size:12.5px;color:#8B8F97;border-top:1px solid #EDEDEF;padding-top:11px;">Not yet mapped.</div>`;
+  const revenueColor=strategicValue==='High'?'#0F8A8A':strategicValue==='Medium'?'#E79A2B':'#E60000';
+  const marginColor=o.requestType==='RFP'?'#0F8A8A':o.requestType==='RFQ'?'#E60000':'#E79A2B';
+  const upsellCount=(o.aiRecommendedServices||[]).length;
+  const upsellColor=upsellCount>=3?'#0F8A8A':upsellCount>=1?'#E79A2B':'#E60000';
+  const repeatRatio=ins.rtm.length?fitBarSegs.full/ins.rtm.length:0;
+  const repeatColor=repeatRatio>=0.6?'#0F8A8A':repeatRatio>=0.3?'#E79A2B':'#E60000';
+  const commercialRiskColor=packStatusColor(ins.champ.money.status);
+  const commercialRows=[
+    ['Revenue potential',revenueColor],['Margin potential',marginColor],['Upsell potential',upsellColor],
+    ['Repeatability',repeatColor],['Commercial risk',commercialRiskColor],
+  ].map(([label,color])=>`<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#4B5563;border-top:1px solid #EDEDEF;padding-top:11px;"><span style="flex:1;">${esc(label)}</span><span style="width:11px;height:11px;border-radius:999px;background:${color};"></span></div>`).join('');
+
+  const trlCurrent=fitPct!=null?Math.max(1,Math.min(9,Math.round(1+8*fitPct/100))):3;
+  const trlTarget=9;
+  const trlGap=trlTarget-trlCurrent;
+  const trlBar=(filled)=>Array.from({length:9},(_,i)=>`<span style="flex:1;height:12px;border-radius:3px;background:${i<filled?'#0F8A8A':'#EDEDEF'};"></span>`).join('');
+  const trlGapBlocks=Array.from({length:Math.max(trlGap,0)},()=>`<span style="width:32px;height:12px;border-radius:3px;background:#E79A2B;"></span>`).join('');
 
   return `
-  <div style="display:flex;align-items:center;gap:24px;background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;padding:22px 26px;box-shadow:0 1px 2px rgba(11,12,14,0.04);">
-    <div style="flex:1;display:flex;flex-direction:column;gap:5px;">
-      <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;letter-spacing:-0.6px;line-height:1.15;color:#E60000;">Opportunity Overview</div>
-      <div style="font-size:14px;color:#6B7280;">Unified decision-support view for opportunity qualification, requirements fit-gap, recommendation, risk, and next actions</div>
-    </div>
-  </div>
-
+  <details class="sec" id="sec-overview" open>
+    <summary>
+      <div class="sec-num">00</div>
+      <div class="sec-text">
+        <div class="sec-title">Opportunity Overview</div>
+        <div class="sec-sub">Unified decision-support view for opportunity qualification, requirements fit-gap, recommendation, risk, and next actions</div>
+      </div>
+      <div class="sec-tag">Summary</div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </summary>
+    <div class="sec-body"><div class="sec-inner">
   <div style="display:grid;grid-template-columns:340px 1fr 280px;gap:20px;margin-top:20px;align-items:stretch;">
     ${packCard(`${packHeading('Opportunity snapshot')}<div style="display:grid;grid-template-columns:1fr auto;margin-top:14px;">${snapshotRows}</div>`,'height:100%;box-sizing:border-box;')}
 
@@ -1624,9 +1644,24 @@ function buildAssessmentPackHTML(o,c,ins){
 
   ${packCard(`${packHeading('Action plan timeline')}<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px;">${timeline}</div>`,'margin-top:20px;')}
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;align-items:stretch;">
-    ${packCard(`${packHeading('Solution fit overview')}<div style="display:flex;flex-direction:column;gap:11px;margin-top:16px;">${solutionRows}</div>`)}
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;align-items:stretch;">
+    ${packCard(`${packHeading('Commercial assessment')}<div style="display:flex;flex-direction:column;gap:11px;margin-top:16px;">${commercialRows}</div>`)}
     ${packCard(`${packHeading('Risk overview')}<div style="display:flex;flex-direction:column;gap:11px;margin-top:16px;">${riskRows}</div>`)}
+    ${packCard(`${packHeading('TRL status')}
+      <div style="display:flex;flex-direction:column;gap:16px;margin-top:18px;">
+        <div>
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:1px;color:#8B8F97;">CURRENT TRL</div>
+          <div style="display:flex;gap:5px;margin-top:9px;">${trlBar(trlCurrent)}</div>
+        </div>
+        <div>
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:1px;color:#8B8F97;">TARGET TRL</div>
+          <div style="display:flex;gap:5px;margin-top:9px;">${trlBar(trlTarget)}</div>
+        </div>
+        <div>
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:1px;color:#8B8F97;">TRL GAP</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:9px;">${trlGapBlocks}<span style="font-size:12.5px;color:#6B7280;">Steps to close</span></div>
+        </div>
+      </div>`)}
   </div>
 
   <div style="display:grid;grid-template-columns:auto repeat(5,1fr) 1.5fr;gap:20px;align-items:center;background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;padding:22px 24px;margin-top:20px;box-shadow:0 1px 2px rgba(11,12,14,0.04);">
@@ -1646,6 +1681,8 @@ function buildAssessmentPackHTML(o,c,ins){
       </div>
     </div>
   </div>
+    </div></div>
+  </details>
   `;
 }
 function exportAssessmentPackPdf(oppId){
