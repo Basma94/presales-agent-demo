@@ -326,6 +326,7 @@ textarea.input{resize:vertical;min-height:70px;}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* =====================================================================
    PRESALES AGENT — interactive prototype (mock data, client-side only)
@@ -624,7 +625,7 @@ const OPPORTUNITIES = [
        'Route R-010 (A2G RAN engineering) and R-011 (aircraft OBU boundary) to a parallel Product/Partner conversation — do not let them block proposal drafting.',
        'Firm up Champion status — Markus is persuadable but uncommitted; a fast, strong technical response is the highest-leverage action before the September shortlist.'
      ],
-     gate:{stage:'Qualification',signal:'Proceed to Proposal Development',confidence:'6 / 8 MEDDPICC evidenced · CHAMP fully confirmed',
+     gate:{signal:'Proceed to Proposal Development',confidence:'6 / 8 MEDDPICC evidenced · CHAMP fully confirmed',
        recommendation:'9 of 11 mapped requirements are Answered against the existing NSE Product Catalogue — a strong, largely off-the-shelf scope. Lead with the targeted ~100-site modernization narrative (reframed in Discovery from an assumed fleet-wide replacement) as the key differentiator against the incumbent\'s generic "scale" positioning.',
        nextStep:'Draft Technical Proposal using the 9 Answered requirements as the core scope'},
      log:[
@@ -965,6 +966,11 @@ function renderOpportunitiesList(){
     return sort.dir==='asc'? av-bv : bv-av;
   });
   const sortArrow=(key)=> sort.key===key ? (sort.dir==='asc'?' ▲':' ▼') : '';
+  const scoredList=list.filter(o=>o.profile.scoring);
+  const avgScore=scoredList.length?Math.round(scoredList.reduce((s,o)=>s+o.profile.scoring.overall,0)/scoredList.length):null;
+  const deliveredList=list.filter(o=>o.status===WON_STATUS).length;
+  const cancelledList=list.filter(o=>o.status===CANCELLED_STATUS).length;
+  const listWinRate=(deliveredList+cancelledList)?Math.round(100*deliveredList/(deliveredList+cancelledList)):null;
 
   const extraFilterLabels=[];
   if(q.excludeStatuses) extraFilterLabels.push('Open pipeline');
@@ -978,6 +984,13 @@ function renderOpportunitiesList(){
   <div class="page-head">
     <div><h1>Opportunities</h1><div class="sub">Every active and historical opportunity in one place</div></div>
     <button class="btn btn-primary" id="btnNewOpp">${ic('plus')} New Opportunity</button>
+  </div>
+
+  <div class="grid grid-4" style="margin-bottom:18px;">
+    <div class="card kpi"><div class="num">${list.length}</div><div class="lbl">Opportunities Shown</div></div>
+    <div class="card kpi"><div class="num">${fmtMoney(list.reduce((s,o)=>s+o.value,0))}</div><div class="lbl">Total Value</div></div>
+    <div class="card kpi"><div class="num">${avgScore!=null?avgScore:'—'}</div><div class="lbl">Avg Score</div></div>
+    <div class="card kpi"><div class="num">${listWinRate!=null?listWinRate+'%':'—'}</div><div class="lbl">Win Rate</div></div>
   </div>
 
   ${extraFilterLabels.length?`
@@ -1008,7 +1021,7 @@ function renderOpportunitiesList(){
     ${list.length? `
     <table class="opp-table">
       <thead><tr>
-        <th>Customer</th><th>PEGA Number</th><th>Type</th><th>Assigned To</th><th>Score</th>
+        <th>PEGA Number</th><th>Customer</th><th>Type</th><th>Assigned To</th><th>Score</th>
         <th class="sortable" data-sort="value">Value${sortArrow('value')}</th>
         <th class="sortable" data-sort="created">Created${sortArrow('created')}</th>
         <th>Status</th><th></th>
@@ -1019,8 +1032,8 @@ function renderOpportunitiesList(){
           const assignee=getTeamMember(o.assignedTo);
           return `
           <tr data-openopp="${o.id}">
-            <td>${esc(c.name)}</td>
             <td>${pegaBadge(o)}</td>
+            <td>${esc(c.name)}</td>
             <td>${requestTypeBadge(o)}</td>
             <td style="white-space:nowrap;">${esc(assignee.name)}</td>
             <td>${scoreBadge(o.profile.scoring)}</td>
@@ -1201,7 +1214,7 @@ function buildLiteInsights(o,c){
       decisionProcess:{status:'none',text:''},paperProcess:{status:'none',text:''},identifyPain:{status:'none',text:''},
       champion:{status:'none',text:''},competition:{status:'none',text:''}},
     rtm:[],competitors:[],openItems:[],
-    gate:{stage:'Kick-off',signal:(o.profile.problemStatement&&o.profile.customerContact)?'Gather CHAMP':'New',confidence:'CHAMP still forming',
+    gate:{signal:(o.profile.problemStatement&&o.profile.customerContact)?'Gather CHAMP':'New',confidence:'CHAMP still forming',
       recommendation:'Not enough signal yet to recommend proceeding to Discovery — keep capturing inputs (comments, uploaded documents) to build the CHAMP picture.',
       nextStep:'Capture inputs to build CHAMP'},
     log:[{time:o.created,source:`PEGA ticket ${o.pegaNumber||''} created`,note:'Initial profile extracted from the demand form.'}]
@@ -1212,17 +1225,30 @@ function recomputeGate(o){
   const ins=o.insights;
   const champConfirmed=CHAMP_ORDER.filter(k=>ins.champ[k].status==='confirmed').length;
   if(!ins.meddpiccStarted){
-    ins.gate={stage:'Kick-off',signal:champConfirmed>=3?'Proceed to Discovery':'Gather CHAMP',
+    ins.gate={signal:champConfirmed>=3?'Proceed to Discovery':'Gather CHAMP',
       confidence:`${champConfirmed}/4 CHAMP confirmed`,
       recommendation:champConfirmed>=3?'Strong CHAMP read — proceed to Discovery.':'CHAMP signals still forming — keep capturing inputs before Discovery.',
       nextStep:'Discovery Call'};
   } else {
     const meddEvidenced=MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status==='evidenced').length;
-    ins.gate={stage:'Qualification',signal:meddEvidenced>=6?'Proceed to Proposal Development':'Continue Qualifying',
+    ins.gate={signal:meddEvidenced>=6?'Proceed to Proposal Development':'Continue Qualifying',
       confidence:`${meddEvidenced}/8 MEDDPICC evidenced`,
       recommendation:meddEvidenced>=6?'Strong qualification picture — proceed to Proposal Development.':'Keep gathering MEDDPICC evidence before drafting a proposal.',
       nextStep:meddEvidenced>=6?'Draft Customer Proposal':'Continue Discovery'};
   }
+}
+function analysisStageInfo(o,ins){
+  if(o.status===WON_STATUS){
+    return {cls:'banner-green',icon:'check',title:`${o.status} — Deal Delivered`,
+      body:'This opportunity has been delivered. The analysis below reflects the qualification record that got it here.',next:null};
+  }
+  if(o.status===CANCELLED_STATUS){
+    return {cls:'banner-red',icon:'ban',title:o.status,
+      body:o.cancelReason?`Reason: ${o.cancelReason}`:'This opportunity was cancelled or rejected — no further action recommended.',next:null};
+  }
+  const proceedSignal=/proceed/i.test(ins.gate.signal);
+  return {cls:proceedSignal?'banner-green':'banner-warn',icon:proceedSignal?'trend':'info',
+    title:`${o.status} · ${ins.gate.signal}`,body:`${ins.gate.confidence} — ${ins.gate.recommendation}`,next:ins.gate.nextStep};
 }
 function addInsightFromInput(o,input){
   const ins=ensureInsights(o);
@@ -1259,9 +1285,10 @@ function rtmStatusPill(v){
   return v==='Answered' ? `<span class="pill pill-green">${ic('check')} Answered</span>` : `<span class="pill pill-amber">${ic('warn')} At Risk</span>`;
 }
 function buildRequestSummaryText(o,c,ins){
+  const stageInfo=analysisStageInfo(o,ins);
   const lines=[];
   lines.push(`${c.name} — ${o.pegaNumber||'Pending PEGA Number'}`);
-  lines.push(`Stage: ${ins.gate.stage} · ${ins.gate.signal}`);
+  lines.push(`Stage: ${stageInfo.title}`);
   lines.push('');
   lines.push('Why now:');
   ins.brief.whyNow.forEach(t=>lines.push('• '+t));
@@ -1286,7 +1313,7 @@ function buildRequestSummaryText(o,c,ins){
     ins.openItems.forEach(t=>lines.push('• '+t));
   }
   lines.push('');
-  lines.push(`Recommendation: ${ins.gate.recommendation} Next step: ${ins.gate.nextStep}.`);
+  lines.push(stageInfo.next?`Recommendation: ${stageInfo.body} Next step: ${stageInfo.next}.`:`Status: ${stageInfo.body}`);
   return lines.join('\n');
 }
 function openRequestSummaryModal(oppId){
@@ -1302,23 +1329,100 @@ function openRequestSummaryModal(oppId){
     </div>
     <div class="modal-foot">
       <button class="btn" id="mCancel">Close</button>
-      <button class="btn btn-primary" id="mCopySummary">${ic('clip')} Copy to clipboard</button>
+      <button class="btn btn-primary" id="mDownloadSummaryPdf">${ic('doc')} Download PDF</button>
     </div>
   </div>`);
   document.getElementById('mClose').onclick=closeModal;
   document.getElementById('mCancel').onclick=closeModal;
-  document.getElementById('mCopySummary').onclick=()=>{
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(summaryText).then(()=>toast('Request summary copied to clipboard.')).catch(()=>toast('Could not copy — select and copy manually.'));
-    } else { toast('Clipboard unavailable — select and copy manually.'); }
+  document.getElementById('mDownloadSummaryPdf').onclick=()=>{
+    const fileName=downloadRequestSummaryPdf(o,c,ins);
+    if(fileName){ closeModal(); toast(`Request Summary (.pdf) downloaded.`); }
   };
+}
+function downloadRequestSummaryPdf(o,c,ins){
+  if(typeof window.jspdf==='undefined'){ toast('PDF library failed to load — check your internet connection and try again.'); return null; }
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'pt',format:'a4'});
+  const pageW=doc.internal.pageSize.getWidth();
+  const pageH=doc.internal.pageSize.getHeight();
+  const marginX=48;
+  const maxW=pageW-marginX*2;
+  let y=56;
+  const ensureSpace=(h)=>{ if(y+h>pageH-50){ doc.addPage(); y=56; } };
+  const heading=(text)=>{ ensureSpace(26); doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(230,0,0); doc.text(text,marginX,y); y+=22; };
+  const meta=(text)=>{ ensureSpace(18); doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(90,93,94); doc.text(text,marginX,y); y+=20; };
+  const sectionTitle=(text)=>{
+    ensureSpace(22); doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.setTextColor(27,27,27);
+    doc.text(text.toUpperCase(),marginX,y); y+=8;
+    doc.setDrawColor(229,231,233); doc.line(marginX,y,pageW-marginX,y); y+=14;
+  };
+  const bodyText=(text,opts)=>{
+    doc.setFont('helvetica',opts&&opts.bold?'bold':'normal'); doc.setFontSize(10.2); doc.setTextColor(27,27,27);
+    doc.splitTextToSize(text,maxW).forEach(line=>{ ensureSpace(14); doc.text(line,marginX,y); y+=14; });
+  };
+  const bullet=(text)=>{
+    doc.setFont('helvetica','normal'); doc.setFontSize(10.2); doc.setTextColor(27,27,27);
+    doc.splitTextToSize(text,maxW-14).forEach((line,i)=>{ ensureSpace(14); doc.text((i===0?'•  ':'   ')+line,marginX,y); y+=14; });
+  };
+
+  const stageInfo=analysisStageInfo(o,ins);
+  heading('Request Summary');
+  meta(`${c.name}  ·  ${o.pegaNumber||'Pending PEGA Number'}${o.requestType?'  ·  '+o.requestType+(o.tier?' ('+o.tier+')':''):''}  ·  Generated ${fmtDate(appNow().toISOString())}`);
+  y+=4;
+  sectionTitle(stageInfo.title);
+  bodyText(stageInfo.body);
+  if(stageInfo.next) bodyText(`Next step: ${stageInfo.next}`,{bold:true});
+  y+=8;
+
+  sectionTitle('Why Now');
+  ins.brief.whyNow.forEach(bullet);
+  y+=6;
+
+  sectionTitle('Ask');
+  bodyText(ins.brief.technicalAsk||o.profile.problemStatement||'Not yet captured.');
+  y+=6;
+
+  sectionTitle('CHAMP');
+  CHAMP_ORDER.forEach(k=>{
+    bodyText(`${CHAMP_LABELS[k]} (${ins.champ[k].status}):`,{bold:true});
+    bodyText(ins.champ[k].text);
+    y+=2;
+  });
+  y+=4;
+
+  if(ins.meddpiccStarted){
+    sectionTitle('MEDDPICC');
+    MEDDPICC_ORDER.forEach(k=>{
+      bodyText(`${MEDDPICC_LABELS[k]} (${ins.meddpicc[k].status}):`,{bold:true});
+      bodyText(ins.meddpicc[k].text||'—');
+      y+=2;
+    });
+    y+=4;
+  }
+
+  if(ins.rtm.length){
+    sectionTitle('Fit-Gap');
+    bodyText(`${ins.rtm.filter(r=>r.status==='Answered').length}/${ins.rtm.length} requirements answered against the catalogue.`);
+    y+=6;
+  }
+
+  if(ins.openItems.length){
+    sectionTitle('Open Items');
+    ins.openItems.forEach(bullet);
+  }
+
+  const slug=c.name.replace(/[^A-Za-z0-9]+/g,'');
+  const suffix=(o.pegaNumber||'').split('-').pop()||uid('v');
+  const fileName=`RequestSummary_${slug}_${suffix}.pdf`;
+  doc.save(fileName);
+  return fileName;
 }
 
 function renderOppInsightsTab(o,c){
   const ins=ensureInsights(o,c);
   const champConfirmed=CHAMP_ORDER.filter(k=>ins.champ[k].status==='confirmed').length;
   const meddEvidenced=ins.meddpiccStarted?MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status==='evidenced').length:0;
-  const proceedSignal=/proceed/i.test(ins.gate.signal);
+  const stageInfo=analysisStageInfo(o,ins);
   const rtmAnswered=ins.rtm.length?ins.rtm.filter(r=>r.status==='Answered').length:0;
   const rtmAtRisk=ins.rtm.length?ins.rtm.filter(r=>r.status==='At Risk').length:0;
   const meddGaps=ins.meddpiccStarted?MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status!=='evidenced').length:0;
@@ -1331,12 +1435,12 @@ function renderOppInsightsTab(o,c){
   return `
   <div class="card card-pad" style="margin-bottom:18px;">
     <div class="card-head"><h3>${ic('spark')} Opportunity Summary</h3><button class="btn btn-sm" data-reqsummary="${o.id}">${ic('clip')} Extract Request Summary</button></div>
-    <div class="banner ${proceedSignal?'banner-green':'banner-warn'}" style="margin-bottom:0;">
-      ${ic(proceedSignal?'trend':'info')}
+    <div class="banner ${stageInfo.cls}" style="margin-bottom:0;">
+      ${ic(stageInfo.icon)}
       <div>
-        <div class="b-title">${esc(ins.gate.stage)} · ${esc(ins.gate.signal)}</div>
-        <div class="b-text">${esc(ins.gate.confidence)} — ${esc(ins.gate.recommendation)}</div>
-        <div class="b-text" style="margin-top:4px;"><b>Next step:</b> ${esc(ins.gate.nextStep)}</div>
+        <div class="b-title">${esc(stageInfo.title)}</div>
+        <div class="b-text">${esc(stageInfo.body)}</div>
+        ${stageInfo.next?`<div class="b-text" style="margin-top:4px;"><b>Next step:</b> ${esc(stageInfo.next)}</div>`:''}
       </div>
     </div>
   </div>
@@ -1746,8 +1850,26 @@ function renderCustomerDetail(id){
   const c=getCustomer(id);
   if(!c) return `<div class="empty-state">Customer not found.</div>`;
   const opps=oppsForCustomer(c.id).slice().sort((a,b)=>new Date(b.created)-new Date(a.created));
+  const delivered=opps.filter(o=>o.status===WON_STATUS).length;
+  const cancelled=opps.filter(o=>o.status===CANCELLED_STATUS).length;
+  const winRate=(delivered+cancelled)?Math.round(100*delivered/(delivered+cancelled)):null;
+  const scored=opps.filter(o=>o.profile.scoring);
+  const avgScore=scored.length?Math.round(scored.reduce((s,o)=>s+o.profile.scoring.overall,0)/scored.length):null;
   return `
   <div style="margin-bottom:14px;"><a data-nav="customers" class="link-btn">&larr; All customers</a></div>
+
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <h2 style="font-size:17px;margin:0;">${esc(c.name)}</h2>
+    <div style="color:var(--vf-grey);font-size:13px;margin-top:6px;">${esc(c.industry)} · ${esc(c.hq)}</div>
+  </div>
+
+  <div class="grid grid-4" style="margin-bottom:18px;">
+    <div class="card kpi"><div class="num">${opps.length}</div><div class="lbl">Opportunities</div></div>
+    <div class="card kpi"><div class="num">${fmtMoney(pipelineValue(opps))}</div><div class="lbl">Open Pipeline</div></div>
+    <div class="card kpi"><div class="num">${winRate!=null?winRate+'%':'—'}</div><div class="lbl">Win Rate</div></div>
+    <div class="card kpi"><div class="num">${avgScore!=null?avgScore:'—'}</div><div class="lbl">Avg Score</div></div>
+  </div>
+
   <div class="grid grid-2" style="margin-bottom:18px;">
     <div class="card card-pad">
       <div class="card-head"><h3>Company Brief</h3><span class="hint">${esc(c.industry)}</span></div>
@@ -1755,7 +1877,6 @@ function renderCustomerDetail(id){
       <div class="kv"><div class="k">HQ</div><div class="v">${esc(c.hq)}</div></div>
       <div class="kv"><div class="k">Employees</div><div class="v">${esc(c.employees)}</div></div>
       <div class="kv"><div class="k">Annual Revenue</div><div class="v">${esc(c.revenue)}</div></div>
-      <div class="kv"><div class="k">Open Pipeline</div><div class="v">${fmtMoney(pipelineValue(opps))}</div></div>
       <div class="section-title">Strategic Priorities</div>
       <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;">
         ${c.priorities.map(p=>`<li>${esc(p)}</li>`).join('')}
