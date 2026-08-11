@@ -1361,13 +1361,15 @@ function packDecision(o,ins){
 }
 function packRadial(score,max,color,size,big){
   size=size||112;
-  const r=size/2-(big?9:12), cx=size/2, cy=size/2;
+  const strokeW=big?8:10;
+  const r=size/2-strokeW, cx=size/2, cy=size/2;
   const circ=2*Math.PI*r;
   const dash=(circ*Math.max(0,Math.min(1,score/max))).toFixed(1);
   const scoreFont=big?23:28, scoreDy=big?4:16, labelDy=big?18:30, labelFont=big?10:11;
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#EAEAEC" stroke-width="8"/>
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${dash} ${circ.toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="width:${size}px;height:${size}px;flex-shrink:0;">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#F1F1F3" stroke-width="${strokeW}"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round" stroke-dasharray="${dash} ${circ.toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>
+    ${big?'':`<text x="${cx}" y="${cy-9}" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" font-weight="700" letter-spacing="1" fill="#9CA3AF">SCORE</text>`}
     <text x="${cx}" y="${cy+scoreDy}" text-anchor="middle" font-family="Poppins, sans-serif" font-size="${scoreFont}" font-weight="700" fill="#0B0C0E">${score}</text>
     <text x="${cx}" y="${cy+labelDy}" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="${labelFont}" font-weight="500" fill="#9CA3AF">/${max}</text>
   </svg>`;
@@ -1729,22 +1731,31 @@ const MEDD_REFERENCE={
   competition:{q:'What are we competing against?',d:'Identify competitors, alternatives and the status quo.',action:'Get further detail on competitors and the status quo.'},
 };
 
+const CHAMP_ICON_COLOR={challenges:'#E60000',authority:'#0F8A8A',money:'#C2670B',prioritization:'#334155'};
+const CHAMP_ICON_BG={challenges:'#FDECEC',authority:'#E3F5F4',money:'#FDF0E3',prioritization:'#EDF0F4'};
+const CHAMP_ICON_SVG={
+  challenges:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3.2 17 16.4H3L10 3.2Z" stroke="#E60000" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  authority:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.2" stroke="#0F8A8A" stroke-width="1.6"/><path d="M4.4 16.4c0-3.1 2.5-5 5.6-5s5.6 1.9 5.6 5" stroke="#0F8A8A" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  money:'£',
+  prioritization:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10.6" r="6.6" stroke="#334155" stroke-width="1.6"/><path d="M10 7.4v3.4l2.4 1.6" stroke="#334155" stroke-width="1.6" stroke-linecap="round"/></svg>',
+};
 function buildChampDetailSection(o,c,ins){
   const cards=CHAMP_ORDER.map(k=>{
     const f=ins.champ[k];
     const score=packChampScore(f.status), color=packStatusColor(f.status), label=packChampLabel(f.status).toUpperCase();
+    const iconColor=CHAMP_ICON_COLOR[k], iconBg=CHAMP_ICON_BG[k], iconGlyph=CHAMP_ICON_SVG[k];
     const checklist=CHAMP_CHECKLIST[k];
     const checkedCount=f.status==='confirmed'?4:f.status==='partial'?2:0;
     const questions=CHAMP_QUESTIONS[k];
     return `
     <div style="background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;padding:22px 24px;box-shadow:0 1px 2px rgba(11,12,14,0.04);">
       <div style="display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid #F0F0F2;">
-        <div style="width:44px;height:44px;border-radius:12px;background:${color}22;display:flex;align-items:center;justify-content:center;color:${color};font-family:'Poppins',sans-serif;font-weight:700;font-size:19px;">${k[0].toUpperCase()}</div>
+        <div style="width:44px;height:44px;border-radius:12px;background:${iconBg};display:flex;align-items:center;justify-content:center;${iconGlyph==='£'?`color:${iconColor};font-family:'Poppins',sans-serif;font-weight:600;font-size:19px;`:''}">${iconGlyph}</div>
         <div style="flex:1;">
           <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.3px;">${esc(CHAMP_LABELS[k])}</div>
           <div style="font-size:13px;color:#6B7280;margin-top:2px;">${esc(champSubtitle(k))}</div>
         </div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:${color};background:${color}22;border-radius:999px;padding:6px 12px;">${k[0].toUpperCase()}</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;color:${iconColor};background:${iconBg};border-radius:999px;padding:6px 12px;">${k[0].toUpperCase()}</div>
       </div>
       <div style="display:grid;grid-template-columns:1.15fr 150px 1.15fr;gap:20px;padding-top:18px;">
         <div style="display:flex;flex-direction:column;gap:16px;">
@@ -1786,7 +1797,13 @@ function buildChampDetailSection(o,c,ins){
       <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </summary>
     <div class="sec-body"><div class="sec-inner">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;">${cards}</div>
+    <div style="position:relative;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;">
+      ${cards}
+      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:116px;height:116px;border-radius:999px;background:#FFFFFF;border:1px solid #E8E8EA;box-shadow:0 4px 18px rgba(11,12,14,0.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
+        <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;color:#E60000;letter-spacing:-0.2px;">CHAMP</div>
+        <div style="font-size:9.5px;color:#8B8F97;text-align:center;line-height:1.3;padding:0 14px;">Customer-centric opportunity qualification</div>
+      </div>
+    </div>
 
     <div style="display:grid;grid-template-columns:220px 1fr 1fr 1fr 1fr;gap:22px;background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;padding:24px;margin-top:20px;box-shadow:0 1px 2px rgba(11,12,14,0.04);">
       <div style="background:#F7F7F8;border-radius:14px;padding:18px;display:flex;align-items:center;gap:16px;">
