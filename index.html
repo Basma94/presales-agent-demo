@@ -2342,11 +2342,6 @@ function buildSolutionDetailSection(o,c,ins){
 
 function buildSupportingAnalysisHTML(o,c,ins){
   return `
-  <div class="toolbar">
-    <div class="toolbar-label">Supporting analysis<span class="toolbar-sub">Four assessments behind this summary — expand any section for the full detail</span></div>
-    <button class="btn" type="button" data-secact="expand">Expand all</button>
-    <button class="btn" type="button" data-secact="collapse">Collapse all</button>
-  </div>
   ${buildChampDetailSection(o,c,ins)}
   ${buildMeddpiccDetailSection(o,c,ins)}
   ${buildRequirementsDetailSection(o,c,ins)}
@@ -2369,6 +2364,12 @@ function renderOppInsightsTab(o,c){
         ${stageInfo.next?`<div class="b-text" style="margin-top:4px;"><b>Next step:</b> ${esc(stageInfo.next)}</div>`:''}
       </div>
     </div>
+  </div>
+
+  <div class="toolbar" style="margin-bottom:0;">
+    <div class="toolbar-label">Opportunity analysis<span class="toolbar-sub">Overview plus four supporting assessments — expand any section for the full detail</span></div>
+    <button class="btn" type="button" data-secact="expand">Expand all</button>
+    <button class="btn" type="button" data-secact="collapse">Collapse all</button>
   </div>
 
   <div style="margin-bottom:18px;">${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
