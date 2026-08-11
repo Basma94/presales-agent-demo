@@ -496,10 +496,6 @@ const CUSTOMERS = [
    overview:'Midland Manufacturing Group produces industrial equipment across 3 factories in the Midlands. Exploring Industry 4.0 investments to reduce downtime and improve production visibility.',
    priorities:['Reduce unplanned downtime via predictive maintenance','Improve factory floor connectivity','Centralise production data'],
    contacts:[{name:'Christopher Hall',title:'Head of Operations',email:'christopher.hall@midlandmfg.co.uk',phone:'+44 121 496 0445'}]},
-  {id:'c6',name:'SCIT Group',industry:'Aviation & Connectivity',hq:'Riyadh, Saudi Arabia',employees:'—',revenue:'—',
-   overview:'SCIT Group is a Saudi-based technology investment fund established May 2022, founded by Sheikh Saad Al-Otaibi. Focused on space, end-to-end security and aviation through advanced communications and emerging technologies, with a strategic focus on the Middle East, Africa and Turkey — explicitly aligned with Saudi Vision 2030. SCIT owns/backs a ~300-site private mobile network delivering Europe Inflight Connectivity, currently served by T-Mobile, and its IFC subsidiary SKYFive Arabia is already expanding A2G connectivity into South Africa.',
-   priorities:['Reduce annual managed-service cost vs. the current T-Mobile contract','Modernize ~100 sites approaching Nokia hardware end-of-support','Secure a new 10-year managed-service agreement','Resolve multi-jurisdiction spectrum licensing continuity across 41 countries'],
-   contacts:[{name:'Markus Feldmann',title:'Head of Network Services (Sponsor)',email:'markus.feldmann@scitgroup-demo.com',phone:'+966 11 496 0210'},{name:'Dr. Amina Rashid',title:'Director of Infrastructure Partnerships',email:'amina.rashid@scitgroup-demo.com',phone:'+966 11 496 0388'},{name:'Petra Lindqvist',title:'NOC Lead',email:'petra.lindqvist@scitgroup-demo.com',phone:'+49 30 496 0122'}]},
 ];
 
 /* Fixed "current" reference date so the whole app reads as 2025 (seed data and anything
@@ -623,100 +619,6 @@ const OPPORTUNITIES = [
      internalTeam:['t2']},
    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Midland_5G.pdf',date:daysAgo(14),by:'James Carter'}],
    comments:[], cancelReason:null, aiRecommendedServices:['Private 5G for Factory Floor','Industrial IoT Sensors Platform']},
-
-  {id:'o11',pegaNumber:'PEGA-91042',customerId:'c6',status:'Proposal Development',stage:'Proposal Development',requestType:'RFP',value:9000000,
-   created:daysAgo(24),assignedTo:'t2',demandFormFileName:'PEGA_DemandForm_SCIT_EuropeIFC.pdf',
-   profile:{customerContact:'Markus Feldmann (Head of Network Services)',
-     problemStatement:'Re-tendering the managed-service contract for a ~300-site European Air-to-Ground In-Flight Connectivity network across 41 countries — cost-driven, with recurring handover incidents and ~100 sites approaching Nokia hardware end-of-support within 18 months.',
-     scoring:{overall:78,band:'Hot',factors:[{label:'Strategic Fit',score:88},{label:'Budget Confirmed',score:75},{label:'Technical Fit',score:80},{label:'Competitive Position',score:70},{label:'Urgency',score:78}]},
-     internalTeam:['t2']},
-   documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_SCIT_EuropeIFC.pdf',date:daysAgo(24),by:'James Carter'}],
-   comments:[{id:uid('cm'),author:'James Carter',text:'Discovery call complete — MEDDPICC now 6/8 evidenced. Recommend we lead the proposal with the targeted ~100-site modernization narrative.',mentions:[],time:daysAgo(8)}],
-   cancelReason:null,
-   aiRecommendedServices:['Managed Private Network (Hybrid MPN)','Managed Network Operations (NOC-as-a-Service)','Solution Delivery & Migration Services','Network Strategic Planning & Capacity Management','Spectrum & Market Advisory'],
-   insights:{
-     meddpiccStarted:true,
-     brief:{
-       whoTheyAre:[
-         'SCIT Group — a Saudi-based technology investment fund established May 2022, founded by Sheikh Saad Al-Otaibi.',
-         'Focused on space, end-to-end security and aviation through advanced communications, information and emerging technologies.',
-         'Strategic focus on the Middle East, Africa and Turkey — direct investments and commercialization partnerships.',
-         "Explicitly aligned with Saudi Vision 2030 — economic diversification and regional digital sovereignty."
-       ],
-       whyNow:[
-         'Owns/backs a ~300-site private mobile network delivering Europe Inflight Connectivity, currently served by T-Mobile.',
-         'Current managed-service contract expires 2029 — re-tendering well ahead of that date.',
-         'Explicit mandate to reduce annual service cost and secure a new 10-year agreement.',
-         "SKYFive Arabia (SCIT's IFC subsidiary) announced an MoU in Feb 2025 to bring A2G connectivity to South Africa — this European re-tender likely sits inside a broader multi-region A2G/IFC build-out."
-       ],
-       technicalAsk:"A new Managed Network Services provider for a ~300-site Mobile Private Network spanning 41 EU countries, delivering In-Flight Connectivity (IFC) to aircraft via Air-to-Ground (A2G) technology. Discovery confirmed this is very likely the actual European Aviation Network (EAN) ground infrastructure — built and operated by Deutsche Telekom (T-Mobile's parent) on dedicated LTE Band 65 — making this a take-over-and-modernize engagement, not a green-field build.",
-       ecosystem:[
-         {name:'Deutsche Telekom',desc:'Builds and operates EAN\'s ground network — the likely current operator behind "T-Mobile" in this deal.'},
-         {name:'Nokia',desc:"EAN's LTE network equipment vendor — explains the required hardware refresh."},
-         {name:'Inmarsat',desc:"Owns EAN's satellite (S-band) component, kept separate from the ground network — this RFP is ground-only."},
-         {name:'Thales',desc:'Builds EAN\'s onboard aircraft equipment (Complementary Ground Component terminal) — relevant only if OBU scope is discussed.'}
-       ]
-     },
-     champ:{
-       challenges:{status:'confirmed',text:"Primarily cost — enterprise-rate pricing hasn't scaled with growth. Also real but non-critical: 14–18 handover-related incidents per month on older ground sites (Germany, France, UK), and ~100 sites approaching Nokia hardware end-of-support within 18 months."},
-       authority:{status:'confirmed',text:'Markus Feldmann (Head of Network Services) owns day-to-day vendor relationship and technical evaluation, with signing authority to €2M. Above that, a named 3-person board: CFO (cost), CTO (technical risk), Dr. Amina Rashid (strategic tiebreaker).'},
-       money:{status:'confirmed',text:'€9M/year confirmed as a flexible target, not a hard ceiling. Hardware-refresh capex now bounded to a targeted ~100-site modernization, not a fleet-wide replacement — a materially smaller, more fundable scope.'},
-       prioritization:{status:'confirmed',text:'High, with a firm board-cycle deadline: shortlist to two vendors by end-September, technical deep-dive in October, board decision in November, signature in December.'}
-     },
-     meddpicc:{
-       metrics:{status:'evidenced',text:'Cost below the T-Mobile baseline; reduction from the 14–18/month handover-incident baseline; a costed modernization path for the ~100-site tier.'},
-       economicBuyer:{status:'evidenced',text:'3-person board named by role — CFO (cost), CTO (technical risk), Dr. Amina Rashid (strategic tiebreaker) — with a €2M sign-off threshold confirmed.'},
-       decisionCriteria:{status:'evidenced',text:'Cost and technical risk weighted equally by the board; the strategic angle acts as tiebreaker between close proposals.'},
-       decisionProcess:{status:'evidenced',text:'Shortlist to two vendors (Sept) → technical deep-dive (Oct) → board decision (Nov) → signature (Dec).'},
-       paperProcess:{status:'partial',text:'Standard commercial contract confirmed; a separate spectrum risk-allocation side-letter is likely, but its timeline isn\'t fixed yet ("could add a few weeks").'},
-       identifyPain:{status:'evidenced',text:'Quantified: 14–18 monthly handover incidents, ~100 sites at hardware risk, and no structured capacity-planning discipline today.'},
-       champion:{status:'partial',text:'Markus is explicitly neutral until proposals land, but has stated he will advocate internally for a strong, specialist technical response.'},
-       competition:{status:'evidenced',text:'Two named-by-type competitors identified: an incumbent telecom vendor (broad scale, low aviation specificity) and a specialist aviation connectivity player (deep aviation credibility, board-flagged funding concern for the hardware refresh).'}
-     },
-     rtm:[
-       {id:'R-001',requirement:'Ground A2G site management, dedicated PLMN (~300 sites, 41 countries)',feature:'F-001',outcome:'Single accountable operator for the ground estate',fitGap:'CONFIGURATION',catalogue:'Managed Private Network (Hybrid MPN)',status:'Answered'},
-       {id:'R-002',requirement:'24/7 NOC monitoring & incident management, flexible first/second-line scope',feature:'F-002',outcome:'Reduce handover incidents from the 14–18/month baseline',fitGap:'FIT',catalogue:'Managed Network Operations (NOC-as-a-Service)',status:'Answered'},
-       {id:'R-003',requirement:'Targeted hardware modernization (~100 sites, Nokia EOL within 18mo)',feature:'F-003',outcome:'Retire EOL risk without fleet-wide capex',fitGap:'FIT',catalogue:'Solution Delivery & Migration Services',status:'Answered'},
-       {id:'R-004',requirement:'Vendor/RFQ management for hardware procurement',feature:'F-004',outcome:'Structured, benchmarked hardware sourcing',fitGap:'FIT',catalogue:'Vendor & RFQ Management Services',status:'Answered'},
-       {id:'R-005',requirement:'Capacity planning / traffic forecasting (replacing manual process)',feature:'F-005',outcome:"Structured capacity-planning discipline vs. today's spreadsheets",fitGap:'FIT',catalogue:'Network Strategic Planning & Capacity Management',status:'Answered'},
-       {id:'R-006',requirement:'SLA/service quality governance, incident & change management',feature:'F-006',outcome:'Reduce NOC-to-vendor handover friction',fitGap:'FIT',catalogue:'Business Continuity & Service Quality Management',status:'Answered'},
-       {id:'R-007',requirement:'Inherited (EAN-origin) architecture validation & evolution roadmap',feature:'F-007',outcome:'De-risk transition of unfamiliar legacy architecture',fitGap:'FIT',catalogue:'Network Strategy & Architecture Advisory',status:'Answered'},
-       {id:'R-008',requirement:'Spectrum continuity across 41 jurisdictions (legacy consortium licensing)',feature:'F-008',outcome:'Close regulatory risk before contract signature',fitGap:'CONFIGURATION',catalogue:'Spectrum & Market Advisory',status:'Answered'},
-       {id:'R-009',requirement:'Contractual risk allocation for spectrum (legal side-letter/schedule)',feature:'F-009',outcome:'Board-level legal comfort ahead of signature',fitGap:'CUSTOMIZATION',catalogue:"Bespoke contract schedule + Spectrum & Market Advisory",status:'Answered'},
-       {id:'R-010',requirement:'A2G-specific RAN engineering (fast handover, Doppler, Band 65 aviation profile)',feature:'F-010',outcome:'Maintain aviation-grade handover performance through modernization',fitGap:'GAP',catalogue:'Not in current RAN catalogue — routed to Product',status:'At Risk'},
-       {id:'R-011',requirement:'Aircraft-side OBU integration boundary',feature:'F-011',outcome:'Clean ground/aircraft scope boundary at handover point',fitGap:'PARTNER',catalogue:"Interface definition with customer's aircraft integrator — ground-only scope confirmed",status:'At Risk'}
-     ],
-     competitors:[
-       {name:'Incumbent Telecom Vendor',strength:'Broad operational scale — "we operate networks this size elsewhere."',weakness:'Low aviation-specific specificity in technical response so far.',howWeWin:"Lead with A2G/EAN-specific technical depth — Band 65, Doppler-compensated handover, hybrid satellite/ground architecture — that a generic response can't match."},
-       {name:'Specialist Aviation Connectivity Player',strength:'Deep aviation credibility and domain expertise.',weakness:'Board-flagged concern over financial capacity to fund the ~100-site hardware refresh.',howWeWin:'Pair telecom-scale financial strength with a credible, specific aviation technical plan.'}
-     ],
-     solutionOptions:[
-       {name:'Full Fleet-Wide Hardware Replacement',fit:'Partial',
-         summary:"Replace all ~300 sites' Nokia hardware in one programme. Matches the RFP charter's literal wording, but represents a much larger, harder-to-fund capex ask that Discovery showed isn't actually required."},
-       {name:'Managed Service Only — No Hardware Refresh',fit:'Partial',
-         summary:"Take over day-to-day NOC and service management but leave the Nokia end-of-support hardware for the customer to replace separately. Cheaper to propose, but leaves the ~100 at-risk sites exposed and doesn't resolve a stated pain point."},
-       {name:'Targeted ~100-Site Modernization + Managed Service',fit:'Strong',
-         summary:'Managed take-over of the full ~300-site estate — NOC, capacity planning, SLA governance — paired with a bounded hardware refresh limited to the ~100 sites actually approaching Nokia end-of-support within 18 months.'}
-     ],
-     recommendedSolution:{
-       name:'Targeted ~100-Site Modernization + Managed Service',
-       why:'Discovery reframed the hardware ask from an assumed fleet-wide replacement to a materially smaller, more fundable ~100-site scope — this is the only option that matches that finding. It also covers 9 of the 11 mapped requirements directly against the existing NSE Product Catalogue (largely off-the-shelf), differentiates against the incumbent\'s generic "scale" positioning with A2G/EAN-specific technical depth, and routes the 2 At-Risk items (A2G RAN engineering, aircraft OBU boundary) to a parallel Product/Partner conversation rather than blocking the proposal.'
-     },
-     openItems:[
-       'Spectrum licensing continuity across all 41 jurisdictions — board-flagged, customer-acknowledged, unresolved. Position as a proposal differentiator, not a footnote.',
-       'Confirm exact current site count with NOC lead Petra Lindqvist (some sites decommissioned) before finalizing the commercial model.',
-       'Route R-010 (A2G RAN engineering) and R-011 (aircraft OBU boundary) to a parallel Product/Partner conversation — do not let them block proposal drafting.',
-       'Firm up Champion status — Markus is persuadable but uncommitted; a fast, strong technical response is the highest-leverage action before the September shortlist.'
-     ],
-     gate:{signal:'Proceed to Proposal Development',confidence:'6 / 8 MEDDPICC evidenced · CHAMP fully confirmed',
-       recommendation:'9 of 11 mapped requirements are Answered against the existing NSE Product Catalogue — a strong, largely off-the-shelf scope. Lead with the targeted ~100-site modernization narrative (reframed in Discovery from an assumed fleet-wide replacement) as the key differentiator against the incumbent\'s generic "scale" positioning.',
-       nextStep:'Draft Technical Proposal using the 9 Answered requirements as the core scope'},
-     log:[
-       {time:daysAgo(8),source:'Discovery call with NOC lead Petra Lindqvist',note:'MEDDPICC evidenced 6/8 — Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain and Competition confirmed. RTM mapped: 9/11 requirements Answered, 2 At Risk (routed to Product/Partner). CHAMP fully confirmed, including Money resolved to a bounded ~100-site hardware scope.'},
-       {time:daysAgo(17),source:'Kick-off call with Markus Feldmann',note:'CHAMP confidence reached 3.5/4 — Challenges, Authority and Prioritization confirmed; Money confirmed as a flexible €9M/year target (hardware capex still unscoped at this point). Confirmed the EAN/Deutsche Telekom origin hypothesis and that Vodafone is 1 of 3 shortlisted bidders.'},
-       {time:daysAgo(24),source:'PEGA ticket PEGA-91042 created (RFP re-tender)',note:'Initial customer & technical brief generated from the demand form and public company data — EAN ground-network hypothesis flagged for validation on the kick-off call.'}
-     ]
-   }},
 ];
 
 const STATUS_ORDER=['New','Kick off','Discovery','Proposal Development','Proposal Sent','Delivered','Cancelled/Rejected'];
@@ -1629,7 +1531,7 @@ function buildAssessmentPackHTML(o,c,ins){
   const trlGapBlocks=Array.from({length:Math.max(trlGap,0)},()=>`<span style="width:32px;height:12px;border-radius:3px;background:#E79A2B;"></span>`).join('');
 
   return `
-  <details class="sec" id="sec-overview" open>
+  <details class="sec" id="sec-overview">
     <summary>
       <div class="sec-num">00</div>
       <div class="sec-text">
@@ -2394,7 +2296,7 @@ function renderOppInsightsTab(o,c){
 }
 
 /* ================= HANDOVER PACK (Presales → Delivery, embedded + PDF export) ================= */
-/* Structure ported from "Handover Pack SCIT.docx": Executive Summary, RAID Log,
+/* Structure ported from a presales-to-delivery handover pack template: Executive Summary, RAID Log,
    Commercial Baseline, RTM cross-reference, Named POCs, Outstanding Items, 90-day
    Kickoff Plan — populated from live opportunity data. */
 function buildHandoverPackHTML(o,c,ins){
