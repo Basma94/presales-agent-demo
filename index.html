@@ -2348,14 +2348,218 @@ function renderOppInsightsTab(o,c){
   `;
 }
 
-const DOC_TYPES=['Customer Proposal'];
+/* ================= HANDOVER PACK (Presales → Delivery, embedded + PDF export) ================= */
+/* Structure ported from "Handover Pack SCIT.docx": Executive Summary, RAID Log,
+   Commercial Baseline, RTM cross-reference, Named POCs, Outstanding Items, 90-day
+   Kickoff Plan — populated from live opportunity data. */
+function buildHandoverPackHTML(o,c,ins){
+  const decision=packDecision(o,ins);
+  const rtmAnswered=ins.rtm.length?ins.rtm.filter(r=>r.status==='Answered').length:0;
+  const atRisk=ins.rtm.filter(r=>r.status==='At Risk');
+  const configItems=ins.rtm.filter(r=>['CONFIGURATION','CUSTOMIZATION'].includes(r.fitGap));
+  const assignee=getTeamMember(o.assignedTo);
+  const docId='HP-'+(o.pegaNumber||o.id).replace(/[^A-Za-z0-9]+/g,'-').toUpperCase();
+  const today=fmtDate(appNow().toISOString());
+
+  const statTiles=[
+    ['CONTRACT STATUS',o.status===WON_STATUS?'#0F8A8A':'#E60000',esc(o.status),'Current stage'],
+    ['RTM ITEMS ANSWERED','#0F8A8A',`${rtmAnswered} / ${ins.rtm.length||0}`,'Fit / config / customization'],
+    ['OPEN RISKS','#E60000',String(atRisk.length),'From RAID log'],
+    ['OUTSTANDING ITEMS','#C2670B',String(ins.openItems.length),'Carried to Delivery'],
+  ].map(([label,color,val,sub])=>packCard(`
+    <div style="font-size:10.5px;font-weight:700;letter-spacing:1px;color:${color};min-height:28px;line-height:14px;">${esc(label)}</div>
+    <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:24px;color:#0B0C0E;margin-top:12px;">${val}</div>
+    <div style="font-size:11.5px;color:#8B8F97;margin-top:6px;line-height:16px;">${esc(sub)}</div>`,'padding:18px;')).join('');
+
+  const metaRows=[
+    ['Document ID',docId],['Version','1.0 — Draft'],['Classification','Sales Confidential — Internal Handover'],
+    ['Handed Over By',assignee?`${assignee.name} (${assignee.role||'Presales'})`:CURRENT_USER.name],
+    ['Handed Over To','Delivery Programme Lead (TBC)'],['Customer',esc(c.name)],
+    ['Ticket',esc(o.pegaNumber||'—')],['Date',today],
+  ].map(([k,v])=>`
+    <div style="font-size:12.5px;color:#6B7280;white-space:nowrap;padding:11px 14px 11px 0;border-top:1px solid #EDEDEF;">${esc(k)}</div>
+    <div style="font-size:12.5px;font-weight:500;color:#0B0C0E;text-align:right;padding:11px 0;border-top:1px solid #EDEDEF;">${v}</div>`).join('');
+
+  const risks=(atRisk.length?atRisk.map(r=>({id:r.id,desc:r.requirement,owner:r.fitGap==='PARTNER'?'Vodafone / Partner':'Vodafone Product',rag:'Red'})):[])
+    .concat(ins.champ.money.status!=='confirmed'?[{id:'RA-C',desc:'Commercial terms not yet fully confirmed with the customer.',owner:'Vodafone / Commercial',rag:'Amber'}]:[])
+    .concat(rtmAnswered<ins.rtm.length?[{id:'RA-R',desc:`${ins.rtm.length-rtmAnswered} requirement(s) not yet fully answered against the catalogue.`,owner:'Vodafone Delivery',rag:'Amber'}]:[]);
+  const riskRows2=risks.length?risks.map(r=>`
+    <tr>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12px;font-weight:700;color:#8B8F97;white-space:nowrap;">${esc(r.id)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#4B5563;">${esc(r.desc)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#6B7280;white-space:nowrap;">${esc(r.owner)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;color:${r.rag==='Red'?'#E60000':'#C2670B'};background:${r.rag==='Red'?'#FDECEC':'#FDF0E3'};border-radius:999px;padding:4px 10px;">${r.rag}</span></td>
+    </tr>`).join('') : `<tr><td colspan="4" style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#8B8F97;">No material risks flagged.</td></tr>`;
+
+  const bulletList=(items)=>items.length?`<div style="display:flex;flex-direction:column;gap:11px;">${items.map(t=>`<div style="font-size:12.5px;color:#4B5563;line-height:1.5;border-top:1px solid #EDEDEF;padding-top:11px;">${esc(t)}</div>`).join('')}</div>`:`<div style="font-size:12.5px;color:#8B8F97;">None captured.</div>`;
+  const assumptions=configItems.map(r=>`${r.requirement} — assumed deliverable via ${r.fitGap.toLowerCase()}, pending validation.`);
+  const issues=ins.openItems;
+  const dependencies=[ins.recommendedSolution?`Delivery sequencing depends on the recommended solution: ${ins.recommendedSolution.name}.`:null,
+    atRisk.length?`Resolution of ${atRisk.map(r=>r.id).join(', ')} depends on Product/Partner engagement, tracked outside this opportunity.`:null,
+    'Full transition depends on confirmed scope sign-off during the Validation Phase.'].filter(Boolean);
+
+  const rtmTableRows=ins.rtm.length?ins.rtm.map(r=>`
+    <tr>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12px;font-weight:700;color:#8B8F97;white-space:nowrap;">${esc(r.id)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#4B5563;">${esc(r.requirement)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#6B7280;">${esc(r.catalogue)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;">${fitGapPill(r.fitGap)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;">${rtmStatusPill(r.status)}</td>
+    </tr>`).join('') : `<tr><td colspan="5" style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#8B8F97;">No requirements traceability captured yet.</td></tr>`;
+
+  const contactRow=(name,title,sub)=>`
+    <div style="display:flex;align-items:center;gap:12px;border-top:1px solid #EDEDEF;padding-top:12px;margin-top:12px;">
+      <div style="width:34px;height:34px;border-radius:999px;background:#FDECEC;color:#E60000;font-family:'Poppins',sans-serif;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${esc((name||'?').split(' ').map(w=>w[0]).slice(0,2).join(''))}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;color:#0B0C0E;">${esc(name)}</div>
+        <div style="font-size:12px;color:#6B7280;">${esc(title)}${sub?' · '+esc(sub):''}</div>
+      </div>
+    </div>`;
+  const custContacts=(c.contacts||[]).map(ct=>contactRow(ct.name,ct.title,ct.email)).join('') || `<div style="font-size:12.5px;color:#8B8F97;">No named contacts on file.</div>`;
+  const vfContacts=contactRow(assignee?assignee.name:CURRENT_USER.name, assignee?(assignee.role||'Presales Lead'):'Presales Lead', 'Available for 30 days for transition questions');
+
+  const outstanding=ins.openItems.length?ins.openItems.map((t,i)=>`
+    <tr>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12px;font-weight:700;color:#8B8F97;white-space:nowrap;">OI-0${i+1}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#4B5563;">${esc(t)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#6B7280;white-space:nowrap;">Vodafone Delivery</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#6B7280;white-space:nowrap;">Day ${(i+1)*30}</td>
+    </tr>`).join('') : `<tr><td colspan="4" style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#8B8F97;">Nothing explicitly deferred — Delivery inherits a clean baseline.</td></tr>`;
+
+  const kickoffStages=[['Contract Signature','Day 0','Commercial and regulatory schedule finalized'],
+    ['Validation Phase Complete','Day 30','Architecture validation, confirmed scope and requirements'],
+    ['Transition Complete','Day 60','Managed operations live; outstanding scope decisions confirmed'],
+    ['Delivery Wave 1','Day 90','First tranche of delivery, prioritized by risk and dependency']];
+  const kickoffRows=kickoffStages.map(([m,t,a])=>`
+    <tr>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;font-weight:600;color:#0B0C0E;white-space:nowrap;">${esc(m)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#6B7280;white-space:nowrap;">${esc(t)}</td>
+      <td style="padding:11px 12px;border-top:1px solid #EDEDEF;font-size:12.5px;color:#4B5563;">${esc(a)}</td>
+    </tr>`).join('');
+
+  const sec=(num,title,sub,body)=>`
+  <details class="sec" id="sec-hp-${num}" open>
+    <summary>
+      <div class="sec-num">0${num}</div>
+      <div class="sec-text"><div class="sec-title">${esc(title)}</div><div class="sec-sub">${esc(sub)}</div></div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </summary>
+    <div class="sec-body"><div class="sec-inner">${body}</div></div>
+  </details>`;
+
+  return `
+  <div style="display:flex;align-items:center;gap:24px;background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;padding:22px 26px;box-shadow:0 1px 2px rgba(11,12,14,0.04);">
+    <div style="flex:1;display:flex;flex-direction:column;gap:5px;">
+      <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;letter-spacing:-0.6px;line-height:1.15;color:#E60000;">Handover Pack</div>
+      <div style="font-size:14px;color:#6B7280;">Presales to Delivery — complete transfer package for ${esc(c.name)}</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:340px 1fr;gap:20px;margin-top:20px;align-items:stretch;">
+    ${packCard(`${packHeading('Document details')}<div style="display:grid;grid-template-columns:1fr auto;margin-top:14px;">${metaRows}</div>`,'height:100%;box-sizing:border-box;')}
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">${statTiles}</div>
+  </div>
+
+  ${sec(1,'Executive Handover Summary','What Delivery needs to begin Day 0 without reconstructing context',`
+    <div style="font-size:13px;color:#4B5563;line-height:1.6;margin-top:16px;">${esc(o.profile.problemStatement||ins.brief.whyNow[0]||'Not yet captured.')}</div>
+    ${ins.recommendedSolution?`<div style="font-size:13px;color:#4B5563;line-height:1.6;margin-top:12px;"><b>Recommended solution:</b> ${esc(ins.recommendedSolution.name)} — ${esc(ins.recommendedSolution.why)}</div>`:''}
+    <div style="display:flex;align-items:center;gap:9px;margin-top:16px;border-top:1px solid #EDEDEF;padding-top:14px;">
+      <span style="width:9px;height:9px;border-radius:999px;background:${decision.color};"></span>
+      <span style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:${decision.color};">${esc(decision.label)}</span>
+      <span style="font-size:12.5px;color:#6B7280;">${esc(decision.text)}</span>
+    </div>
+  `)}
+
+  ${sec(2,'RAID Log','Risks, Assumptions, Issues and Dependencies carried forward — not regenerated by Delivery',`
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;margin-top:16px;">2.1 RISKS</div>
+    <table style="width:100%;border-collapse:collapse;margin-top:10px;"><tbody>${riskRows2}</tbody></table>
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;margin-top:20px;">2.2 ASSUMPTIONS</div>
+    <div style="margin-top:10px;">${bulletList(assumptions)}</div>
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;margin-top:20px;">2.3 ISSUES</div>
+    <div style="margin-top:10px;">${bulletList(issues)}</div>
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;margin-top:20px;">2.4 DEPENDENCIES</div>
+    <div style="margin-top:10px;">${bulletList(dependencies)}</div>
+  `)}
+
+  ${sec(3,'Commercial Handover Baseline','The agreed scope boundary Delivery should build against',`
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;margin-top:16px;">3.1 AGREED SCOPE BOUNDARY</div>
+    <div style="margin-top:10px;">${bulletList((o.aiRecommendedServices||[]).length?o.aiRecommendedServices:[o.profile.problemStatement||'Scope to be finalized in Discovery.'])}</div>
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;margin-top:20px;">3.2 PRICING POSITION</div>
+    <div style="font-size:13px;color:#4B5563;line-height:1.6;margin-top:10px;">Indicative opportunity value: <b>${o.value?fmtMoney(o.value):'To be confirmed'}</b> (${esc(o.requestType||'—')}${o.tier?' · '+esc(o.tier):''}). Final commercial terms are owned by Commercial and Legal, not restated here.</div>
+    <div style="background:#FDF0E30D;border:1px solid #F0DCC1;border-radius:12px;padding:12px 14px;margin-top:12px;">
+      <div style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#C2670B;">DO NOT ASSUME</div>
+      <div style="font-size:12.5px;color:#6B7280;margin-top:5px;line-height:1.5;">No commercial figure should be treated as final until Delivery's own scoping exercise is complete.</div>
+    </div>
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;margin-top:20px;">3.3 NEGOTIATION CONDITIONS</div>
+    <div style="margin-top:10px;">${bulletList([ins.gate.recommendation].filter(Boolean))}</div>
+  `)}
+
+  ${sec(4,'Requirements Traceability Matrix','Cross-referenced from qualification — the single source of truth for what was promised',`
+    <table style="width:100%;border-collapse:collapse;margin-top:16px;"><tbody>${rtmTableRows}</tbody></table>
+  `)}
+
+  ${sec(5,'Named Points of Contact','Who Delivery should talk to, and why',`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;">
+      <div><div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;">5.1 CUSTOMER-SIDE</div>${custContacts}</div>
+      <div><div style="font-size:12.5px;font-weight:700;letter-spacing:.6px;color:#8B8F97;">5.2 VODAFONE-SIDE (PRESALES, OUTGOING)</div>${vfContacts}</div>
+    </div>
+  `)}
+
+  ${sec(6,'Outstanding Items','Explicitly deferred at handover — not oversights',`
+    <table style="width:100%;border-collapse:collapse;margin-top:16px;"><tbody>${outstanding}</tbody></table>
+  `)}
+
+  ${sec(7,'Delivery Kickoff Plan — First 90 Days','Inherited as a commitment already made to the customer',`
+    <table style="width:100%;border-collapse:collapse;margin-top:16px;"><tbody>${kickoffRows}</tbody></table>
+  `)}
+  `;
+}
+function exportHandoverPackPdf(oppId){
+  const o=getOpp(oppId),c=getCustomer(o.customerId);
+  const ins=ensureInsights(o,c);
+  const inner=buildHandoverPackHTML(o,c,ins).replace(/<details class="sec"/g,'<details class="sec" open');
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(c.name)} — Handover Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+body{margin:0;background:#F7F7F8;font-family:"DM Sans",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+.page{width:1200px;background:#F7F7F8;padding:32px;color:#0B0C0E;}
+a{color:#E60000;text-decoration:none;}
+details.sec{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);margin-top:14px;overflow:hidden;}
+details.sec > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;padding:20px 26px;user-select:none;}
+details.sec > summary::-webkit-details-marker{display:none;}
+.sec-num{flex:0 0 auto;width:40px;height:40px;border-radius:11px;background:#E60000;color:#FFFFFF;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.sec-text{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+.sec-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;letter-spacing:-0.3px;line-height:1.2;}
+.sec-sub{font-size:12.5px;color:#6B7280;}
+.chev{flex:0 0 auto;width:22px;height:22px;color:#E60000;transform:rotate(180deg);}
+.sec-body{padding:0 26px 26px;border-top:1px solid #F0F0F2;}
+@media print{
+  body{background:#FFFFFF;} .page{width:auto;}
+  details.sec{break-inside:avoid;box-shadow:none;border-color:#E8E8EA;}
+  details.sec > summary{break-after:avoid;}
+}
+</style>
+</head><body><div class="page">${inner}</div>
+<script>window.onload=function(){setTimeout(function(){window.print();},450);};<\/script>
+</body></html>`;
+  const w=window.open('','_blank');
+  if(!w){ toast('Pop-up blocked — allow pop-ups for this site to export the Handover Pack PDF.'); return; }
+  w.document.open();w.document.write(html);w.document.close();
+  o.documents.push({id:uid('d'),type:'Handover Pack',fileName:`Handover_${c.name.replace(/[^A-Za-z0-9]+/g,'')}_${(o.pegaNumber||'').split('-').pop()||uid('v')}.pdf`,date:appNow().toISOString(),by:CURRENT_USER.name,source:'generated'});
+  saveDB();render();
+}
+
+const DOC_TYPES=['Customer Proposal','Handover Pack'];
 const DOC_DESC={
   'Customer Proposal':'Auto-generated client-facing proposal document for this opportunity.',
+  'Handover Pack':'Presales-to-Delivery transfer package — RAID log, commercial baseline, RTM, contacts and 90-day kickoff plan.',
 };
-const DOC_EXT={'Customer Proposal':'pptx'};
-const DOC_PREFIX={'Customer Proposal':'Proposal'};
+const DOC_EXT={'Customer Proposal':'pptx','Handover Pack':'pdf'};
+const DOC_PREFIX={'Customer Proposal':'Proposal','Handover Pack':'Handover'};
 function docTypeColor(type){
-  const map={'PEGA Demand Form':'blue','Customer Proposal':'purple','Fit Gap Analysis':'teal','Initial Solution Architecture':'amber','Comment Attachment':'grey'};
+  const map={'PEGA Demand Form':'blue','Customer Proposal':'purple','Handover Pack':'navy','Fit Gap Analysis':'teal','Initial Solution Architecture':'amber','Comment Attachment':'grey'};
   return map[type]||'red';
 }
 function renderOppDocumentsTab(o){
@@ -3322,7 +3526,12 @@ function attachGlobalHandlers(){
     el.onclick=()=>openAddDocModal(el.getAttribute('data-adddoc'),el.getAttribute('data-doctype'));
   });
   document.querySelectorAll('[data-gendoc]').forEach(el=>{
-    el.onclick=()=>{ openProposalFormatModal(el.getAttribute('data-gendoc')); };
+    el.onclick=()=>{
+      const oppId=el.getAttribute('data-gendoc');
+      const docType=el.getAttribute('data-doctype');
+      if(docType==='Handover Pack'){ exportHandoverPackPdf(oppId); toast('Generating Handover Pack (PDF)...'); }
+      else openProposalFormatModal(oppId);
+    };
   });
   document.querySelectorAll('[data-dlreport]').forEach(el=>{
     el.onclick=()=>{
