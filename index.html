@@ -619,6 +619,18 @@ const OPPORTUNITIES = [
        {name:'Incumbent Telecom Vendor',strength:'Broad operational scale — "we operate networks this size elsewhere."',weakness:'Low aviation-specific specificity in technical response so far.',howWeWin:"Lead with A2G/EAN-specific technical depth — Band 65, Doppler-compensated handover, hybrid satellite/ground architecture — that a generic response can't match."},
        {name:'Specialist Aviation Connectivity Player',strength:'Deep aviation credibility and domain expertise.',weakness:'Board-flagged concern over financial capacity to fund the ~100-site hardware refresh.',howWeWin:'Pair telecom-scale financial strength with a credible, specific aviation technical plan.'}
      ],
+     solutionOptions:[
+       {name:'Full Fleet-Wide Hardware Replacement',fit:'Partial',
+         summary:"Replace all ~300 sites' Nokia hardware in one programme. Matches the RFP charter's literal wording, but represents a much larger, harder-to-fund capex ask that Discovery showed isn't actually required."},
+       {name:'Managed Service Only — No Hardware Refresh',fit:'Partial',
+         summary:"Take over day-to-day NOC and service management but leave the Nokia end-of-support hardware for the customer to replace separately. Cheaper to propose, but leaves the ~100 at-risk sites exposed and doesn't resolve a stated pain point."},
+       {name:'Targeted ~100-Site Modernization + Managed Service',fit:'Strong',
+         summary:'Managed take-over of the full ~300-site estate — NOC, capacity planning, SLA governance — paired with a bounded hardware refresh limited to the ~100 sites actually approaching Nokia end-of-support within 18 months.'}
+     ],
+     recommendedSolution:{
+       name:'Targeted ~100-Site Modernization + Managed Service',
+       why:'Discovery reframed the hardware ask from an assumed fleet-wide replacement to a materially smaller, more fundable ~100-site scope — this is the only option that matches that finding. It also covers 9 of the 11 mapped requirements directly against the existing NSE Product Catalogue (largely off-the-shelf), differentiates against the incumbent\'s generic "scale" positioning with A2G/EAN-specific technical depth, and routes the 2 At-Risk items (A2G RAN engineering, aircraft OBU boundary) to a parallel Product/Partner conversation rather than blocking the proposal.'
+     },
      openItems:[
        'Spectrum licensing continuity across all 41 jurisdictions — board-flagged, customer-acknowledged, unresolved. Position as a proposal differentiator, not a footnote.',
        'Confirm exact current site count with NOC lead Petra Lindqvist (some sites decommissioned) before finalizing the commercial model.',
@@ -1192,10 +1204,38 @@ function ensureInsights(o,c){
   if(!o.insights) o.insights=buildLiteInsights(o,c||getCustomer(o.customerId));
   return o.insights;
 }
+function buildLiteSolutionOptions(o,c){
+  const catalog=SERVICE_CATALOG[c.industry]||[];
+  const core=o.aiRecommendedServices.length?o.aiRecommendedServices:catalog.slice(0,2);
+  if(!core.length) return {options:[],recommended:null};
+  const single=[core[0]];
+  const full=catalog.length?catalog:core;
+  const options=[
+    {name:'Targeted Fix',fit:'Partial',services:single,
+      summary:`Address the immediate pain point only — ${single.join(', ')}. Fastest to deploy, narrowest scope.`},
+    {name:'Recommended Package',fit:'Strong',services:core,
+      summary:`Balanced package matched to the stated problem and current qualification signals — ${core.join(', ')}.`},
+  ];
+  if(full.length>core.length){
+    options.push({name:'Full Platform',fit:'Good',services:full,
+      summary:`Broader ${c.industry} modernization across the wider capability set — ${full.join(', ')}. Bigger scope, longer-term investment.`});
+  }
+  const seen=new Set();
+  const deduped=options.filter(op=>{const key=op.services.join('|');if(seen.has(key))return false;seen.add(key);return true;});
+  const sc=o.profile.scoring;
+  return {
+    options:deduped,
+    recommended:{
+      name:'Recommended Package',
+      why:`Matches the stated problem${o.profile.problemStatement?' ("'+o.profile.problemStatement+'")':''} with the highest-fit catalogue services identified by scoring${sc?` — ${sc.band} qualification (${sc.overall}/100)`:''}.`
+    }
+  };
+}
 function buildLiteInsights(o,c){
   const sc=o.profile.scoring;
   const budgetScore=sc?(sc.factors.find(f=>f.label==='Budget Confirmed')||{}).score:null;
   const urgencyScore=sc?(sc.factors.find(f=>f.label==='Urgency')||{}).score:null;
+  const sol=buildLiteSolutionOptions(o,c);
   return {
     meddpiccStarted:false,
     brief:{
@@ -1213,7 +1253,7 @@ function buildLiteInsights(o,c){
     meddpicc:{metrics:{status:'none',text:''},economicBuyer:{status:'none',text:''},decisionCriteria:{status:'none',text:''},
       decisionProcess:{status:'none',text:''},paperProcess:{status:'none',text:''},identifyPain:{status:'none',text:''},
       champion:{status:'none',text:''},competition:{status:'none',text:''}},
-    rtm:[],competitors:[],openItems:[],
+    rtm:[],competitors:[],solutionOptions:sol.options,recommendedSolution:sol.recommended,openItems:[],
     gate:{signal:(o.profile.problemStatement&&o.profile.customerContact)?'Gather CHAMP':'New',confidence:'CHAMP still forming',
       recommendation:'Not enough signal yet to recommend proceeding to Discovery — keep capturing inputs (comments, uploaded documents) to build the CHAMP picture.',
       nextStep:'Capture inputs to build CHAMP'},
@@ -1306,6 +1346,16 @@ function buildRequestSummaryText(o,c,ins){
   if(ins.rtm.length){
     lines.push('');
     lines.push(`Fit-Gap: ${ins.rtm.filter(r=>r.status==='Answered').length}/${ins.rtm.length} requirements answered against the catalogue.`);
+  }
+  if(ins.solutionOptions&&ins.solutionOptions.length){
+    lines.push('');
+    lines.push('Solution options considered:');
+    ins.solutionOptions.forEach(op=>lines.push(`• ${op.name} (${op.fit} fit): ${op.summary}`));
+  }
+  if(ins.recommendedSolution){
+    lines.push('');
+    lines.push(`Recommended solution: ${ins.recommendedSolution.name}`);
+    lines.push(ins.recommendedSolution.why);
   }
   if(ins.openItems.length){
     lines.push('');
@@ -1403,6 +1453,19 @@ function downloadRequestSummaryPdf(o,c,ins){
   if(ins.rtm.length){
     sectionTitle('Fit-Gap');
     bodyText(`${ins.rtm.filter(r=>r.status==='Answered').length}/${ins.rtm.length} requirements answered against the catalogue.`);
+    y+=6;
+  }
+
+  if(ins.solutionOptions&&ins.solutionOptions.length){
+    sectionTitle('Solution Options');
+    ins.solutionOptions.forEach(op=>bullet(`${op.name} (${op.fit} fit): ${op.summary}`));
+    y+=6;
+  }
+
+  if(ins.recommendedSolution){
+    sectionTitle('Recommended Solution');
+    bodyText(ins.recommendedSolution.name,{bold:true});
+    bodyText(ins.recommendedSolution.why);
     y+=6;
   }
 
@@ -1556,6 +1619,35 @@ function renderOppInsightsTab(o,c){
         <div style="font-size:12.5px;">${esc(cp.howWeWin)}</div>
       </div>`).join('')}
     </div>
+  </div>`:''}
+
+  ${ins.solutionOptions&&ins.solutionOptions.length?`
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>Solution Options</h3><span class="hint">${ins.solutionOptions.length} option${ins.solutionOptions.length>1?'s':''} considered</span></div>
+    <div class="grid grid-3" style="gap:14px;">
+      ${ins.solutionOptions.map(op=>{
+        const isRec=ins.recommendedSolution&&op.name===ins.recommendedSolution.name;
+        const fitCls={Strong:'pill-green',Good:'pill-blue',Partial:'pill-amber'}[op.fit]||'pill-grey';
+        return `
+        <div style="border:1.5px solid ${isRec?'var(--vf-green)':'var(--vf-border)'};background:${isRec?'var(--vf-green-bg)':'#fff'};border-radius:10px;padding:14px 16px;position:relative;">
+          ${isRec?`<span class="pill pill-green" style="position:absolute;top:-10px;right:12px;">${ic('check')} Recommended</span>`:''}
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;">
+            <div style="font-weight:700;font-size:13.5px;">${esc(op.name)}</div>
+            <span class="pill ${fitCls}">${esc(op.fit)} Fit</span>
+          </div>
+          <div style="font-size:12.5px;color:var(--vf-grey);line-height:1.55;${op.services?'margin-bottom:8px;':''}">${esc(op.summary)}</div>
+          ${op.services?`<div style="display:flex;gap:5px;flex-wrap:wrap;">${op.services.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>
+    ${ins.recommendedSolution?`
+    <div class="banner banner-green" style="margin-top:16px;margin-bottom:0;">
+      ${ic('check')}
+      <div>
+        <div class="b-title">Recommended: ${esc(ins.recommendedSolution.name)}</div>
+        <div class="b-text">${esc(ins.recommendedSolution.why)}</div>
+      </div>
+    </div>`:''}
   </div>`:''}
 
   ${ins.openItems.length?`
