@@ -1366,11 +1366,6 @@ function addInsightFromInput(o,input){
   recomputeGate(o);
   return note;
 }
-function insightStatusPill(status){
-  const map={confirmed:['pill-green','Confirmed'],evidenced:['pill-green','Evidenced'],partial:['pill-amber','Partial'],none:['pill-grey','Not yet']};
-  const [cls,label]=map[status]||map.none;
-  return `<span class="pill ${cls}">${label}</span>`;
-}
 function fitGapPill(v){
   const map={FIT:'pill-green',CONFIGURATION:'pill-blue',CUSTOMIZATION:'pill-amber',GAP:'pill-red',PARTNER:'pill-orange'};
   return `<span class="pill ${map[v]||'pill-grey'}">${esc(v)}</span>`;
@@ -2264,17 +2259,7 @@ function buildSupportingAnalysisHTML(o,c,ins){
 
 function renderOppInsightsTab(o,c){
   const ins=ensureInsights(o,c);
-  const champConfirmed=CHAMP_ORDER.filter(k=>ins.champ[k].status==='confirmed').length;
-  const meddEvidenced=ins.meddpiccStarted?MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status==='evidenced').length:0;
   const stageInfo=analysisStageInfo(o,ins);
-  const rtmAnswered=ins.rtm.length?ins.rtm.filter(r=>r.status==='Answered').length:0;
-  const rtmAtRisk=ins.rtm.length?ins.rtm.filter(r=>r.status==='At Risk').length:0;
-  const meddGaps=ins.meddpiccStarted?MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status!=='evidenced').length:0;
-  const openCount=ins.openItems.length;
-  const maxRisk=Math.max(1,rtmAtRisk,meddGaps,openCount);
-  const fitGapCounts={};
-  ins.rtm.forEach(r=>{fitGapCounts[r.fitGap]=(fitGapCounts[r.fitGap]||0)+1;});
-  const FITGAP_COLOR={FIT:'var(--vf-green)',CONFIGURATION:'var(--vf-blue)',CUSTOMIZATION:'var(--vf-amber)',GAP:'var(--vf-red)',PARTNER:'#C1622B'};
 
   return `
   <div class="card card-pad" style="margin-bottom:18px;">
@@ -2290,158 +2275,6 @@ function renderOppInsightsTab(o,c){
   </div>
 
   <div style="margin-bottom:18px;">${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
-
-  <div class="grid grid-3" style="margin-bottom:18px;">
-    <div class="card kpi">${iconBadge('check','purple')}<div class="num">${champConfirmed}/4</div><div class="lbl">CHAMP Confirmed</div></div>
-    <div class="card kpi">${iconBadge('target','blue')}<div class="num">${ins.meddpiccStarted?meddEvidenced+'/8':'—'}</div><div class="lbl">MEDDPICC Evidenced</div></div>
-    <div class="card kpi">${iconBadge('clip','teal')}<div class="num">${ins.rtm.length?rtmAnswered+'/'+ins.rtm.length:'—'}</div><div class="lbl">Requirements Answered</div></div>
-  </div>
-
-  <div class="grid grid-2" style="margin-bottom:18px;align-items:start;">
-    <div class="card card-pad">
-      <div class="card-head"><h3>Fit-Gap Breakdown</h3><span class="hint">${ins.rtm.length?rtmAnswered+'/'+ins.rtm.length+' answered':'—'}</span></div>
-      ${ins.rtm.length?`
-      <div style="display:flex;width:100%;height:16px;border-radius:8px;overflow:hidden;background:var(--vf-grey-bg);margin-bottom:14px;">
-        ${Object.entries(fitGapCounts).map(([k,v])=>`<div style="width:${Math.round(v/ins.rtm.length*1000)/10}%;background:${FITGAP_COLOR[k]||'var(--vf-grey-light)'};" title="${esc(k)}: ${v}"></div>`).join('')}
-      </div>
-      <div class="legend" style="border-top:none;padding-top:0;margin-top:0;">
-        ${Object.entries(fitGapCounts).map(([k,v])=>`<div class="legend-item"><span class="legend-dot" style="background:${FITGAP_COLOR[k]||'var(--vf-grey-light)'}"></span>${esc(k)} — ${v}</div>`).join('')}
-      </div>`:`<div class="empty-state">${ic('spark')}<div>Not yet mapped — available after Discovery.</div></div>`}
-    </div>
-    <div class="card card-pad">
-      <div class="card-head"><h3>Risk</h3><span class="hint">${rtmAtRisk+meddGaps+openCount} open across the record</span></div>
-      <div class="funnel">
-        <div class="f-row"><div class="f-lbl">Requirements At Risk</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*rtmAtRisk/maxRisk)}%;background:var(--vf-red);"></div></div><div class="f-num">${ins.rtm.length?rtmAtRisk+'/'+ins.rtm.length:'—'}</div></div>
-        <div class="f-row"><div class="f-lbl">MEDDPICC Gaps</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*meddGaps/maxRisk)}%;background:var(--vf-amber);"></div></div><div class="f-num">${ins.meddpiccStarted?meddGaps+'/8':'—'}</div></div>
-        <div class="f-row"><div class="f-lbl">Open Items</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*openCount/maxRisk)}%;background:#C1622B;"></div></div><div class="f-num">${openCount}</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>Customer &amp; Technical Brief</h3><span class="hint">Who they are · why now</span></div>
-    <div class="section-title" style="margin-top:0;">Who They Are</div>
-    <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whoTheyAre.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
-    <div class="section-title">Why Now</div>
-    <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whyNow.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
-    ${ins.brief.technicalAsk?`<div class="section-title">Technical Ask</div><div style="font-size:13px;line-height:1.7;">${esc(ins.brief.technicalAsk)}</div>`:''}
-    ${ins.brief.ecosystem&&ins.brief.ecosystem.length?`
-    <div class="section-title">Key Ecosystem Players</div>
-    <div class="grid grid-3" style="gap:10px;">
-      ${ins.brief.ecosystem.map(e=>`
-      <div style="border:1px solid var(--vf-border);border-radius:9px;padding:10px 12px;">
-        <div style="font-weight:700;font-size:12.5px;color:var(--vf-blue);">${esc(e.name)}</div>
-        <div style="font-size:12px;color:var(--vf-grey);margin-top:3px;line-height:1.5;">${esc(e.desc)}</div>
-      </div>`).join('')}
-    </div>`:''}
-  </div>
-
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>CHAMP</h3><span class="hint">${champConfirmed}/4 confirmed</span></div>
-    <div class="grid grid-4" style="gap:12px;">
-      ${CHAMP_ORDER.map(k=>{const f=ins.champ[k];return `
-      <div style="border:1px solid var(--vf-border);border-radius:10px;padding:12px 14px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-          <span style="font-weight:700;font-size:12.5px;">${CHAMP_LABELS[k]}</span>${insightStatusPill(f.status)}
-        </div>
-        <div style="font-size:12px;color:var(--vf-grey);line-height:1.55;">${esc(f.text||'Not yet captured.')}</div>
-      </div>`;}).join('')}
-    </div>
-  </div>
-
-  ${ins.meddpiccStarted?`
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>MEDDPICC</h3><span class="hint">${meddEvidenced}/8 evidenced</span></div>
-    <div class="grid grid-2" style="gap:10px;">
-      ${MEDDPICC_ORDER.map(k=>{const f=ins.meddpicc[k];return `
-      <div style="border-left:3px solid ${f.status==='evidenced'?'var(--vf-green)':f.status==='partial'?'var(--vf-amber)':'var(--vf-border)'};padding:4px 0 4px 12px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-weight:700;font-size:12.5px;">${MEDDPICC_LABELS[k]}</span>${insightStatusPill(f.status)}
-        </div>
-        <div style="font-size:12px;color:var(--vf-grey);margin-top:3px;line-height:1.5;">${esc(f.text||'—')}</div>
-      </div>`;}).join('')}
-    </div>
-  </div>`:`
-  <div class="banner banner-warn" style="margin-bottom:18px;">
-    ${ic('info')}
-    <div><div class="b-title">MEDDPICC not assessed yet</div><div class="b-text">Discovery hasn't happened, so there's no evidence yet for Metrics, Decision Criteria, Identify Pain, etc. This fills in automatically as Discovery inputs (call notes, documents) come in.</div></div>
-  </div>`}
-
-  ${ins.rtm.length?`
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>Requirements Fit-Gap</h3><span class="hint">${ins.rtm.filter(r=>r.status==='Answered').length}/${ins.rtm.length} answered against the catalogue</span></div>
-    <div style="overflow-x:auto;">
-    <table class="opp-table">
-      <thead><tr><th>ID</th><th>Requirement</th><th>Fit / Gap</th><th>Catalogue Product</th><th>Status</th></tr></thead>
-      <tbody>
-        ${ins.rtm.map(r=>`
-        <tr>
-          <td style="font-family:'SF Mono',Consolas,monospace;font-size:11.5px;color:var(--vf-grey-light);">${esc(r.id)}</td>
-          <td style="max-width:260px;">${esc(r.requirement)}</td>
-          <td>${fitGapPill(r.fitGap)}</td>
-          <td style="color:var(--vf-grey);">${esc(r.catalogue)}</td>
-          <td>${rtmStatusPill(r.status)}</td>
-        </tr>`).join('')}
-      </tbody>
-    </table>
-    </div>
-  </div>`:''}
-
-  ${ins.competitors.length?`
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>Competitive Battlecards</h3></div>
-    <div class="grid grid-2" style="gap:14px;">
-      ${ins.competitors.map(cp=>`
-      <div style="border:1px solid var(--vf-border);border-radius:10px;padding:14px 16px;">
-        <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;">${esc(cp.name)}</div>
-        <div style="font-size:11px;font-weight:700;color:var(--vf-green);text-transform:uppercase;letter-spacing:.03em;">Strength</div>
-        <div style="font-size:12.5px;margin-bottom:8px;">${esc(cp.strength)}</div>
-        <div style="font-size:11px;font-weight:700;color:var(--vf-red-dark);text-transform:uppercase;letter-spacing:.03em;">Weakness</div>
-        <div style="font-size:12.5px;margin-bottom:8px;">${esc(cp.weakness)}</div>
-        <div style="font-size:11px;font-weight:700;color:var(--vf-blue);text-transform:uppercase;letter-spacing:.03em;">How We Win</div>
-        <div style="font-size:12.5px;">${esc(cp.howWeWin)}</div>
-      </div>`).join('')}
-    </div>
-  </div>`:''}
-
-  ${ins.solutionOptions&&ins.solutionOptions.length?`
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>Solution Options</h3><span class="hint">${ins.solutionOptions.length} option${ins.solutionOptions.length>1?'s':''} considered</span></div>
-    <div class="grid grid-3" style="gap:14px;">
-      ${ins.solutionOptions.map(op=>{
-        const isRec=ins.recommendedSolution&&op.name===ins.recommendedSolution.name;
-        const fitCls={Strong:'pill-green',Good:'pill-blue',Partial:'pill-amber'}[op.fit]||'pill-grey';
-        const fitBadge={Strong:['check','green'],Good:['trend','blue'],Partial:['warn','amber']}[op.fit]||['doc','grey'];
-        return `
-        <div style="border:1.5px solid ${isRec?'var(--vf-green)':'var(--vf-border)'};background:${isRec?'var(--vf-green-bg)':'#fff'};border-radius:var(--radius-sm);padding:16px;position:relative;">
-          ${isRec?`<span class="pill pill-green" style="position:absolute;top:-10px;right:12px;">${ic('check')} Recommended</span>`:''}
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px;">
-            ${iconBadge(fitBadge[0],fitBadge[1])}
-            <span class="pill ${fitCls}">${esc(op.fit)} Fit</span>
-          </div>
-          <div style="font-weight:700;font-size:13.5px;margin-bottom:6px;">${esc(op.name)}</div>
-          <div style="font-size:12.5px;color:var(--vf-grey);line-height:1.55;${op.services?'margin-bottom:10px;':''}">${esc(op.summary)}</div>
-          ${op.services?`<div style="display:flex;gap:5px;flex-wrap:wrap;">${op.services.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div>`:''}
-        </div>`;
-      }).join('')}
-    </div>
-    ${ins.recommendedSolution?`
-    <div class="banner banner-green" style="margin-top:16px;margin-bottom:0;">
-      ${ic('check')}
-      <div>
-        <div class="b-title">Recommended: ${esc(ins.recommendedSolution.name)}</div>
-        <div class="b-text">${esc(ins.recommendedSolution.why)}</div>
-      </div>
-    </div>`:''}
-  </div>`:''}
-
-  ${ins.openItems.length?`
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>Open Items</h3></div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      ${ins.openItems.map(t=>`<div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;"><span style="color:var(--vf-red);flex-shrink:0;margin-top:1px;">${ic('arrowr')}</span>${esc(t)}</div>`).join('')}
-    </div>
-  </div>`:''}
 
   <div class="card card-pad">
     <div class="card-head"><h3>Insights Feed</h3><span class="hint">Every new input — a document, a comment — adds to this picture</span></div>
