@@ -417,6 +417,11 @@ const ICONS = {
   clip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3"/></svg>',
   trend:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',
   target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>',
+  money:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 6v0M18 18v0"/></svg>',
+  cpu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"/><path d="M16 8.5a3 3 0 1 1 3.5 5"/><path d="M21.5 19.5c0-2.5-1.8-4.3-4-5"/></svg>',
 };
 function ic(name){return ICONS[name]||'';}
 function iconBadge(name,color,size){
@@ -1188,39 +1193,61 @@ function renderOpportunityDetail(id){
   `;
 }
 
+function profileScoreRadial(score,band){
+  const color=band==='Hot'?'var(--vf-red)':band==='Warm'?'var(--vf-amber)':'var(--vf-teal)';
+  const size=104,r=size/2-9,cx=size/2,cy=size/2,circ=2*Math.PI*r;
+  const dash=(circ*Math.max(0,Math.min(1,score/100))).toFixed(1);
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="width:${size}px;height:${size}px;flex-shrink:0;">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--vf-grey-bg)" stroke-width="9"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${dash} ${circ.toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy+8}" text-anchor="middle" font-family="var(--font-display),sans-serif" font-size="26" font-weight="700" fill="var(--vf-dark)">${score}</text>
+  </svg>`;
+}
+const FACTOR_ICON={'Strategic Fit':'target','Budget Confirmed':'money','Technical Fit':'cpu','Competitive Position':'shield','Urgency':'clock'};
 function renderOppProfileTab(o,c){
   const internal=o.profile.internalTeam.map(tid=>getTeamMember(tid)).filter(Boolean);
   const sc=o.profile.scoring;
+  const chipColors=['purple','teal','blue','amber','green','navy'];
   return `
   <div class="grid grid-2">
     <div class="card card-pad">
-      <div class="card-head"><h3>Opportunity Profile</h3><span class="hint">Auto-populated from demand form</span></div>
+      <div class="card-head">${iconBadge('doc','red','sm')}<h3 style="flex:1;margin-left:10px;">Opportunity Profile</h3><span class="hint">Auto-populated from demand form</span></div>
       <div class="kv"><div class="k">PEGA Number</div><div class="v">${esc(o.pegaNumber)}</div></div>
       <div class="kv"><div class="k">Request Type</div><div class="v">${requestTypeBadge(o)}</div></div>
       <div class="kv"><div class="k">Customer</div><div class="v">${esc(c.name)}</div></div>
       <div class="kv"><div class="k">Customer Contact</div><div class="v">${esc(o.profile.customerContact||'—')}</div></div>
-      <div class="kv"><div class="k">Internal Team</div><div class="v">${internal.length?internal.map(t=>esc(t.name)).join(', '):'—'}</div></div>
       <div class="kv"><div class="k">Source Document</div><div class="v">${esc(o.demandFormFileName)}</div></div>
 
+      <div class="section-title">Internal Team</div>
+      ${internal.length?`<div style="display:flex;flex-wrap:wrap;gap:10px;">${internal.map(t=>`
+        <div style="display:flex;align-items:center;gap:8px;background:var(--vf-grey-bg);border-radius:999px;padding:5px 12px 5px 5px;">
+          <div class="avatar" style="width:24px;height:24px;font-size:10.5px;">${esc(t.name.split(' ').map(w=>w[0]).slice(0,2).join(''))}</div>
+          <div><div style="font-size:12.5px;font-weight:700;line-height:1.3;">${esc(t.name)}</div><div style="font-size:10.5px;color:var(--vf-grey);line-height:1.2;">${esc(t.role||'')}</div></div>
+        </div>`).join('')}</div>` : `<div style="font-size:13px;color:var(--vf-grey);">—</div>`}
+
       <div class="section-title">Problem Statement</div>
-      <div style="font-size:13px;line-height:1.6;">${esc(o.profile.problemStatement||'—')}</div>
+      <div style="font-size:13px;line-height:1.6;background:var(--vf-grey-bg);border-radius:var(--radius-sm);padding:12px 14px;">${esc(o.profile.problemStatement||'—')}</div>
 
       ${o.aiRecommendedServices.length?`
       <div class="section-title">AI Recommended Services</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">${o.aiRecommendedServices.map(s=>`<span class="chip chip-purple">${ic('spark')} ${esc(s)}</span>`).join('')}</div>`:''}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${o.aiRecommendedServices.map((s,i)=>`<span class="chip chip-${chipColors[i%chipColors.length]}">${ic('spark')} ${esc(s)}</span>`).join('')}</div>`:''}
     </div>
 
     <div class="card card-pad">
-      <div class="card-head"><h3>Opportunity Scoring</h3><span class="hint">Model-assisted qualification score</span></div>
+      <div class="card-head">${iconBadge('spark','purple','sm')}<h3 style="flex:1;margin-left:10px;">Opportunity Scoring</h3><span class="hint">Model-assisted qualification score</span></div>
       ${sc?`
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-        <div style="font-size:34px;font-weight:800;line-height:1;">${sc.overall}</div>
-        <span class="pill ${scoreBandPill(sc.band)}" style="font-size:12.5px;">${esc(sc.band)}</span>
+      <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--vf-border);">
+        ${profileScoreRadial(sc.overall,sc.band)}
+        <div>
+          <span class="pill ${scoreBandPill(sc.band)}" style="font-size:12.5px;">${esc(sc.band)} opportunity</span>
+          <div style="font-size:12px;color:var(--vf-grey);margin-top:8px;line-height:1.5;">Composite of strategic fit, budget, technical fit, competitive position and urgency.</div>
+        </div>
       </div>
       ${sc.factors.map(f=>`
-        <div style="margin-bottom:10px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
-            <span>${esc(f.label)}</span><span style="color:var(--vf-grey-light);font-weight:700;">${f.score}</span>
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:7px;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+            <span style="display:flex;align-items:center;gap:7px;color:var(--vf-dark);font-weight:600;">${ic(FACTOR_ICON[f.label]||'check')} ${esc(f.label)}</span>
+            <span style="color:var(--vf-grey-light);font-weight:700;">${f.score}</span>
           </div>
           <div class="progress-track"><div class="progress-fill" style="width:${f.score}%;background:${factorBarColor(f.score)}"></div></div>
         </div>`).join('')}
@@ -1236,6 +1263,23 @@ function renderOppProfileTab(o,c){
       </div>
     </div>
   </div>
+
+  ${(c.contacts||[]).length?`
+  <div class="card card-pad" style="margin-top:18px;">
+    <div class="card-head">${iconBadge('users','navy','sm')}<h3 style="flex:1;margin-left:10px;">Key Contacts</h3><span class="hint">${c.contacts.length} on file</span></div>
+    <div class="grid grid-2" style="gap:14px;">
+      ${c.contacts.map(ct=>`
+      <div style="display:flex;align-items:center;gap:12px;border:1px solid var(--vf-border);border-radius:var(--radius-sm);padding:12px 14px;">
+        <div class="icon-badge icon-badge-navy" style="border-radius:999px;">${esc((ct.name||'?').split(' ').map(w=>w[0]).slice(0,2).join(''))}</div>
+        <div style="min-width:0;flex:1;">
+          <div style="font-size:13.5px;font-weight:700;">${esc(ct.name)}</div>
+          <div style="font-size:12px;color:var(--vf-grey);">${esc(ct.title)}</div>
+          <div style="font-size:11.5px;color:var(--vf-grey-light);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(ct.email)}${ct.phone?' · '+esc(ct.phone):''}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`:''}
+
   ${renderScheduledReportCard(o)}
   `;
 }
