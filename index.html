@@ -350,6 +350,12 @@ textarea.input{resize:vertical;min-height:70px;}
 .progress-track{height:6px;background:var(--vf-grey-bg);border-radius:4px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--vf-red);}
 
+/* ---------- Tender sidebar nav (static, not yet clickable) ---------- */
+.tender-nav-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 18px;border-radius:999px;font-size:14.5px;color:var(--vf-dark);cursor:default;margin-bottom:2px;}
+.tender-nav-count{font-size:12.5px;color:var(--vf-grey-light);}
+.tender-nav-active{background:var(--vf-red-light);color:var(--vf-red-dark);font-weight:700;border-left:4px solid var(--vf-red);padding-left:14px;margin-bottom:10px;}
+.tender-nav-active .tender-nav-count{color:var(--vf-grey);}
+
 /* ---------- Assessment Pack accordion (matches source design system) ---------- */
 .toolbar{display:flex;align-items:center;gap:12px;margin:26px 0 14px;flex-wrap:wrap;}
 .toolbar-label{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;letter-spacing:-0.2px;color:#0B0C0E;margin-right:auto;}
@@ -810,6 +816,7 @@ function renderTopNav(){
   const items=[
     {p:'dashboard',label:'Dashboard',icon:'dashboard'},
     {p:'opportunities',label:'Opportunities',icon:'briefcase'},
+    {p:'tender',label:'Tender',icon:'target'},
     {p:'customers',label:'Customers',icon:'building'},
   ];
   const isActive=(p)=>{
@@ -842,6 +849,7 @@ function renderTopNav(){
 function pageTitle(){
   if(ROUTE.page==='dashboard') return ['OVERVIEW','Dashboard','Team performance, pipeline health & AI insights'];
   if(ROUTE.page==='customers') return ['ACCOUNTS','Customers','Accounts, company briefs and opportunity history'];
+  if(ROUTE.page==='tender') return ['WORKSPACE','Tender','Radar, bid strategy and proposal workspace'];
   return ['','Presales Agent',''];
 }
 function pageHead(){
@@ -855,6 +863,7 @@ function renderPage(){
   if(ROUTE.page==='opportunity') return renderOpportunityDetail(ROUTE.id);
   if(ROUTE.page==='customers') return pageHead()+renderCustomersList();
   if(ROUTE.page==='customer') return renderCustomerDetail(ROUTE.id);
+  if(ROUTE.page==='tender') return pageHead()+renderTenderPage();
   return '<div class="empty-state">Page not found</div>';
 }
 
@@ -2533,6 +2542,35 @@ function renderMentions(text){
 }
 
 /* ================= CUSTOMERS LIST ================= */
+/* ================= TENDER ================= */
+function renderTenderPage(){
+  const subpages=[
+    {label:'Opportunities',count:18},
+    {label:'Tender intelligence',count:7},
+    {label:'Bid strategy',count:7},
+    {label:'Bid workspace',count:4},
+    {label:'Proposal',count:2},
+    {label:'Intelligence',count:null},
+    {label:'Analytics',count:null},
+  ];
+  return `
+  <div style="display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start;">
+    <div class="card card-pad" style="padding:14px;">
+      <div class="tender-nav-item tender-nav-active">
+        <span>Radar</span><span class="tender-nav-count">124</span>
+      </div>
+      ${subpages.map(sp=>`
+      <div class="tender-nav-item">
+        <span>${esc(sp.label)}</span>${sp.count!=null?`<span class="tender-nav-count">${sp.count}</span>`:''}
+      </div>`).join('')}
+    </div>
+    <div class="card card-pad">
+      <div class="empty-state">${ic('target')}<div>Radar workspace coming soon.</div></div>
+    </div>
+  </div>
+  `;
+}
+
 function renderCustomersList(){
   return `
   <div class="grid grid-3">
