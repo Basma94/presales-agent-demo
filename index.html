@@ -437,7 +437,7 @@ function appNow(){return new Date(APP_NOW);}
 function daysAgo(n){const d=appNow();d.setDate(d.getDate()-n);return d.toISOString();}
 
 const OPPORTUNITIES = [
-  {id:'o1',pegaNumber:'PEGA-2025-10432',customerId:'c1',status:'Won',stage:'Won',value:4200000,
+  {id:'o1',pegaNumber:'PEGA-2025-10432',customerId:'c1',status:'Delivered',stage:'Delivered',requestType:'RFP',value:4200000,
    created:daysAgo(162),assignedTo:'t1',demandFormFileName:'PEGA_DemandForm_Harrogate_Connectivity.pdf',
    profile:{customerContact:'Laura Simmons (Head of IT Infrastructure)',problemStatement:'Inconsistent connectivity across 140 stores causing POS downtime and lost sales during peak hours.',
      scoring:{overall:87,band:'Hot',factors:[{label:'Strategic Fit',score:92},{label:'Budget Confirmed',score:90},{label:'Technical Fit',score:85},{label:'Competitive Position',score:80},{label:'Urgency',score:88}]},
@@ -458,7 +458,7 @@ const OPPORTUNITIES = [
      {name:'Marcus Webb',role:'Financial Approver',approved:true,approvedAt:daysAgo(125)},
    ]}},
 
-  {id:'o2',pegaNumber:'PEGA-2025-20817',customerId:'c1',status:'Discovery',stage:'Discovery',value:2650000,
+  {id:'o2',pegaNumber:'PEGA-2025-20817',customerId:'c1',status:'Discovery',stage:'Discovery',requestType:'RFP',value:2650000,
    created:daysAgo(58),assignedTo:'t3',demandFormFileName:'PEGA_DemandForm_Harrogate_Inventory.pdf',
    profile:{customerContact:'Robert Hayes (CIO)',problemStatement:'Manual stock counts leading to ~12% stock-out rate and lost revenue during promotions.',
      scoring:{overall:71,band:'Warm',factors:[{label:'Strategic Fit',score:78},{label:'Budget Confirmed',score:65},{label:'Technical Fit',score:74},{label:'Competitive Position',score:62},{label:'Urgency',score:76}]},
@@ -472,7 +472,7 @@ const OPPORTUNITIES = [
    ],
    cancelReason:null, aiRecommendedServices:['IoT Smart Shelving & Inventory','Unified Customer Analytics Platform']},
 
-  {id:'o3',pegaNumber:'PEGA-2025-30945',customerId:'c2',status:'Discovery',stage:'Discovery',value:1850000,
+  {id:'o3',pegaNumber:'PEGA-2025-30945',customerId:'c2',status:'Discovery',stage:'Discovery',requestType:'RFI',tier:'Tier 2',value:1850000,
    created:daysAgo(30),assignedTo:'t4',demandFormFileName:'PEGA_DemandForm_ClydeLogistics_Fleet.pdf',
    profile:{customerContact:'Hannah Wright (IT Manager)',problemStatement:'No real-time visibility into fleet location leading to inefficient routing and high fuel costs.',
      scoring:{overall:64,band:'Warm',factors:[{label:'Strategic Fit',score:70},{label:'Budget Confirmed',score:55},{label:'Technical Fit',score:68},{label:'Competitive Position',score:58},{label:'Urgency',score:69}]},
@@ -482,7 +482,7 @@ const OPPORTUNITIES = [
    ],
    comments:[], cancelReason:null, aiRecommendedServices:['Fleet Tracking IoT Platform','Supply Chain Visibility Suite']},
 
-  {id:'o4',pegaNumber:'PEGA-2025-90233',customerId:'c2',status:'New',stage:'New',value:1450000,
+  {id:'o4',pegaNumber:'PEGA-2025-90233',customerId:'c2',status:'New',stage:'New',requestType:'RFQ',value:1450000,
    created:daysAgo(4),assignedTo:'t4',demandFormFileName:'PEGA_DemandForm_ClydeLogistics_Warehouse.pdf',
    profile:{customerContact:'William Parker (COO)',problemStatement:'Manual warehouse processes causing pick-pack delays and limited visibility into stock movement.',
      scoring:{overall:61,band:'Warm',factors:[{label:'Strategic Fit',score:68},{label:'Budget Confirmed',score:52},{label:'Technical Fit',score:65},{label:'Competitive Position',score:55},{label:'Urgency',score:65}]},
@@ -490,7 +490,7 @@ const OPPORTUNITIES = [
    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_ClydeLogistics_Warehouse.pdf',date:daysAgo(4),by:'Daniel Brooks'}],
    comments:[], cancelReason:null, aiRecommendedServices:['Supply Chain Visibility Suite','Edge Computing Nodes']},
 
-  {id:'o5',pegaNumber:'PEGA-2025-40221',customerId:'c3',status:'Awaiting Approval',stage:'Awaiting Approval',value:3400000,
+  {id:'o5',pegaNumber:'PEGA-2025-40221',customerId:'c3',status:'Proposal Development',stage:'Proposal Development',requestType:'RFP',value:3400000,
    created:daysAgo(70),assignedTo:'t2',demandFormFileName:'PEGA_DemandForm_Wessex_RPM.pdf',
    profile:{customerContact:'Dr. Andrew Collins (Chief Digital Officer)',problemStatement:'High readmission rates for chronic patients due to lack of remote monitoring between visits.',
      scoring:{overall:79,band:'Hot',factors:[{label:'Strategic Fit',score:85},{label:'Budget Confirmed',score:74},{label:'Technical Fit',score:82},{label:'Competitive Position',score:70},{label:'Urgency',score:84}]},
@@ -510,16 +510,16 @@ const OPPORTUNITIES = [
      {name:'Marcus Webb',role:'Financial Approver',approved:false,approvedAt:null},
    ]}},
 
-  {id:'o6',pegaNumber:'PEGA-2025-50678',customerId:'c3',status:'Blocked',stage:'Blocked',value:980000,
+  {id:'o6',pegaNumber:'PEGA-2025-50678',customerId:'c3',status:'Cancelled/Rejected',stage:'Cancelled/Rejected',requestType:'RFI',tier:'Tier 3',value:980000,
    created:daysAgo(140),assignedTo:'t5',demandFormFileName:'PEGA_DemandForm_Wessex_UC.pdf',
    profile:{customerContact:'Rachel Foster (IT Director)',problemStatement:'Fragmented communication tools across 9 hospital sites causing coordination delays.',
      scoring:{overall:48,band:'Cool',factors:[{label:'Strategic Fit',score:55},{label:'Budget Confirmed',score:40},{label:'Technical Fit',score:58},{label:'Competitive Position',score:35},{label:'Urgency',score:52}]},
      internalTeam:['t5']},
    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Wessex_UC.pdf',date:daysAgo(140),by:'Emily Clarke'}],
-   comments:[{id:uid('cm'),author:'Emily Clarke',text:'Blocked pending customer budget re-approval; competitor offered a lower price — revisit in 6 months.',mentions:[],time:daysAgo(95)}],
-   cancelReason:null, aiRecommendedServices:['Unified Communications Suite']},
+   comments:[{id:uid('cm'),author:'Emily Clarke',text:'Rejected pending customer budget re-approval; competitor offered a lower price — revisit in 6 months.',mentions:[],time:daysAgo(95)}],
+   cancelReason:'Competitor offered a lower price; customer paused budget re-approval — revisit in 6 months.', aiRecommendedServices:['Unified Communications Suite']},
 
-  {id:'o7',pegaNumber:'PEGA-2025-60389',customerId:'c4',status:'Discovery',stage:'Discovery',value:5100000,
+  {id:'o7',pegaNumber:'PEGA-2025-60389',customerId:'c4',status:'Discovery',stage:'Discovery',requestType:'RFP',value:5100000,
    created:daysAgo(22),assignedTo:'t6',demandFormFileName:'PEGA_DemandForm_AlbionBank_Network.pdf',
    profile:{customerContact:'Thomas Walsh (CTO)',problemStatement:'Legacy MPLS network across 210 branches is costly and lacks modern security controls.',
      scoring:{overall:69,band:'Warm',factors:[{label:'Strategic Fit',score:75},{label:'Budget Confirmed',score:60},{label:'Technical Fit',score:72},{label:'Competitive Position',score:63},{label:'Urgency',score:75}]},
@@ -527,7 +527,7 @@ const OPPORTUNITIES = [
    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_AlbionBank_Network.pdf',date:daysAgo(22),by:'Michael Reed'}],
    comments:[], cancelReason:null, aiRecommendedServices:['Secure Private Network','Fraud Detection AI Engine']},
 
-  {id:'o8',pegaNumber:'PEGA-2025-70154',customerId:'c4',status:'Cancelled',stage:'Cancelled',value:1200000,
+  {id:'o8',pegaNumber:'PEGA-2025-70154',customerId:'c4',status:'Cancelled/Rejected',stage:'Cancelled/Rejected',requestType:'RFQ',value:1200000,
    created:daysAgo(95),assignedTo:'t1',demandFormFileName:'PEGA_DemandForm_AlbionBank_CCM.pdf',
    profile:{customerContact:'Sophie Ramsey (Head of Digital Channels)',problemStatement:'On-prem contact center infrastructure nearing end-of-life with high maintenance costs.',
      scoring:{overall:39,band:'Cool',factors:[{label:'Strategic Fit',score:45},{label:'Budget Confirmed',score:30},{label:'Technical Fit',score:48},{label:'Competitive Position',score:32},{label:'Urgency',score:40}]},
@@ -536,7 +536,7 @@ const OPPORTUNITIES = [
    comments:[], cancelReason:'Customer paused all cloud migration initiatives pending internal budget review for next fiscal year.',
    aiRecommendedServices:['Cloud Contact Center']},
 
-  {id:'o9',pegaNumber:'PEGA-2025-90876',customerId:'c5',status:'New',stage:'New',value:980000,
+  {id:'o9',pegaNumber:'PEGA-2025-90876',customerId:'c5',status:'New',stage:'New',requestType:'RFI',tier:'Tier 1',value:980000,
    created:daysAgo(2),assignedTo:'t6',demandFormFileName:'PEGA_DemandForm_Midland_Maintenance.pdf',
    profile:{customerContact:'Christopher Hall (Head of Operations)',problemStatement:'Reactive maintenance approach causing unplanned downtime across production lines.',
      scoring:{overall:58,band:'Warm',factors:[{label:'Strategic Fit',score:65},{label:'Budget Confirmed',score:48},{label:'Technical Fit',score:62},{label:'Competitive Position',score:50},{label:'Urgency',score:65}]},
@@ -544,7 +544,7 @@ const OPPORTUNITIES = [
    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Midland_Maintenance.pdf',date:daysAgo(2),by:'Michael Reed'}],
    comments:[], cancelReason:null, aiRecommendedServices:['Predictive Maintenance AI','Industrial IoT Sensors Platform']},
 
-  {id:'o10',pegaNumber:'PEGA-2025-80512',customerId:'c5',status:'Discovery',stage:'Discovery',value:2900000,
+  {id:'o10',pegaNumber:'PEGA-2025-80512',customerId:'c5',status:'Discovery',stage:'Discovery',requestType:'RFP',value:2900000,
    created:daysAgo(14),assignedTo:'t2',demandFormFileName:'PEGA_DemandForm_Midland_5G.pdf',
    profile:{customerContact:'Christopher Hall (Head of Operations)',problemStatement:'Wi-Fi interference on factory floor causing connectivity drops for automated equipment.',
      scoring:{overall:73,band:'Warm',factors:[{label:'Strategic Fit',score:80},{label:'Budget Confirmed',score:62},{label:'Technical Fit',score:78},{label:'Competitive Position',score:65},{label:'Urgency',score:80}]},
@@ -552,7 +552,7 @@ const OPPORTUNITIES = [
    documents:[{id:uid('d'),type:'PEGA Demand Form',fileName:'PEGA_DemandForm_Midland_5G.pdf',date:daysAgo(14),by:'James Carter'}],
    comments:[], cancelReason:null, aiRecommendedServices:['Private 5G for Factory Floor','Industrial IoT Sensors Platform']},
 
-  {id:'o11',pegaNumber:'PEGA-91042',customerId:'c6',status:'Discovery',stage:'Discovery',value:9000000,
+  {id:'o11',pegaNumber:'PEGA-91042',customerId:'c6',status:'Proposal Development',stage:'Proposal Development',requestType:'RFP',value:9000000,
    created:daysAgo(24),assignedTo:'t2',demandFormFileName:'PEGA_DemandForm_SCIT_EuropeIFC.pdf',
    profile:{customerContact:'Markus Feldmann (Head of Network Services)',
      problemStatement:'Re-tendering the managed-service contract for a ~300-site European Air-to-Ground In-Flight Connectivity network across 41 countries — cost-driven, with recurring handover incidents and ~100 sites approaching Nokia hardware end-of-support within 18 months.',
@@ -635,11 +635,22 @@ const OPPORTUNITIES = [
    }},
 ];
 
-const STATUS_ORDER=['New','Discovery','Awaiting Approval','Blocked','Won','Cancelled'];
+const STATUS_ORDER=['New','Kick off','Discovery','Proposal Development','Proposal Sent','Delivered','Cancelled/Rejected'];
 const STATUS_PILL={
-  'New':'pill-grey','Discovery':'pill-blue','Awaiting Approval':'pill-amber','Blocked':'pill-orange',
-  'Won':'pill-green','Cancelled':'pill-red'
+  'New':'pill-grey','Kick off':'pill-teal','Discovery':'pill-blue','Proposal Development':'pill-amber',
+  'Proposal Sent':'pill-orange','Delivered':'pill-green','Cancelled/Rejected':'pill-red'
 };
+const WON_STATUS='Delivered';
+const CANCELLED_STATUS='Cancelled/Rejected';
+
+const REQUEST_TYPES=['RFI','RFP','RFQ'];
+const RFI_TIERS=['Tier 1','Tier 2','Tier 3'];
+const REQUEST_TYPE_PILL={'RFI':'pill-teal','RFP':'pill-blue','RFQ':'pill-orange'};
+function requestTypeBadge(o){
+  if(!o.requestType) return `<span class="pill pill-grey">—</span>`;
+  const tierSuffix=(o.requestType==='RFI'&&o.tier)?` · ${o.tier}`:'';
+  return `<span class="pill ${REQUEST_TYPE_PILL[o.requestType]||'pill-grey'}">${esc(o.requestType)}${esc(tierSuffix)}</span>`;
+}
 
 /* ---------------------- PEGA NUMBER & SCORING HELPERS ---------------------- */
 function generatePegaNumber(){
@@ -700,7 +711,7 @@ function getOpp(id){return DB.opportunities.find(o=>o.id===id);}
 function getCustomer(id){return DB.customers.find(c=>c.id===id);}
 function getTeamMember(id){return DB.team.find(t=>t.id===id);}
 function oppsForCustomer(cid){return DB.opportunities.filter(o=>o.customerId===cid);}
-function pipelineValue(list){return list.filter(o=>o.status!=='Cancelled').reduce((s,o)=>s+o.value,0);}
+function pipelineValue(list){return list.filter(o=>o.status!==CANCELLED_STATUS).reduce((s,o)=>s+o.value,0);}
 
 function avatarSm(name){
   return `<div class="avatar-sm" style="background:${colorFor(name)}" title="${esc(name)}">${initials(name)}</div>`;
@@ -784,22 +795,22 @@ function renderPage(){
 /* ================= DASHBOARD ================= */
 function renderDashboard(){
   const opps=DB.opportunities;
-  const active=opps.filter(o=>!['Won','Cancelled'].includes(o.status));
-  const won=opps.filter(o=>o.status==='Won');
+  const active=opps.filter(o=>![WON_STATUS,CANCELLED_STATUS].includes(o.status));
+  const won=opps.filter(o=>o.status===WON_STATUS);
   const totalPipeline=pipelineValue(opps);
-  const winRate=Math.round(100*won.length/Math.max(1,opps.filter(o=>['Won','Cancelled'].includes(o.status)).length));
+  const winRate=Math.round(100*won.length/Math.max(1,opps.filter(o=>[WON_STATUS,CANCELLED_STATUS].includes(o.status)).length));
 
   // Team workload
   const teamRows=DB.team.map(tm=>{
     const mine=opps.filter(o=>o.assignedTo===tm.id);
-    const activeMine=mine.filter(o=>!['Won','Cancelled'].includes(o.status));
+    const activeMine=mine.filter(o=>![WON_STATUS,CANCELLED_STATUS].includes(o.status));
     const value=pipelineValue(mine);
     return {tm,total:mine.length,active:activeMine.length,value};
   }).sort((a,b)=>b.value-a.value);
 
   // Lead status funnel
-  const funnelStages=['New','Discovery','Awaiting Approval','Won'];
-  const maxCount=Math.max(1,...funnelStages.map(s=>opps.filter(o=>o.status===s).length));
+  const funnelStages=['New','Kick off','Discovery','Proposal Development','Proposal Sent','Delivered'];
+  const maxCount=Math.max(1,...funnelStages.map(s=>opps.filter(o=>o.status===s).length),opps.filter(o=>o.status===CANCELLED_STATUS).length);
 
   // Months window (last 6 months incl current)
   const months=[];
@@ -866,8 +877,7 @@ function renderDashboard(){
             <div class="f-num">${c}</div>
           </div>`;
         }).join('')}
-        <div class="f-row f-row-click" data-gostatus="Blocked"><div class="f-lbl">Blocked</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*opps.filter(o=>o.status==='Blocked').length/maxCount)}%;background:#E08A3E"></div></div><div class="f-num">${opps.filter(o=>o.status==='Blocked').length}</div></div>
-        <div class="f-row f-row-click" data-gostatus="Cancelled"><div class="f-lbl">Cancelled</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*opps.filter(o=>o.status==='Cancelled').length/maxCount)}%;background:#C94B4B"></div></div><div class="f-num">${opps.filter(o=>o.status==='Cancelled').length}</div></div>
+        <div class="f-row f-row-click" data-gostatus="${esc(CANCELLED_STATUS)}"><div class="f-lbl">Cancelled/Rejected</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*opps.filter(o=>o.status===CANCELLED_STATUS).length/maxCount)}%;background:#C94B4B"></div></div><div class="f-num">${opps.filter(o=>o.status===CANCELLED_STATUS).length}</div></div>
       </div>
     </div>
   </div>
@@ -941,6 +951,7 @@ function renderOpportunitiesList(){
   if(q.statusIn) list=list.filter(o=>q.statusIn.includes(o.status));
   if(q.excludeStatuses) list=list.filter(o=>!q.excludeStatuses.includes(o.status));
   if(q.assignedTo) list=list.filter(o=>o.assignedTo===q.assignedTo);
+  if(q.requestType) list=list.filter(o=>o.requestType===q.requestType);
   if(q.scoreBand) list=list.filter(o=>o.profile.scoring && o.profile.scoring.band===q.scoreBand);
   if(q.service) list=list.filter(o=>o.aiRecommendedServices.includes(q.service));
   if(q.text){
@@ -961,6 +972,7 @@ function renderOpportunitiesList(){
   if(q.scoreBand) extraFilterLabels.push(`${q.scoreBand} score`);
   if(q.service) extraFilterLabels.push(`Service: ${q.service}`);
   if(q.assignedTo) extraFilterLabels.push(`Assigned: ${getTeamMember(q.assignedTo).name}`);
+  if(q.requestType) extraFilterLabels.push(`Type: ${q.requestType}`);
 
   return `
   <div class="page-head">
@@ -986,13 +998,17 @@ function renderOpportunitiesList(){
       <option value="">All team members</option>
       ${DB.team.map(t=>`<option value="${t.id}" ${q.assignedTo===t.id?'selected':''}>${t.name}</option>`).join('')}
     </select>
+    <select id="fRequestType" class="input" style="width:160px;">
+      <option value="">All request types</option>
+      ${REQUEST_TYPES.map(t=>`<option value="${t}" ${q.requestType===t?'selected':''}>${t}</option>`).join('')}
+    </select>
   </div>
 
   <div class="card">
     ${list.length? `
     <table class="opp-table">
       <thead><tr>
-        <th>Customer</th><th>PEGA Number</th><th>Assigned To</th><th>Score</th>
+        <th>Customer</th><th>PEGA Number</th><th>Type</th><th>Assigned To</th><th>Score</th>
         <th class="sortable" data-sort="value">Value${sortArrow('value')}</th>
         <th class="sortable" data-sort="created">Created${sortArrow('created')}</th>
         <th>Status</th><th></th>
@@ -1005,6 +1021,7 @@ function renderOpportunitiesList(){
           <tr data-openopp="${o.id}">
             <td>${esc(c.name)}</td>
             <td>${pegaBadge(o)}</td>
+            <td>${requestTypeBadge(o)}</td>
             <td style="white-space:nowrap;">${esc(assignee.name)}</td>
             <td>${scoreBadge(o.profile.scoring)}</td>
             <td>${o.value?fmtMoney(o.value):'—'}</td>
@@ -1040,7 +1057,7 @@ function renderOpportunityDetail(id){
           ${statusPill(o.status)}
         </div>
         <div style="color:var(--vf-grey);font-size:13px;margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-          ${pegaBadge(o)} · ${esc(c.industry)} · Created ${fmtDate(o.created)}
+          ${pegaBadge(o)} ${requestTypeBadge(o)} · ${esc(c.industry)} · Created ${fmtDate(o.created)}
         </div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
@@ -1056,15 +1073,15 @@ function renderOpportunityDetail(id){
     </div>
   </div>
 
-  ${o.status==='Cancelled'?`
+  ${o.status===CANCELLED_STATUS?`
   <div class="banner banner-red">
     ${ic('ban')}
-    <div><div class="b-title">Opportunity Cancelled</div><div class="b-text"><b>Reason:</b> ${esc(o.cancelReason||'—')}</div></div>
+    <div><div class="b-title">Opportunity Cancelled / Rejected</div><div class="b-text"><b>Reason:</b> ${esc(o.cancelReason||'—')}</div></div>
   </div>`:''}
 
   <div class="tabs">
     <div class="tab ${ACTIVE_TAB==='profile'?'active':''}" data-tab="profile">Profile</div>
-    <div class="tab ${ACTIVE_TAB==='insights'?'active':''}" data-tab="insights">Insights</div>
+    <div class="tab ${ACTIVE_TAB==='insights'?'active':''}" data-tab="insights">Summary</div>
     <div class="tab ${ACTIVE_TAB==='documents'?'active':''}" data-tab="documents">Documents</div>
     <div class="tab ${ACTIVE_TAB==='comments'?'active':''}" data-tab="comments">Comments</div>
   </div>
@@ -1084,6 +1101,7 @@ function renderOppProfileTab(o,c){
     <div class="card card-pad">
       <div class="card-head"><h3>Opportunity Profile</h3><span class="hint">Auto-populated from demand form</span></div>
       <div class="kv"><div class="k">PEGA Number</div><div class="v">${esc(o.pegaNumber)}</div></div>
+      <div class="kv"><div class="k">Request Type</div><div class="v">${requestTypeBadge(o)}</div></div>
       <div class="kv"><div class="k">Customer</div><div class="v">${esc(c.name)}</div></div>
       <div class="kv"><div class="k">Customer Contact</div><div class="v">${esc(o.profile.customerContact||'—')}</div></div>
       <div class="kv"><div class="k">Internal Team</div><div class="v">${internal.length?internal.map(t=>esc(t.name)).join(', '):'—'}</div></div>
@@ -1301,9 +1319,18 @@ function renderOppInsightsTab(o,c){
   const champConfirmed=CHAMP_ORDER.filter(k=>ins.champ[k].status==='confirmed').length;
   const meddEvidenced=ins.meddpiccStarted?MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status==='evidenced').length:0;
   const proceedSignal=/proceed/i.test(ins.gate.signal);
+  const rtmAnswered=ins.rtm.length?ins.rtm.filter(r=>r.status==='Answered').length:0;
+  const rtmAtRisk=ins.rtm.length?ins.rtm.filter(r=>r.status==='At Risk').length:0;
+  const meddGaps=ins.meddpiccStarted?MEDDPICC_ORDER.filter(k=>ins.meddpicc[k].status!=='evidenced').length:0;
+  const openCount=ins.openItems.length;
+  const maxRisk=Math.max(1,rtmAtRisk,meddGaps,openCount);
+  const fitGapCounts={};
+  ins.rtm.forEach(r=>{fitGapCounts[r.fitGap]=(fitGapCounts[r.fitGap]||0)+1;});
+  const FITGAP_COLOR={FIT:'var(--vf-green)',CONFIGURATION:'var(--vf-blue)',CUSTOMIZATION:'var(--vf-amber)',GAP:'var(--vf-red)',PARTNER:'#C1622B'};
+
   return `
   <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>${ic('spark')} Opportunity Insights</h3><button class="btn btn-sm" data-reqsummary="${o.id}">${ic('clip')} Extract Request Summary</button></div>
+    <div class="card-head"><h3>${ic('spark')} Opportunity Summary</h3><button class="btn btn-sm" data-reqsummary="${o.id}">${ic('clip')} Extract Request Summary</button></div>
     <div class="banner ${proceedSignal?'banner-green':'banner-warn'}" style="margin-bottom:0;">
       ${ic(proceedSignal?'trend':'info')}
       <div>
@@ -1314,36 +1341,61 @@ function renderOppInsightsTab(o,c){
     </div>
   </div>
 
+  <div class="grid grid-3" style="margin-bottom:18px;">
+    <div class="card kpi"><div class="num">${champConfirmed}/4</div><div class="lbl">CHAMP Confirmed</div></div>
+    <div class="card kpi"><div class="num">${ins.meddpiccStarted?meddEvidenced+'/8':'—'}</div><div class="lbl">MEDDPICC Evidenced</div></div>
+    <div class="card kpi"><div class="num">${ins.rtm.length?rtmAnswered+'/'+ins.rtm.length:'—'}</div><div class="lbl">Requirements Answered</div></div>
+  </div>
+
   <div class="grid grid-2" style="margin-bottom:18px;align-items:start;">
     <div class="card card-pad">
-      <div class="card-head"><h3>Customer &amp; Technical Brief</h3><span class="hint">Who they are · why now</span></div>
-      <div class="section-title" style="margin-top:0;">Who They Are</div>
-      <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whoTheyAre.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
-      <div class="section-title">Why Now</div>
-      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whyNow.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
-      ${ins.brief.technicalAsk?`<div class="section-title">Technical Ask</div><div style="font-size:13px;line-height:1.7;">${esc(ins.brief.technicalAsk)}</div>`:''}
-      ${ins.brief.ecosystem&&ins.brief.ecosystem.length?`
-      <div class="section-title">Key Ecosystem Players</div>
-      <div class="grid grid-2" style="gap:10px;">
-        ${ins.brief.ecosystem.map(e=>`
-        <div style="border:1px solid var(--vf-border);border-radius:9px;padding:10px 12px;">
-          <div style="font-weight:700;font-size:12.5px;color:var(--vf-blue);">${esc(e.name)}</div>
-          <div style="font-size:12px;color:var(--vf-grey);margin-top:3px;line-height:1.5;">${esc(e.desc)}</div>
-        </div>`).join('')}
-      </div>`:''}
-    </div>
-
-    <div class="card card-pad">
-      <div class="card-head"><h3>CHAMP</h3><span class="hint">${champConfirmed}/4 confirmed</span></div>
-      <div class="grid grid-2" style="gap:12px;">
-        ${CHAMP_ORDER.map(k=>{const f=ins.champ[k];return `
-        <div style="border:1px solid var(--vf-border);border-radius:10px;padding:12px 14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <span style="font-weight:700;font-size:12.5px;">${CHAMP_LABELS[k]}</span>${insightStatusPill(f.status)}
-          </div>
-          <div style="font-size:12px;color:var(--vf-grey);line-height:1.55;">${esc(f.text||'Not yet captured.')}</div>
-        </div>`;}).join('')}
+      <div class="card-head"><h3>Fit-Gap Breakdown</h3><span class="hint">${ins.rtm.length?rtmAnswered+'/'+ins.rtm.length+' answered':'—'}</span></div>
+      ${ins.rtm.length?`
+      <div style="display:flex;width:100%;height:16px;border-radius:8px;overflow:hidden;background:var(--vf-grey-bg);margin-bottom:14px;">
+        ${Object.entries(fitGapCounts).map(([k,v])=>`<div style="width:${Math.round(v/ins.rtm.length*1000)/10}%;background:${FITGAP_COLOR[k]||'var(--vf-grey-light)'};" title="${esc(k)}: ${v}"></div>`).join('')}
       </div>
+      <div class="legend" style="border-top:none;padding-top:0;margin-top:0;">
+        ${Object.entries(fitGapCounts).map(([k,v])=>`<div class="legend-item"><span class="legend-dot" style="background:${FITGAP_COLOR[k]||'var(--vf-grey-light)'}"></span>${esc(k)} — ${v}</div>`).join('')}
+      </div>`:`<div class="empty-state">${ic('spark')}<div>Not yet mapped — available after Discovery.</div></div>`}
+    </div>
+    <div class="card card-pad">
+      <div class="card-head"><h3>Risk</h3><span class="hint">${rtmAtRisk+meddGaps+openCount} open across the record</span></div>
+      <div class="funnel">
+        <div class="f-row"><div class="f-lbl">Requirements At Risk</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*rtmAtRisk/maxRisk)}%;background:var(--vf-red);"></div></div><div class="f-num">${ins.rtm.length?rtmAtRisk+'/'+ins.rtm.length:'—'}</div></div>
+        <div class="f-row"><div class="f-lbl">MEDDPICC Gaps</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*meddGaps/maxRisk)}%;background:var(--vf-amber);"></div></div><div class="f-num">${ins.meddpiccStarted?meddGaps+'/8':'—'}</div></div>
+        <div class="f-row"><div class="f-lbl">Open Items</div><div class="f-bar-wrap"><div class="f-bar" style="width:${Math.round(100*openCount/maxRisk)}%;background:#C1622B;"></div></div><div class="f-num">${openCount}</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>Customer &amp; Technical Brief</h3><span class="hint">Who they are · why now</span></div>
+    <div class="section-title" style="margin-top:0;">Who They Are</div>
+    <ul style="margin:0 0 4px;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whoTheyAre.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
+    <div class="section-title">Why Now</div>
+    <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;">${ins.brief.whyNow.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
+    ${ins.brief.technicalAsk?`<div class="section-title">Technical Ask</div><div style="font-size:13px;line-height:1.7;">${esc(ins.brief.technicalAsk)}</div>`:''}
+    ${ins.brief.ecosystem&&ins.brief.ecosystem.length?`
+    <div class="section-title">Key Ecosystem Players</div>
+    <div class="grid grid-3" style="gap:10px;">
+      ${ins.brief.ecosystem.map(e=>`
+      <div style="border:1px solid var(--vf-border);border-radius:9px;padding:10px 12px;">
+        <div style="font-weight:700;font-size:12.5px;color:var(--vf-blue);">${esc(e.name)}</div>
+        <div style="font-size:12px;color:var(--vf-grey);margin-top:3px;line-height:1.5;">${esc(e.desc)}</div>
+      </div>`).join('')}
+    </div>`:''}
+  </div>
+
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div class="card-head"><h3>CHAMP</h3><span class="hint">${champConfirmed}/4 confirmed</span></div>
+    <div class="grid grid-4" style="gap:12px;">
+      ${CHAMP_ORDER.map(k=>{const f=ins.champ[k];return `
+      <div style="border:1px solid var(--vf-border);border-radius:10px;padding:12px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-weight:700;font-size:12.5px;">${CHAMP_LABELS[k]}</span>${insightStatusPill(f.status)}
+        </div>
+        <div style="font-size:12px;color:var(--vf-grey);line-height:1.55;">${esc(f.text||'Not yet captured.')}</div>
+      </div>`;}).join('')}
     </div>
   </div>
 
@@ -1573,7 +1625,7 @@ function renderApprovalSection(o){
   if(!appr){
     return `
     <div class="card card-pad" style="margin-top:18px;">
-      <div class="card-head"><h3>Proposal Approval</h3><span class="hint">Recommended before moving to Won</span></div>
+      <div class="card-head"><h3>Proposal Approval</h3><span class="hint">Recommended before Proposal Sent</span></div>
       <div style="font-size:13px;color:var(--vf-grey);line-height:1.6;margin-bottom:14px;">Send this proposal for approval. An email will be sent to the Presales Manager and Financial Approver — the opportunity status updates automatically once both approve, and the assigned presales engineer is notified by email.</div>
       <button class="btn btn-primary btn-sm" data-reqapproval="${o.id}">${ic('send')} Request Approval</button>
     </div>`;
@@ -1583,7 +1635,7 @@ function renderApprovalSection(o){
   <div class="card card-pad" style="margin-top:18px;">
     <div class="card-head"><h3>Proposal Approval</h3><span class="hint">Requested ${fmtDate(appr.requestedAt)}</span></div>
     ${allApproved?`
-    <div class="banner banner-info" style="margin-bottom:14px;">${ic('check')}<div><div class="b-title">Fully Approved</div><div class="b-text">Both approvers signed off. The assigned presales engineer has been notified by email and the opportunity status is now Won.</div></div></div>
+    <div class="banner banner-info" style="margin-bottom:14px;">${ic('check')}<div><div class="b-title">Fully Approved</div><div class="b-text">Both approvers signed off. The assigned presales engineer has been notified by email and the opportunity status is now Proposal Sent.</div></div></div>
     `:`
     <div class="banner banner-warn" style="margin-bottom:14px;">${ic('info')}<div><div class="b-title">Awaiting approval</div><div class="b-text">Emails have been sent to both approvers below. Status will update to Approved once both respond.</div></div></div>
     `}
@@ -1608,7 +1660,7 @@ function renderApprovalSection(o){
 function requestApproval(oppId){
   const o=getOpp(oppId);
   o.approval={requestedAt:appNow().toISOString(),approvers:APPROVERS.map(a=>({name:a.name,role:a.role,approved:false,approvedAt:null}))};
-  if(!['Won','Blocked','Cancelled'].includes(o.status)){ o.status='Awaiting Approval'; o.stage='Awaiting Approval'; }
+  if(![WON_STATUS,CANCELLED_STATUS].includes(o.status)){ o.status='Proposal Development'; o.stage='Proposal Development'; }
   saveDB();render();
   toast('Approval requested — email sent to Presales Manager and Financial Approver.');
 }
@@ -1620,11 +1672,11 @@ function simulateApprove(oppId,approverName){
   a.approved=true;a.approvedAt=appNow().toISOString();
   const allApproved=o.approval.approvers.every(x=>x.approved);
   if(allApproved){
-    o.status='Won';o.stage='Won';
+    o.status='Proposal Sent';o.stage='Proposal Sent';
     const assignee=getTeamMember(o.assignedTo);
-    o.comments.push({id:uid('cm'),author:'System',text:`Proposal approved by ${o.approval.approvers.map(x=>x.name).join(' and ')}. Notification email sent to ${assignee.name} (assigned presales engineer). Status moved to Won.`,mentions:[],time:appNow().toISOString(),attachment:null});
+    o.comments.push({id:uid('cm'),author:'System',text:`Proposal approved by ${o.approval.approvers.map(x=>x.name).join(' and ')}. Notification email sent to ${assignee.name} (assigned presales engineer). Status moved to Proposal Sent.`,mentions:[],time:appNow().toISOString(),attachment:null});
     saveDB();render();
-    toast(`Proposal fully approved — status updated to Won, email sent to ${assignee.name}.`);
+    toast(`Proposal fully approved — status updated to Proposal Sent, email sent to ${assignee.name}.`);
   } else {
     saveDB();render();
     toast(`${approverName} approved. Waiting on remaining approver.`);
@@ -1668,7 +1720,7 @@ function renderCustomersList(){
   <div class="grid grid-3">
     ${DB.customers.map(c=>{
       const opps=oppsForCustomer(c.id);
-      const active=opps.filter(o=>!['Won','Cancelled'].includes(o.status)).length;
+      const active=opps.filter(o=>![WON_STATUS,CANCELLED_STATUS].includes(o.status)).length;
       return `
       <div class="card opp-card" data-navcust="${c.id}">
         <div class="oc-top">
@@ -1768,6 +1820,14 @@ function openCreateOppModal(){
         <select class="input" id="newOppAssignee">${DB.team.map(t=>`<option value="${t.id}">${t.name} — ${t.role}</option>`).join('')}</select>
       </div>
       <div class="field">
+        <label class="field-label field-req">Request Type</label>
+        <select class="input" id="newOppRequestType">${REQUEST_TYPES.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+      </div>
+      <div class="field" id="newOppTierField">
+        <label class="field-label field-req">RFI Tier</label>
+        <select class="input" id="newOppTier">${RFI_TIERS.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+      </div>
+      <div class="field">
         <label class="field-label field-req">PEGA Demand Form file</label>
         <input class="input" type="file" id="newOppDemandForm">
         <div class="field-note">Accepted: PDF, DOCX. Required to create the opportunity.</div>
@@ -1781,15 +1841,22 @@ function openCreateOppModal(){
   </div>`);
   document.getElementById('mClose').onclick=closeModal;
   document.getElementById('mCancel').onclick=closeModal;
+  const newOppRequestType=document.getElementById('newOppRequestType');
+  const newOppTierField=document.getElementById('newOppTierField');
+  const syncTierVisibility=()=>{ newOppTierField.style.display = newOppRequestType.value==='RFI' ? '' : 'none'; };
+  syncTierVisibility();
+  newOppRequestType.onchange=syncTierVisibility;
   document.getElementById('mCreate').onclick=()=>{
     const assignee=document.getElementById('newOppAssignee').value;
+    const requestType=newOppRequestType.value;
+    const tier=requestType==='RFI'?document.getElementById('newOppTier').value:null;
     const file=document.getElementById('newOppDemandForm').files[0];
     if(!file){toast('Please upload the PEGA Demand Form — it is required to create an opportunity.');return;}
     const area=document.getElementById('createProgressArea');
     area.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:var(--vf-grey);"><span class="spin"></span> Extracting fields from demand form...</div>`;
     document.getElementById('mCreate').disabled=true;
     setTimeout(()=>{
-      const newOpp=createOpportunityFromDemandForm(assignee,file.name);
+      const newOpp=createOpportunityFromDemandForm(assignee,file.name,requestType,tier);
       closeModal();
       ACTIVE_TAB='profile';
       go('opportunity',newOpp.id);
@@ -1798,14 +1865,14 @@ function openCreateOppModal(){
   };
 }
 
-function createOpportunityFromDemandForm(assignedTo,fileName){
+function createOpportunityFromDemandForm(assignedTo,fileName,requestType,tier){
   const c=DB.customers[Math.floor(Math.random()*DB.customers.length)];
   const customerId=c.id;
   const pegaNumber=generatePegaNumber();
   const contact=(c.contacts&&c.contacts[0])?`${c.contacts[0].name} (${c.contacts[0].title})`:'Primary customer contact (TBD)';
   const value=Math.round((800000+Math.random()*4200000)/50000)*50000;
   const newOpp={
-    id:uid('o'),pegaNumber,customerId,status:'New',stage:'New',value,
+    id:uid('o'),pegaNumber,customerId,status:'New',stage:'New',requestType,tier:requestType==='RFI'?tier:null,value,
     created:appNow().toISOString(),assignedTo,demandFormFileName:fileName,
     profile:{
       customerContact:contact,
@@ -1964,7 +2031,7 @@ function openCancelReasonModal(oppId,revertSelectEl){
     if(sel==='Other' && !comment){toast('Please add a comment for "Other".');return;}
     const reason = comment ? `${sel} — ${comment}` : sel;
     const o=getOpp(oppId);
-    o.status='Cancelled';o.stage='Cancelled';o.cancelReason=reason;
+    o.status=CANCELLED_STATUS;o.stage=CANCELLED_STATUS;o.cancelReason=reason;
     saveDB();
     closeModal();
     render();
@@ -2013,8 +2080,8 @@ function generatePipelineReportText(){
   const opps=DB.opportunities;
   const byStatus=STATUS_ORDER.map(s=>`${s}: ${opps.filter(o=>o.status===s).length}`).join(', ');
   const pipeline=pipelineValue(opps);
-  const won=opps.filter(o=>o.status==='Won').length;
-  const lost=opps.filter(o=>o.status==='Lost').length;
+  const won=opps.filter(o=>o.status===WON_STATUS).length;
+  const lost=opps.filter(o=>o.status===CANCELLED_STATUS).length;
   const winRate=Math.round(100*won/Math.max(1,won+lost));
   const topValue=opps.slice().sort((a,b)=>b.value-a.value).slice(0,3);
   const topScore=opps.filter(o=>o.profile.scoring).slice().sort((a,b)=>b.profile.scoring.overall-a.profile.scoring.overall).slice(0,3);
@@ -2062,11 +2129,11 @@ function buildReportRows(scope,refId){
     summary:{
       total:list.length,
       openPipelineValue:pipelineValue(list),
-      won:list.filter(o=>o.status==='Won').length,
-      cancelled:list.filter(o=>o.status==='Cancelled').length,
+      won:list.filter(o=>o.status===WON_STATUS).length,
+      cancelled:list.filter(o=>o.status===CANCELLED_STATUS).length,
     },
     rows:list.map(o=>({
-      pega:o.pegaNumber||'—', customer:getCustomer(o.customerId).name, status:o.status,
+      pega:o.pegaNumber||'—', customer:getCustomer(o.customerId).name, requestType:o.requestType||'—', status:o.status,
       assignedTo:getTeamMember(o.assignedTo).name, value:o.value,
       score:o.profile.scoring?o.profile.scoring.overall:'', band:o.profile.scoring?o.profile.scoring.band:'',
       created:fmtDate(o.created),
@@ -2081,8 +2148,8 @@ function downloadStatusReport(fmt,scope,custId){
     const wsSummary=XLSX.utils.json_to_sheet([
       {Metric:'Total Opportunities',Value:data.summary.total},
       {Metric:'Open Pipeline Value (EUR)',Value:data.summary.openPipelineValue},
-      {Metric:'Won',Value:data.summary.won},
-      {Metric:'Cancelled',Value:data.summary.cancelled},
+      {Metric:'Delivered',Value:data.summary.won},
+      {Metric:'Cancelled/Rejected',Value:data.summary.cancelled},
     ]);
     const wsRows=XLSX.utils.json_to_sheet(data.rows.map(r=>({
       'PEGA Number':r.pega,'Customer':r.customer,'Status':r.status,'Assigned To':r.assignedTo,
@@ -2101,7 +2168,7 @@ function downloadStatusReport(fmt,scope,custId){
     s1.addText(data.title,{x:0.5,y:0.4,w:9,h:0.8,fontSize:26,bold:true,color:'E60000'});
     s1.addText(`Generated ${fmtDate(data.generated)}`,{x:0.5,y:1.1,w:9,h:0.4,fontSize:12,color:'5A5D5E'});
     s1.addText(
-      `Total Opportunities: ${data.summary.total}\nOpen Pipeline Value: ${fmtMoney(data.summary.openPipelineValue)}\nWon: ${data.summary.won}    Cancelled: ${data.summary.cancelled}`,
+      `Total Opportunities: ${data.summary.total}\nOpen Pipeline Value: ${fmtMoney(data.summary.openPipelineValue)}\nDelivered: ${data.summary.won}    Cancelled/Rejected: ${data.summary.cancelled}`,
       {x:0.5,y:1.8,w:9,h:1.5,fontSize:14,valign:'top'}
     );
     const s2=pres.addSlide();
@@ -2265,20 +2332,19 @@ function chatRespond(q){
     const list=DB.opportunities.filter(o=>o.profile.scoring&&o.profile.scoring.band==='Hot');
     return list.length? `Hot opportunities (highest scoring): ${list.map(o=>`"${esc(oppLabel(o))}" (${esc(getCustomer(o.customerId).name)}, score ${o.profile.scoring.overall})`).join(', ')}.` : 'No Hot-scored opportunities currently.';
   }
-  if(/cancel/.test(ql)){
-    const list=DB.opportunities.filter(o=>o.status==='Cancelled');
-    return list.length? list.map(o=>`"${esc(oppLabel(o))}" was cancelled — reason: ${esc(o.cancelReason)}`).join(' ') : 'No cancelled opportunities on record.';
+  if(/cancel|reject/.test(ql)){
+    const list=DB.opportunities.filter(o=>o.status===CANCELLED_STATUS);
+    return list.length? list.map(o=>`"${esc(oppLabel(o))}" was cancelled/rejected — reason: ${esc(o.cancelReason)}`).join(' ') : 'No cancelled/rejected opportunities on record.';
   }
   if(/approv/.test(ql)){
     const pending=DB.opportunities.filter(o=>o.approval && !o.approval.approvers.every(a=>a.approved));
     const approved=DB.opportunities.filter(o=>o.approval && o.approval.approvers.every(a=>a.approved));
     return `Pending approval: ${pending.length? pending.map(o=>`"${esc(oppLabel(o))}"`).join(', ') : 'none'}. Fully approved: ${approved.length? approved.map(o=>`"${esc(oppLabel(o))}"`).join(', ') : 'none'}.`;
   }
-  if(/win rate|won|pipeline|value/.test(ql)){
-    const won=DB.opportunities.filter(o=>o.status==='Won').length;
-    const blocked=DB.opportunities.filter(o=>o.status==='Blocked').length;
-    const cancelled=DB.opportunities.filter(o=>o.status==='Cancelled').length;
-    return `Current pipeline value is ${fmtMoney(pipelineValue(DB.opportunities))} across ${DB.opportunities.filter(o=>!['Won','Cancelled'].includes(o.status)).length} open opportunities. Won: ${won}, Blocked: ${blocked}, Cancelled: ${cancelled}.`;
+  if(/win rate|delivered|pipeline|value/.test(ql)){
+    const delivered=DB.opportunities.filter(o=>o.status===WON_STATUS).length;
+    const cancelled=DB.opportunities.filter(o=>o.status===CANCELLED_STATUS).length;
+    return `Current pipeline value is ${fmtMoney(pipelineValue(DB.opportunities))} across ${DB.opportunities.filter(o=>![WON_STATUS,CANCELLED_STATUS].includes(o.status)).length} open opportunities. Delivered: ${delivered}, Cancelled/Rejected: ${cancelled}.`;
   }
   if(/team|assigned|workload/.test(ql)){
     return `Team members: ${DB.team.map(t=>`${esc(t.name)} (${esc(t.role)})`).join(', ')}. Ask me "who is working on [customer]?" for specifics.`;
@@ -2377,10 +2443,10 @@ function attachGlobalHandlers(){
   if(statusSelect) statusSelect.onchange=()=>{
     const oppId=statusSelect.getAttribute('data-oppid');
     const val=statusSelect.value;
-    if(val==='Cancelled'){ openCancelReasonModal(oppId,statusSelect); return; }
+    if(val===CANCELLED_STATUS){ openCancelReasonModal(oppId,statusSelect); return; }
     const o=getOpp(oppId);
     o.status=val;o.stage=val;
-    if(val!=='Cancelled') o.cancelReason=null;
+    if(val!==CANCELLED_STATUS) o.cancelReason=null;
     saveDB();render();toast('Status updated to '+val+'.');
   };
 
@@ -2445,10 +2511,10 @@ function attachGlobalHandlers(){
 
   // dashboard: clickable cards / rows drilling into a filtered Opportunities view
   document.querySelectorAll('[data-goactive]').forEach(el=>{
-    el.onclick=()=>{ window.__oppFilter={excludeStatuses:['Won','Cancelled']}; go('opportunities'); };
+    el.onclick=()=>{ window.__oppFilter={excludeStatuses:[WON_STATUS,CANCELLED_STATUS]}; go('opportunities'); };
   });
   document.querySelectorAll('[data-goclosed]').forEach(el=>{
-    el.onclick=()=>{ window.__oppFilter={statusIn:['Won','Cancelled']}; go('opportunities'); };
+    el.onclick=()=>{ window.__oppFilter={statusIn:[WON_STATUS,CANCELLED_STATUS]}; go('opportunities'); };
   });
   document.querySelectorAll('[data-goscore]').forEach(el=>{
     el.onclick=()=>{ window.__oppFilter={scoreBand:el.getAttribute('data-goscore')}; go('opportunities'); };
@@ -2466,6 +2532,8 @@ function attachGlobalHandlers(){
   // opportunities page: assignee filter
   const fAssignee=document.getElementById('fAssignee');
   if(fAssignee) fAssignee.onchange=()=>{window.__oppFilter=Object.assign({},window.__oppFilter,{assignedTo:fAssignee.value});render();};
+  const fRequestType=document.getElementById('fRequestType');
+  if(fRequestType) fRequestType.onchange=()=>{window.__oppFilter=Object.assign({},window.__oppFilter,{requestType:fRequestType.value});render();};
   // opportunities page: local search (preserves caret across re-render)
   const oppSearch=document.getElementById('oppSearch');
   if(oppSearch) oppSearch.oninput=()=>{
