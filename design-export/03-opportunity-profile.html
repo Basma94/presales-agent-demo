@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Presales Agent — Opportunity Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css?v=2">
+</head>
+<body>
+<div id="app">
+
+
+  <div class="topnav">
+    <div class="topnav-inner">
+      <div class="topnav-brand">
+        <div class="mark">V!</div>
+        <div class="txt"><b>Presales Agent</b><span>Vodafone Business</span></div>
+      </div>
+      <div class="topnav-links">
+
+          <div class="topnav-link " data-nav="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg><span>Dashboard</span>
+          </div>
+          <div class="topnav-link active" data-nav="opportunities">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path></svg><span>Opportunities</span>
+          </div>
+          <div class="topnav-link " data-nav="tender">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1" fill="currentColor"></circle></svg><span>Tender</span>
+          </div>
+          <div class="topnav-link " data-nav="customers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"></rect><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"></path><path d="M10 21v-4h4v4"></path></svg><span>Customers</span>
+          </div>
+      </div>
+      <div class="topnav-right">
+        <div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg><input placeholder="Search PEGA #, customer..." id="globalSearch"></div>
+        <div class="avatar" title="Basma G.">BG</div>
+      </div>
+    </div>
+  </div>
+    <div class="main">
+      <div class="content">
+  <div style="margin-bottom:14px;">
+    <a data-nav="opportunities" class="link-btn" style="display:inline-flex;align-items:center;gap:5px;">← All opportunities</a>
+  </div>
+
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
+      <div>
+        <div class="eyebrow">OPPORTUNITY</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <h2 style="font-size:17px;margin:0;"><a class="link-btn" data-nav-customer="c6" style="font-size:inherit;">SCIT Group</a></h2>
+          <span class="pill pill-amber">Proposal Development</span>
+        </div>
+        <div style="color:var(--vf-grey);font-size:13px;margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <span class="pega-num">PEGA-91042</span> <span class="pill pill-blue">RFP</span> · Aviation &amp; Connectivity · Created 21 Nov 2025
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <div style="font-size:12px;color:var(--vf-grey);">Assigned to</div>
+        <select class="input" style="width:auto;" id="assignSelect" data-oppid="o11">
+          <option value="t1">Sarah Bennett</option><option value="t2" selected="">James Carter</option><option value="t3">Olivia Turner</option><option value="t4">Daniel Brooks</option><option value="t5">Emily Clarke</option><option value="t6">Michael Reed</option>
+        </select>
+        <select class="input" style="width:auto;" id="statusSelect" data-oppid="o11">
+          <option value="New">New</option><option value="Kick off">Kick off</option><option value="Discovery">Discovery</option><option value="Proposal Development" selected="">Proposal Development</option><option value="Proposal Sent">Proposal Sent</option><option value="Delivered">Delivered</option><option value="Cancelled/Rejected">Cancelled/Rejected</option>
+        </select>
+        <div style="font-weight:700;font-size:16px;">€9,000,000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="profile">Profile</div>
+    <div class="tab " data-tab="insights">Summary</div>
+    <div class="tab " data-tab="documents">Documents</div>
+    <div class="tab " data-tab="comments">Comments</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card card-pad">
+      <div class="card-head"><div class="icon-badge icon-badge-sm icon-badge-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg></div><h3 style="flex:1;margin-left:10px;">Opportunity Profile</h3><span class="hint">Auto-populated from demand form</span></div>
+      <div class="kv"><div class="k">PEGA Number</div><div class="v">PEGA-91042</div></div>
+      <div class="kv"><div class="k">Request Type</div><div class="v"><span class="pill pill-blue">RFP</span></div></div>
+      <div class="kv"><div class="k">Customer</div><div class="v">SCIT Group</div></div>
+      <div class="kv"><div class="k">Customer Contact</div><div class="v">Markus Feldmann (Head of Network Services)</div></div>
+      <div class="kv"><div class="k">Source Document</div><div class="v">PEGA_DemandForm_SCIT_EuropeIFC.pdf</div></div>
+
+      <div class="section-title">Internal Team</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--vf-grey-bg);border-radius:999px;padding:5px 12px 5px 5px;">
+          <div class="avatar" style="width:24px;height:24px;font-size:10.5px;">JC</div>
+          <div><div style="font-size:12.5px;font-weight:700;line-height:1.3;">James Carter</div><div style="font-size:10.5px;color:var(--vf-grey);line-height:1.2;">Solution Architect</div></div>
+        </div></div>
+
+      <div class="section-title">Problem Statement</div>
+      <div style="font-size:13px;line-height:1.6;background:var(--vf-grey-bg);border-radius:var(--radius-sm);padding:12px 14px;">Re-tendering the managed-service contract for a ~300-site European Air-to-Ground In-Flight Connectivity network across 41 countries — cost-driven, with recurring handover incidents and ~100 sites approaching Nokia hardware end-of-support within 18 months.</div>
+
+      <div class="section-title">AI Recommended Services</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="chip chip-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg> Managed Private Network (Hybrid MPN)</span><span class="chip chip-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg> Managed Network Operations (NOC-as-a-Service)</span><span class="chip chip-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg> Solution Delivery &amp; Migration Services</span><span class="chip chip-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg> Network Strategic Planning &amp; Capacity Management</span><span class="chip chip-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg> Spectrum &amp; Market Advisory</span></div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-head"><div class="icon-badge icon-badge-sm icon-badge-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg></div><h3 style="flex:1;margin-left:10px;">Opportunity Scoring</h3><span class="hint">Model-assisted qualification score</span></div>
+
+      <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--vf-border);">
+        <svg width="104" height="104" viewBox="0 0 104 104" style="width:104px;height:104px;flex-shrink:0;">
+    <circle cx="52" cy="52" r="43" fill="none" stroke="var(--vf-grey-bg)" stroke-width="9"></circle>
+    <circle cx="52" cy="52" r="43" fill="none" stroke="var(--vf-red)" stroke-width="9" stroke-linecap="round" stroke-dasharray="210.7 270.2" transform="rotate(-90 52 52)"></circle>
+    <text x="52" y="60" text-anchor="middle" font-family="var(--font-display),sans-serif" font-size="26" font-weight="700" fill="var(--vf-dark)">78</text>
+  </svg>
+        <div>
+          <span class="pill pill-green" style="font-size:12.5px;">Hot opportunity</span>
+          <div style="font-size:12px;color:var(--vf-grey);margin-top:8px;line-height:1.5;">Composite of strategic fit, budget, technical fit, competitive position and urgency.</div>
+        </div>
+      </div>
+
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:7px;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+            <span style="display:flex;align-items:center;gap:7px;color:var(--vf-dark);font-weight:600;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1" fill="currentColor"></circle></svg> Strategic Fit</span>
+            <span style="color:var(--vf-grey-light);font-weight:700;">88</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:88%;background:var(--vf-green)"></div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:7px;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+            <span style="display:flex;align-items:center;gap:7px;color:var(--vf-dark);font-weight:600;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle><path d="M6 6v0M18 18v0"></path></svg> Budget Confirmed</span>
+            <span style="color:var(--vf-grey-light);font-weight:700;">75</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:75%;background:var(--vf-green)"></div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:7px;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+            <span style="display:flex;align-items:center;gap:7px;color:var(--vf-dark);font-weight:600;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1.5"></rect><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path></svg> Technical Fit</span>
+            <span style="color:var(--vf-grey-light);font-weight:700;">80</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:80%;background:var(--vf-green)"></div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:7px;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+            <span style="display:flex;align-items:center;gap:7px;color:var(--vf-dark);font-weight:600;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"></path></svg> Competitive Position</span>
+            <span style="color:var(--vf-grey-light);font-weight:700;">70</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:70%;background:var(--vf-amber)"></div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:7px;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+            <span style="display:flex;align-items:center;gap:7px;color:var(--vf-dark);font-weight:600;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg> Urgency</span>
+            <span style="color:var(--vf-grey-light);font-weight:700;">78</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:78%;background:var(--vf-green)"></div></div>
+        </div>
+
+      <div class="section-title">Company Brief</div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px;">SCIT Group is a Saudi-based technology investment fund established May 2022, founded by Sheikh Saad Al-Otaibi. Focused on space, end-to-end security and aviation through advanced communications and emerging technologies, with a strategic focus on the Middle East, Africa and Turkey — explicitly aligned with Saudi Vision 2030. SCIT owns/backs a ~300-site private mobile network delivering Europe Inflight Connectivity, currently served by T-Mobile, and its IFC subsidiary SKYFive Arabia is already expanding A2G connectivity into South Africa.</div>
+      <div class="kv"><div class="k">Industry</div><div class="v">Aviation &amp; Connectivity</div></div>
+      <div class="kv"><div class="k">HQ</div><div class="v">Riyadh, Saudi Arabia</div></div>
+      <div class="kv"><div class="k">Annual Revenue</div><div class="v">—</div></div>
+      <div style="margin-top:14px;">
+        <a class="link-btn" data-nav-customer="c6">View full customer profile →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-pad" style="margin-top:18px;">
+    <div class="card-head"><div class="icon-badge icon-badge-sm icon-badge-navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"></path><path d="M16 8.5a3 3 0 1 1 3.5 5"></path><path d="M21.5 19.5c0-2.5-1.8-4.3-4-5"></path></svg></div><h3 style="flex:1;margin-left:10px;">Key Contacts</h3><span class="hint">3 on file</span></div>
+    <div class="grid grid-2" style="gap:14px;">
+
+      <div style="display:flex;align-items:center;gap:12px;border:1px solid var(--vf-border);border-radius:var(--radius-sm);padding:12px 14px;">
+        <div class="icon-badge icon-badge-navy" style="border-radius:999px;">MF</div>
+        <div style="min-width:0;flex:1;">
+          <div style="font-size:13.5px;font-weight:700;">Markus Feldmann</div>
+          <div style="font-size:12px;color:var(--vf-grey);">Head of Network Services (Sponsor)</div>
+          <div style="font-size:11.5px;color:var(--vf-grey-light);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">markus.feldmann@scitgroup-demo.com · +966 11 496 0210</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;border:1px solid var(--vf-border);border-radius:var(--radius-sm);padding:12px 14px;">
+        <div class="icon-badge icon-badge-navy" style="border-radius:999px;">DA</div>
+        <div style="min-width:0;flex:1;">
+          <div style="font-size:13.5px;font-weight:700;">Dr. Amina Rashid</div>
+          <div style="font-size:12px;color:var(--vf-grey);">Director of Infrastructure Partnerships</div>
+          <div style="font-size:11.5px;color:var(--vf-grey-light);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">amina.rashid@scitgroup-demo.com · +966 11 496 0388</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;border:1px solid var(--vf-border);border-radius:var(--radius-sm);padding:12px 14px;">
+        <div class="icon-badge icon-badge-navy" style="border-radius:999px;">PL</div>
+        <div style="min-width:0;flex:1;">
+          <div style="font-size:13.5px;font-weight:700;">Petra Lindqvist</div>
+          <div style="font-size:12px;color:var(--vf-grey);">NOC Lead</div>
+          <div style="font-size:11.5px;color:var(--vf-grey-light);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">petra.lindqvist@scitgroup-demo.com · +49 30 496 0122</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-pad" style="margin-top:18px;">
+    <div class="card-head"><h3>Scheduled Report</h3><span class="hint">Recurring status report delivery</span></div>
+
+    <div style="font-size:13px;color:var(--vf-grey);line-height:1.6;margin-bottom:14px;">Automatically generate and send this opportunity's status report to the assigned presales engineer on a recurring basis.</div>
+    <button class="btn btn-primary btn-sm" data-schedulereport="o11"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"></path></svg> Schedule Report</button>
+
+  </div>
+
+  </div>
+    </div>
+    <button class="chat-fab" id="chatFab" title="Presales Assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
+
+
+</div>
+</body>
+</html>

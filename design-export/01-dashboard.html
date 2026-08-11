@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Presales Agent — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css?v=2">
+</head>
+<body>
+<div id="app">
+
+  <div class="topnav">
+    <div class="topnav-inner">
+      <div class="topnav-brand">
+        <div class="mark">V!</div>
+        <div class="txt"><b>Presales Agent</b><span>Vodafone Business</span></div>
+      </div>
+      <div class="topnav-links">
+
+          <div class="topnav-link active" data-nav="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg><span>Dashboard</span>
+          </div>
+          <div class="topnav-link " data-nav="opportunities">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path></svg><span>Opportunities</span>
+          </div>
+          <div class="topnav-link " data-nav="tender">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1" fill="currentColor"></circle></svg><span>Tender</span>
+          </div>
+          <div class="topnav-link " data-nav="customers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"></rect><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"></path><path d="M10 21v-4h4v4"></path></svg><span>Customers</span>
+          </div>
+      </div>
+      <div class="topnav-right">
+        <div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg><input placeholder="Search PEGA #, customer..." id="globalSearch"></div>
+        <div class="avatar" title="Basma G.">BG</div>
+      </div>
+    </div>
+  </div>
+    <div class="main">
+      <div class="content"><div class="page-head"><div><div class="eyebrow">OVERVIEW</div><h1>Dashboard</h1><div class="sub">Team performance, pipeline health &amp; AI insights</div></div></div>
+  <div class="grid grid-4" style="margin-bottom:18px;">
+    <div class="card kpi kpi-click" data-goactive="1"><div class="icon-badge icon-badge-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path></svg></div><div class="num">8</div><div class="lbl">Active Opportunities</div></div>
+    <div class="card kpi kpi-click" data-goactive="1"><div class="icon-badge icon-badge-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg></div><div class="num">€31,530,000</div><div class="lbl">Open Pipeline Value</div><span class="delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg> Excl. cancelled</span></div>
+    <div class="card kpi kpi-click" data-goclosed="1"><div class="icon-badge icon-badge-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"></path></svg></div><div class="num">33%</div><div class="lbl">Win Rate</div></div>
+    <div class="card kpi kpi-click" data-goscore="Hot"><div class="icon-badge icon-badge-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg></div><div class="num">3</div><div class="lbl">Hot Opportunities</div><span class="delta up">High scoring</span></div>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:18px;">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Team Workload</h3><span class="hint">By assigned pipeline value</span></div>
+      <div class="rowlist">
+
+          <div class="row" data-goassignee="t2">
+            <div class="avatar-sm" style="background:#B77A00" title="James Carter">JC</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13px;">James Carter</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">Solution Architect · 3 active / 3 total</div>
+            </div>
+            <div style="text-align:right;font-weight:700;font-size:13px;">€15,300,000</div>
+          </div>
+          <div class="row" data-goassignee="t6">
+            <div class="avatar-sm" style="background:#0A84C7" title="Michael Reed">MR</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13px;">Michael Reed</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">Solution Architect · 2 active / 2 total</div>
+            </div>
+            <div style="text-align:right;font-weight:700;font-size:13px;">€6,080,000</div>
+          </div>
+          <div class="row" data-goassignee="t1">
+            <div class="avatar-sm" style="background:#0A84C7" title="Sarah Bennett">SB</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13px;">Sarah Bennett</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">Presales Lead · 0 active / 2 total</div>
+            </div>
+            <div style="text-align:right;font-weight:700;font-size:13px;">€4,200,000</div>
+          </div>
+          <div class="row" data-goassignee="t4">
+            <div class="avatar-sm" style="background:#0A84C7" title="Daniel Brooks">DB</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13px;">Daniel Brooks</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">Presales Consultant · 2 active / 2 total</div>
+            </div>
+            <div style="text-align:right;font-weight:700;font-size:13px;">€3,300,000</div>
+          </div>
+          <div class="row" data-goassignee="t3">
+            <div class="avatar-sm" style="background:#E60000" title="Olivia Turner">OT</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13px;">Olivia Turner</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">Presales Consultant · 1 active / 1 total</div>
+            </div>
+            <div style="text-align:right;font-weight:700;font-size:13px;">€2,650,000</div>
+          </div>
+          <div class="row" data-goassignee="t5">
+            <div class="avatar-sm" style="background:#7A4FE6" title="Emily Clarke">EC</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13px;">Emily Clarke</div>
+              <div style="font-size:11.5px;color:var(--vf-grey-light);">Practice Lead · 0 active / 1 total</div>
+            </div>
+            <div style="text-align:right;font-weight:700;font-size:13px;">€0</div>
+          </div>
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-head"><h3>Lead Status</h3><span class="hint">Opportunity funnel</span></div>
+      <div class="funnel">
+        <div class="f-row f-row-click" data-gostatus="New">
+            <div class="f-lbl">New</div>
+            <div class="f-bar-wrap"><div class="f-bar" style="width:50%"></div></div>
+            <div class="f-num">2</div>
+          </div><div class="f-row f-row-click" data-gostatus="Kick off">
+            <div class="f-lbl">Kick off</div>
+            <div class="f-bar-wrap"><div class="f-bar" style="width:0%"></div></div>
+            <div class="f-num">0</div>
+          </div><div class="f-row f-row-click" data-gostatus="Discovery">
+            <div class="f-lbl">Discovery</div>
+            <div class="f-bar-wrap"><div class="f-bar" style="width:100%"></div></div>
+            <div class="f-num">4</div>
+          </div><div class="f-row f-row-click" data-gostatus="Proposal Development">
+            <div class="f-lbl">Proposal Development</div>
+            <div class="f-bar-wrap"><div class="f-bar" style="width:50%"></div></div>
+            <div class="f-num">2</div>
+          </div><div class="f-row f-row-click" data-gostatus="Proposal Sent">
+            <div class="f-lbl">Proposal Sent</div>
+            <div class="f-bar-wrap"><div class="f-bar" style="width:0%"></div></div>
+            <div class="f-num">0</div>
+          </div><div class="f-row f-row-click" data-gostatus="Delivered">
+            <div class="f-lbl">Delivered</div>
+            <div class="f-bar-wrap"><div class="f-bar" style="width:25%"></div></div>
+            <div class="f-num">1</div>
+          </div>
+        <div class="f-row f-row-click" data-gostatus="Cancelled/Rejected"><div class="f-lbl">Cancelled/Rejected</div><div class="f-bar-wrap"><div class="f-bar" style="width:50%;background:#C94B4B"></div></div><div class="f-num">2</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Demand Trend — Services Requested</h3><span class="hint">New opportunities per month, by service</span></div>
+      <div class="barchart">
+
+          <div class="bar-col">
+            <div class="bar-val">3</div>
+            <div class="stackbar" style="height:33%"><div style="height:11%;background:#0C9B4A" title="Managed SD-WAN for Stores: 1"></div><div style="height:11%;background:#0A84C7" title="Omnichannel Connectivity Suite: 1"></div><div style="height:11%;background:var(--vf-grey-light)" title="Other: 1"></div></div>
+            <div class="bar-lbl">Jul</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-val">0</div>
+            <div class="stackbar" style="height:6%"></div>
+            <div class="bar-lbl">Aug</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-val">1</div>
+            <div class="stackbar" style="height:11%"><div style="height:11%;background:var(--vf-grey-light)" title="Other: 1"></div></div>
+            <div class="bar-lbl">Sept</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-val">4</div>
+            <div class="stackbar" style="height:44%"><div style="height:11%;background:#B77A00" title="IoT Smart Shelving &amp; Inventory: 1"></div><div style="height:33%;background:var(--vf-grey-light)" title="Other: 3"></div></div>
+            <div class="bar-lbl">Oct</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-val">9</div>
+            <div class="stackbar" style="height:100%"><div style="height:11%;background:#E60000" title="Supply Chain Visibility Suite: 1"></div><div style="height:89%;background:var(--vf-grey-light)" title="Other: 8"></div></div>
+            <div class="bar-lbl">Nov</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-val">6</div>
+            <div class="stackbar" style="height:67%"><div style="height:11%;background:#E60000" title="Supply Chain Visibility Suite: 1"></div><div style="height:22%;background:#0A84C7" title="Industrial IoT Sensors Platform: 2"></div><div style="height:33%;background:var(--vf-grey-light)" title="Other: 3"></div></div>
+            <div class="bar-lbl">Dec</div>
+          </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item legend-item-click" data-goservice="Supply Chain Visibility Suite"><span class="legend-dot" style="background:#E60000"></span>Supply Chain Visibility Suite</div><div class="legend-item legend-item-click" data-goservice="Industrial IoT Sensors Platform"><span class="legend-dot" style="background:#0A84C7"></span>Industrial IoT Sensors Platform</div><div class="legend-item legend-item-click" data-goservice="Managed SD-WAN for Stores"><span class="legend-dot" style="background:#0C9B4A"></span>Managed SD-WAN for Stores</div><div class="legend-item legend-item-click" data-goservice="Omnichannel Connectivity Suite"><span class="legend-dot" style="background:#0A84C7"></span>Omnichannel Connectivity Suite</div><div class="legend-item legend-item-click" data-goservice="IoT Smart Shelving &amp; Inventory"><span class="legend-dot" style="background:#B77A00"></span>IoT Smart Shelving &amp; Inventory</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--vf-grey-light)"></span>Other</div>
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-head"><h3>AI Recommended Services</h3><span class="hint">Share of pipeline value, active opportunities</span></div>
+
+  <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
+    <div style="width:158px;height:158px;border-radius:50%;background:conic-gradient(#7A4FE6 0% 17.964071856287426%, #B77A00 17.964071856287426% 35.92814371257485%, #B77A00 35.92814371257485% 53.89221556886228%, #0C9B4A 53.89221556886228% 71.8562874251497%, #E60000 71.8562874251497% 89.82035928143713%, #7A4FE6 89.82035928143713% 100.00000000000001%);position:relative;flex-shrink:0;">
+      <div style="position:absolute;inset:19%;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+        <div style="font-size:14px;font-weight:800;">€50,100,000</div>
+        <div style="font-size:9.5px;color:var(--vf-grey-light);">Total Value</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:9px;">
+
+        <div class="legend-row-click" data-goservice="Managed Private Network (Hybrid MPN)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:4px 6px;margin:-4px -6px;border-radius:6px;">
+          <span style="display:flex;align-items:center;gap:7px;min-width:0;"><span class="legend-dot" style="background:#7A4FE6"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Managed Private Network (Hybrid MPN)</span></span>
+          <span style="font-weight:700;color:var(--vf-grey);white-space:nowrap;">€9,000,000</span>
+        </div>
+        <div class="legend-row-click" data-goservice="Managed Network Operations (NOC-as-a-Service)" style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:4px 6px;margin:-4px -6px;border-radius:6px;">
+          <span style="display:flex;align-items:center;gap:7px;min-width:0;"><span class="legend-dot" style="background:#B77A00"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Managed Network Operations (NOC-as-a-Service)</span></span>
+          <span style="font-weight:700;color:var(--vf-grey);white-space:nowrap;">€9,000,000</span>
+        </div>
+        <div class="legend-row-click" data-goservice="Solution Delivery &amp; Migration Services" style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:4px 6px;margin:-4px -6px;border-radius:6px;">
+          <span style="display:flex;align-items:center;gap:7px;min-width:0;"><span class="legend-dot" style="background:#B77A00"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Solution Delivery &amp; Migration Services</span></span>
+          <span style="font-weight:700;color:var(--vf-grey);white-space:nowrap;">€9,000,000</span>
+        </div>
+        <div class="legend-row-click" data-goservice="Network Strategic Planning &amp; Capacity Management" style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:4px 6px;margin:-4px -6px;border-radius:6px;">
+          <span style="display:flex;align-items:center;gap:7px;min-width:0;"><span class="legend-dot" style="background:#0C9B4A"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Network Strategic Planning &amp; Capacity Management</span></span>
+          <span style="font-weight:700;color:var(--vf-grey);white-space:nowrap;">€9,000,000</span>
+        </div>
+        <div class="legend-row-click" data-goservice="Spectrum &amp; Market Advisory" style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:4px 6px;margin:-4px -6px;border-radius:6px;">
+          <span style="display:flex;align-items:center;gap:7px;min-width:0;"><span class="legend-dot" style="background:#E60000"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Spectrum &amp; Market Advisory</span></span>
+          <span style="font-weight:700;color:var(--vf-grey);white-space:nowrap;">€9,000,000</span>
+        </div>
+        <div class="legend-row-click" data-goservice="Secure Private Network" style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:4px 6px;margin:-4px -6px;border-radius:6px;">
+          <span style="display:flex;align-items:center;gap:7px;min-width:0;"><span class="legend-dot" style="background:#7A4FE6"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Secure Private Network</span></span>
+          <span style="font-weight:700;color:var(--vf-grey);white-space:nowrap;">€5,100,000</span>
+        </div>
+    </div>
+  </div>
+
+    </div>
+  </div>
+  </div>
+    </div>
+    <button class="chat-fab" id="chatFab" title="Presales Assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
+</div>
+</body>
+</html>

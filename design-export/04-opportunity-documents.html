@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Presales Agent — Opportunity Documents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css?v=2">
+</head>
+<body>
+<div id="app">
+
+
+  <div class="topnav">
+    <div class="topnav-inner">
+      <div class="topnav-brand">
+        <div class="mark">V!</div>
+        <div class="txt"><b>Presales Agent</b><span>Vodafone Business</span></div>
+      </div>
+      <div class="topnav-links">
+
+          <div class="topnav-link " data-nav="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg><span>Dashboard</span>
+          </div>
+          <div class="topnav-link active" data-nav="opportunities">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path></svg><span>Opportunities</span>
+          </div>
+          <div class="topnav-link " data-nav="tender">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1" fill="currentColor"></circle></svg><span>Tender</span>
+          </div>
+          <div class="topnav-link " data-nav="customers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"></rect><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"></path><path d="M10 21v-4h4v4"></path></svg><span>Customers</span>
+          </div>
+      </div>
+      <div class="topnav-right">
+        <div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg><input placeholder="Search PEGA #, customer..." id="globalSearch"></div>
+        <div class="avatar" title="Basma G.">BG</div>
+      </div>
+    </div>
+  </div>
+    <div class="main">
+      <div class="content">
+  <div style="margin-bottom:14px;">
+    <a data-nav="opportunities" class="link-btn" style="display:inline-flex;align-items:center;gap:5px;">← All opportunities</a>
+  </div>
+
+  <div class="card card-pad" style="margin-bottom:18px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
+      <div>
+        <div class="eyebrow">OPPORTUNITY</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <h2 style="font-size:17px;margin:0;"><a class="link-btn" data-nav-customer="c6" style="font-size:inherit;">SCIT Group</a></h2>
+          <span class="pill pill-amber">Proposal Development</span>
+        </div>
+        <div style="color:var(--vf-grey);font-size:13px;margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <span class="pega-num">PEGA-91042</span> <span class="pill pill-blue">RFP</span> · Aviation &amp; Connectivity · Created 21 Nov 2025
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <div style="font-size:12px;color:var(--vf-grey);">Assigned to</div>
+        <select class="input" style="width:auto;" id="assignSelect" data-oppid="o11">
+          <option value="t1">Sarah Bennett</option><option value="t2" selected="">James Carter</option><option value="t3">Olivia Turner</option><option value="t4">Daniel Brooks</option><option value="t5">Emily Clarke</option><option value="t6">Michael Reed</option>
+        </select>
+        <select class="input" style="width:auto;" id="statusSelect" data-oppid="o11">
+          <option value="New">New</option><option value="Kick off">Kick off</option><option value="Discovery">Discovery</option><option value="Proposal Development" selected="">Proposal Development</option><option value="Proposal Sent">Proposal Sent</option><option value="Delivered">Delivered</option><option value="Cancelled/Rejected">Cancelled/Rejected</option>
+        </select>
+        <div style="font-weight:700;font-size:16px;">€9,000,000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab " data-tab="profile">Profile</div>
+    <div class="tab " data-tab="insights">Summary</div>
+    <div class="tab active" data-tab="documents">Documents</div>
+    <div class="tab " data-tab="comments">Comments</div>
+  </div>
+
+  <div class="card card-pad">
+    <div class="card-head"><h3>Documents</h3><span class="hint">1 on file</span></div>
+
+      <div class="doc-row">
+        <div class="icon-badge icon-badge-sm icon-badge-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg></div>
+        <div style="flex:1;min-width:0;">
+          <div class="doc-name">PEGA_DemandForm_SCIT_EuropeIFC.pdf</div>
+          <div class="doc-meta">PEGA Demand Form · uploaded by James Carter · 21 Nov 2025</div>
+        </div>
+        <span class="chip">PEGA Demand Form</span>
+      </div>
+
+    <div class="section-title">Generate Document</div>
+
+      <div class="doc-slot" id="genslot-o11-CustomerProposal">
+        <div class="ds-l">
+          <div class="icon-badge icon-badge-sm icon-badge-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg></div>
+          <div><div class="ds-name">Customer Proposal</div><div class="ds-desc">Auto-generated client-facing proposal document for this opportunity.</div></div>
+        </div>
+        <button class="btn btn-sm" data-gendoc="o11" data-doctype="Customer Proposal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg> Populate</button>
+      </div>
+      <div class="doc-slot" id="genslot-o11-HandoverPack">
+        <div class="ds-l">
+          <div class="icon-badge icon-badge-sm icon-badge-navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg></div>
+          <div><div class="ds-name">Handover Pack</div><div class="ds-desc">Presales-to-Delivery transfer package — RAID log, commercial baseline, RTM, contacts and 90-day kickoff plan.</div></div>
+        </div>
+        <button class="btn btn-sm" data-gendoc="o11" data-doctype="Handover Pack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"></path></svg> Populate</button>
+      </div>
+
+    <div class="section-title">Upload Document</div>
+    <div class="field-note" style="margin-bottom:8px;">Add any supporting file — call notes, RFP documents, anything relevant. It appears here, feeds the Insights tab, and is used as context for the chatbot and proposal.</div>
+    <button class="btn btn-sm" data-adddoc="o11" data-doctype="Other"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5"></path><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg> Upload document</button>
+  </div>
+
+  </div>
+    </div>
+    <button class="chat-fab" id="chatFab" title="Presales Assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
+
+
+</div>
+</body>
+</html>
