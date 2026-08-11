@@ -6,33 +6,38 @@
 <title>Presales Agent | Vodafone</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
+  /* Universal design system — Standalone PSC-2 theme.css tokens */
   --vf-red:#E60000;
-  --vf-red-dark:#B10000;
-  --vf-red-light:#FFEAEA;
-  --vf-dark:#1B1B1B;
-  --vf-grey:#5A5D5E;
-  --vf-grey-light:#8A8D8E;
-  --vf-bg:#F5F6F7;
+  --vf-red-dark:#B30000;
+  --vf-red-light:#FDE8E8;
+  --vf-navy:#2F3C7E;
+  --vf-navy-bg:#E8EAF6;
+  --vf-dark:#14161A;
+  --vf-grey:#6B7280;
+  --vf-grey-light:#9A9DA6;
+  --vf-bg:#F7F7F8;
   --vf-card:#FFFFFF;
-  --vf-border:#E5E7E9;
-  --vf-green:#0C9B4A;
-  --vf-green-bg:#E7F8ED;
-  --vf-amber:#B77A00;
-  --vf-amber-bg:#FFF4E0;
-  --vf-blue:#0A84C7;
-  --vf-blue-bg:#E6F4FB;
-  --vf-grey-bg:#F0F1F2;
-  --vf-purple:#7A4FE6;
-  --vf-purple-bg:#F1ECFD;
-  --vf-teal:#0E7C86;
-  --vf-teal-bg:#E3F5F4;
-  --vf-orange:#C1622B;
-  --vf-orange-bg:#FDEEDC;
-  --radius:14px;
-  --radius-sm:10px;
+  --vf-border:#E7E7EA;
+  --vf-green:#1AA37A;
+  --vf-green-bg:#E4F7F0;
+  --vf-amber:#B15A16;
+  --vf-amber-bg:#FDECDD;
+  --vf-blue:#2D9CDB;
+  --vf-blue-bg:#E4F3FC;
+  --vf-grey-bg:#F0F0F2;
+  --vf-purple:#9B51E0;
+  --vf-purple-bg:#F3E8FC;
+  --vf-teal:#00A99D;
+  --vf-teal-bg:#E0F5F3;
+  --vf-orange:#B15A16;
+  --vf-orange-bg:#FDECDD;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --radius:12px;
+  --radius-sm:8px;
   --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 6px 20px rgba(0,0,0,.08);
 }
@@ -40,11 +45,12 @@
 html,body{height:100%;}
 body{
   margin:0;
-  font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  font-family:var(--font-body),"Helvetica Neue",Arial,sans-serif;
   background:var(--vf-bg);
   color:var(--vf-dark);
   -webkit-font-smoothing:antialiased;
 }
+h1,h2,h3,.page-head h1,.card-head h3,.topnav-brand .txt b{font-family:var(--font-display),sans-serif;}
 a{color:inherit;text-decoration:none;}
 button{font-family:inherit;cursor:pointer;}
 input,textarea,select{font-family:inherit;}
@@ -159,6 +165,7 @@ svg{width:16px;height:16px;flex-shrink:0;}
 .icon-badge-amber{background:var(--vf-amber-bg);color:var(--vf-amber);}
 .icon-badge-orange{background:var(--vf-orange-bg);color:var(--vf-orange);}
 .icon-badge-grey{background:var(--vf-grey-bg);color:var(--vf-grey);}
+.icon-badge-navy{background:var(--vf-navy-bg);color:var(--vf-navy);}
 
 /* ---------- Eyebrow / kicker label ---------- */
 .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--vf-red);margin-bottom:6px;}
