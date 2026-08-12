@@ -363,23 +363,22 @@ textarea.input{resize:vertical;min-height:70px;}
 .tender-nav-active{background:var(--vf-red-light);color:var(--vf-red-dark);font-weight:700;border-left:4px solid var(--vf-red);padding-left:14px;margin-bottom:10px;}
 .tender-nav-active .tender-nav-count{color:var(--vf-grey);}
 
-/* ---------- Assessment Pack accordion (matches source design system) ---------- */
+/* ---------- Assessment Pack section tabs (matches source design system) ---------- */
 .toolbar{display:flex;align-items:center;gap:12px;margin:26px 0 14px;flex-wrap:wrap;}
 .toolbar-label{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;letter-spacing:-0.2px;color:#0B0C0E;margin-right:auto;}
 .toolbar-sub{font-size:12.5px;color:#6B7280;font-weight:400;margin-left:10px;}
-details.sec{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);margin-top:14px;overflow:hidden;}
-details.sec[open]{border-color:#F0C9C9;box-shadow:0 3px 12px rgba(11,12,14,0.07);}
-details.sec > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;padding:20px 26px;user-select:none;}
-details.sec > summary::-webkit-details-marker{display:none;}
-details.sec > summary:hover{background:#FCFCFD;}
+.sec-btn{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);margin-top:14px;overflow:hidden;list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;padding:20px 26px;user-select:none;text-align:left;width:100%;}
+.sec-btn.active{border-color:#F0C9C9;box-shadow:0 3px 12px rgba(11,12,14,0.07);}
+.sec-btn:hover{background:#FCFCFD;}
 .sec-num{flex:0 0 auto;width:40px;height:40px;border-radius:11px;background:#FDECEC;color:#E60000;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
-details.sec[open] .sec-num{background:#E60000;color:#FFFFFF;}
+.sec-btn.active .sec-num{background:#E60000;color:#FFFFFF;}
 .sec-text{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
 .sec-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;letter-spacing:-0.3px;line-height:1.2;}
 .sec-sub{font-size:12.5px;color:#6B7280;}
 .sec-tag{flex:0 0 auto;font-size:10.5px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;color:#6B7280;background:#F4F4F6;border:1px solid #EDEDEF;border-radius:999px;padding:5px 11px;}
 .chev{flex:0 0 auto;width:22px;height:22px;color:#9CA3AF;transition:transform .18s ease, color .18s ease;}
-details.sec[open] .chev{transform:rotate(180deg);color:#E60000;}
+.sec-btn.active .chev{transform:rotate(90deg);color:#E60000;}
+.sec-panel{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);padding:26px;margin-top:18px;}
 .sec-body{padding:0 26px 26px;border-top:1px solid #F0F0F2;}
 </style>
 </head>
@@ -1037,6 +1036,29 @@ function renderOpportunitiesList(){
 
 /* ================= OPPORTUNITY DETAIL ================= */
 let ACTIVE_TAB='profile';
+let ACTIVE_ANALYSIS_TAB='overview';
+const ANALYSIS_TABS=[
+  {id:'overview',num:'00',title:'Opportunity Overview',sub:'Unified decision-support view for opportunity qualification, requirements fit-gap, recommendation, risk, and next actions',tag:'Summary'},
+  {id:'champ',num:'01',title:'CHAMP Qualification',sub:'Challenges, Authority, Money, Prioritisation — customer-centric qualification',tag:'Qualification'},
+  {id:'meddpicc',num:'02',title:'MEDDPICC Analysis',sub:'Full opportunity qualification framework and scoring',tag:'Qualification'},
+  {id:'reqs',num:'03',title:'Requirements Analysis',sub:'Requirement quality, clarity, completeness, risk and open clarifications',tag:'Discovery'},
+  {id:'solution',num:'04',title:'Solution Recommendation & Gap Closure',sub:'Recommended option, assumptions, dependencies and residual gaps',tag:'Design'},
+];
+function renderAnalysisTabStrip(){
+  return ANALYSIS_TABS.map(t=>`
+    <button type="button" class="sec-btn ${ACTIVE_ANALYSIS_TAB===t.id?'active':''}" data-analysistab="${t.id}">
+      <div class="sec-num">${esc(t.num)}</div>
+      <div class="sec-text">
+        <div class="sec-title">${esc(t.title)}</div>
+        <div class="sec-sub">${esc(t.sub)}</div>
+      </div>
+      <div class="sec-tag">${esc(t.tag)}</div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>`).join('');
+}
+function secPanelOpen(id){
+  return `<div class="sec-panel" id="sec-${id}" style="display:${ACTIVE_ANALYSIS_TAB===id?'block':'none'};">`;
+}
 function renderOpportunityDetail(id){
   const o=getOpp(id);
   if(!o) return `<div class="empty-state">Opportunity not found. <a class="link-btn" data-nav="opportunities">Back to list</a></div>`;
@@ -1525,17 +1547,7 @@ function buildAssessmentPackHTML(o,c,ins){
   const trlGapBlocks=Array.from({length:Math.max(trlGap,0)},()=>`<span style="width:32px;height:12px;border-radius:3px;background:#E79A2B;"></span>`).join('');
 
   return `
-  <details class="sec" id="sec-overview">
-    <summary>
-      <div class="sec-num">00</div>
-      <div class="sec-text">
-        <div class="sec-title">Opportunity Overview</div>
-        <div class="sec-sub">Unified decision-support view for opportunity qualification, requirements fit-gap, recommendation, risk, and next actions</div>
-      </div>
-      <div class="sec-tag">Summary</div>
-      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </summary>
-    <div class="sec-body"><div class="sec-inner">
+  ${secPanelOpen('overview')}
   <div style="display:grid;grid-template-columns:340px 1fr 280px;gap:20px;margin-top:20px;align-items:stretch;">
     ${packCard(`${packHeading('Opportunity snapshot')}<div style="display:grid;grid-template-columns:1fr auto;margin-top:14px;">${snapshotRows}</div>`,'height:100%;box-sizing:border-box;')}
 
@@ -1615,15 +1627,22 @@ function buildAssessmentPackHTML(o,c,ins){
       </div>
     </div>
   </div>
-    </div></div>
-  </details>
+  </div>
   `;
 }
 function exportAssessmentPackPdf(oppId){
   const o=getOpp(oppId),c=getCustomer(o.customerId);
   const ins=ensureInsights(o,c);
-  let inner=buildAssessmentPackHTML(o,c,ins)+buildSupportingAnalysisHTML(o,c,ins);
-  inner=inner.replace(/<details class="sec"/g,'<details class="sec" open');
+  const prevTab=ACTIVE_ANALYSIS_TAB;
+  const sections=ANALYSIS_TABS.map(t=>{
+    ACTIVE_ANALYSIS_TAB=t.id;
+    return t.id==='overview'?buildAssessmentPackHTML(o,c,ins)
+      :t.id==='champ'?buildChampDetailSection(o,c,ins)
+      :t.id==='meddpicc'?buildMeddpiccDetailSection(o,c,ins)
+      :t.id==='reqs'?buildRequirementsDetailSection(o,c,ins)
+      :buildSolutionDetailSection(o,c,ins);
+  }).join('');
+  ACTIVE_ANALYSIS_TAB=prevTab;
   const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(c.name)} — Assessment Pack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1633,27 +1652,13 @@ function exportAssessmentPackPdf(oppId){
 body{margin:0;background:#F7F7F8;font-family:"DM Sans",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
 .page{width:1600px;background:#F7F7F8;padding:32px;color:#0B0C0E;}
 a{color:#E60000;text-decoration:none;}
-.toolbar{display:flex;align-items:center;gap:12px;margin:26px 0 14px;}
-.toolbar-label{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;letter-spacing:-0.2px;color:#0B0C0E;margin-right:auto;}
-.toolbar-sub{font-size:12.5px;color:#6B7280;font-weight:400;margin-left:10px;}
-.btn{font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;color:#0B0C0E;background:#FFFFFF;border:1px solid #E8E8EA;border-radius:9px;padding:8px 14px;cursor:pointer;}
-details.sec{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);margin-top:14px;overflow:hidden;}
-details.sec > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;padding:20px 26px;user-select:none;}
-details.sec > summary::-webkit-details-marker{display:none;}
-.sec-num{flex:0 0 auto;width:40px;height:40px;border-radius:11px;background:#E60000;color:#FFFFFF;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
-.sec-text{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
-.sec-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;letter-spacing:-0.3px;line-height:1.2;}
-.sec-sub{font-size:12.5px;color:#6B7280;}
-.sec-tag{flex:0 0 auto;font-size:10.5px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;color:#6B7280;background:#F4F4F6;border:1px solid #EDEDEF;border-radius:999px;padding:5px 11px;}
-.chev{flex:0 0 auto;width:22px;height:22px;color:#E60000;transform:rotate(180deg);}
-.sec-body{padding:0 26px 26px;border-top:1px solid #F0F0F2;}
+.sec-panel{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);padding:26px;margin-top:14px;display:block !important;}
 @media print{
-  body{background:#FFFFFF;} .page{width:auto;} .toolbar{display:none;}
-  details.sec{break-inside:avoid;box-shadow:none;border-color:#E8E8EA;}
-  details.sec > summary{break-after:avoid;}
+  body{background:#FFFFFF;} .page{width:auto;}
+  .sec-panel{break-inside:avoid;box-shadow:none;border-color:#E8E8EA;}
 }
 </style>
-</head><body><div class="page">${inner}</div>
+</head><body><div class="page">${sections}</div>
 <script>window.onload=function(){setTimeout(function(){window.print();},450);};<\/script>
 </body></html>`;
   const w=window.open('','_blank');
@@ -1759,17 +1764,7 @@ function buildChampDetailSection(o,c,ins){
   const overallColor=champAvg>=4?'#0F8A8A':champAvg>=2.5?'#C2670B':'#E60000';
 
   return `
-  <details class="sec" id="sec-champ">
-    <summary>
-      <div class="sec-num">01</div>
-      <div class="sec-text">
-        <div class="sec-title">CHAMP Qualification</div>
-        <div class="sec-sub">Challenges, Authority, Money, Prioritisation — customer-centric qualification</div>
-      </div>
-      <div class="sec-tag">Qualification</div>
-      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </summary>
-    <div class="sec-body"><div class="sec-inner">
+  ${secPanelOpen('champ')}
     <div style="position:relative;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;">
       ${cards}
       <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:116px;height:116px;border-radius:999px;background:#FFFFFF;border:1px solid #E8E8EA;box-shadow:0 4px 18px rgba(11,12,14,0.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
@@ -1828,8 +1823,8 @@ function buildChampDetailSection(o,c,ins){
       <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#4B5563;"><span style="width:20px;height:20px;border-radius:999px;background:#E3F5F4;color:#0F8A8A;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">4</span>Strong</div>
       <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#4B5563;"><span style="width:20px;height:20px;border-radius:999px;background:#E3F5F4;color:#0F8A8A;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">5</span>Excellent</div>
     </div>
-    </div></div>
-  </details>`;
+  </div>
+  `;
 }
 
 function buildMeddpiccDetailSection(o,c,ins){
@@ -1880,17 +1875,7 @@ function buildMeddpiccDetailSection(o,c,ins){
   }).join('');
 
   return `
-  <details class="sec" id="sec-meddpicc">
-    <summary>
-      <div class="sec-num">02</div>
-      <div class="sec-text">
-        <div class="sec-title">MEDDPICC Analysis</div>
-        <div class="sec-sub">Full opportunity qualification framework and scoring</div>
-      </div>
-      <div class="sec-tag">Qualification</div>
-      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </summary>
-    <div class="sec-body"><div class="sec-inner">
+  ${secPanelOpen('meddpicc')}
     <div style="display:grid;grid-template-columns:320px 1fr;gap:20px;margin-top:20px;align-items:stretch;">
       <div style="display:flex;flex-direction:column;gap:20px;">
         <div style="background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;padding:22px 24px;box-shadow:0 1px 2px rgba(11,12,14,0.04);">
@@ -1948,8 +1933,8 @@ function buildMeddpiccDetailSection(o,c,ins){
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:6px;">${eightElements}</div>
     </div>
-    </div></div>
-  </details>`;
+  </div>
+  `;
 }
 
 function buildRequirementsDetailSection(o,c,ins){
@@ -1987,17 +1972,7 @@ function buildRequirementsDetailSection(o,c,ins){
     <div style="padding:12px 12px 12px 0;border-top:1px solid #EDEDEF;">${rtmStatusPill(r.status)}</div>`).join('');
 
   return `
-  <details class="sec" id="sec-reqs">
-    <summary>
-      <div class="sec-num">03</div>
-      <div class="sec-text">
-        <div class="sec-title">Requirements Analysis</div>
-        <div class="sec-sub">Requirement quality, clarity, completeness, risk and open clarifications</div>
-      </div>
-      <div class="sec-tag">Discovery</div>
-      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </summary>
-    <div class="sec-body"><div class="sec-inner">
+  ${secPanelOpen('reqs')}
     ${!hasRtm?`
     <div style="margin-top:20px;padding:16px 20px;background:#FFF4E0;border:1px solid #F5D999;border-radius:14px;font-size:13px;color:#4B5563;">${reachedDiscovery?'Discovery reached — requirements traceability not yet mapped.':'Requirements analysis is populated after this opportunity reaches Discovery.'}</div>
     `:`
@@ -2167,8 +2142,8 @@ function buildRequirementsDetailSection(o,c,ins){
       </div>
     </div>
     `}
-    </div></div>
-  </details>`;
+  </div>
+  `;
 }
 
 function buildSolutionDetailSection(o,c,ins){
@@ -2231,17 +2206,7 @@ function buildSolutionDetailSection(o,c,ins){
   }).join('');
 
   return `
-  <details class="sec" id="sec-solution">
-    <summary>
-      <div class="sec-num">04</div>
-      <div class="sec-text">
-        <div class="sec-title">Solution Recommendation &amp; Gap Closure</div>
-        <div class="sec-sub">Recommended option, assumptions, dependencies and residual gaps</div>
-      </div>
-      <div class="sec-tag">Design</div>
-      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </summary>
-    <div class="sec-body"><div class="sec-inner">
+  ${secPanelOpen('solution')}
     ${options.length?`
     <div style="background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;padding:22px 24px;margin-top:20px;box-shadow:0 1px 2px rgba(11,12,14,0.04);">
       <div style="display:flex;align-items:baseline;gap:10px;">
@@ -2339,8 +2304,8 @@ function buildSolutionDetailSection(o,c,ins){
         </div>
       </div>
     </div>
-    </div></div>
-  </details>`;
+  </div>
+  `;
 }
 
 function buildSupportingAnalysisHTML(o,c,ins){
@@ -2375,10 +2340,9 @@ function renderOppInsightsTab(o,c){
   </div>
 
   <div class="toolbar" style="margin-bottom:0;">
-    <div class="toolbar-label">Opportunity analysis<span class="toolbar-sub">Overview plus four supporting assessments — expand any section for the full detail</span></div>
-    <button class="btn" type="button" data-secact="expand">Expand all</button>
-    <button class="btn" type="button" data-secact="collapse">Collapse all</button>
+    <div class="toolbar-label">Opportunity analysis<span class="toolbar-sub">Overview plus four supporting assessments — click a section to view it</span></div>
   </div>
+  ${renderAnalysisTabStrip()}
 
   <div style="margin-bottom:18px;">${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
 
@@ -3034,7 +2998,7 @@ function openCreateOppModal(){
     setTimeout(()=>{
       const newOpp=createOpportunityFromDemandForm(assignee,file.name,requestType,tier);
       closeModal();
-      ACTIVE_TAB='profile';
+      ACTIVE_TAB='profile';ACTIVE_ANALYSIS_TAB='overview';
       go('opportunity',newOpp.id);
       toast('Opportunity created — customer, PEGA number and profile populated from the form.');
     },1300);
@@ -3587,7 +3551,7 @@ function attachGlobalHandlers(){
     el.onclick=()=>go('customer',el.getAttribute('data-navcust'));
   });
   document.querySelectorAll('[data-openopp]').forEach(el=>{
-    el.onclick=()=>{ACTIVE_TAB='profile';go('opportunity',el.getAttribute('data-openopp'));};
+    el.onclick=()=>{ACTIVE_TAB='profile';ACTIVE_ANALYSIS_TAB='overview';go('opportunity',el.getAttribute('data-openopp'));};
   });
 
   const btnNewOpp=document.getElementById('btnNewOpp');
@@ -3629,11 +3593,8 @@ function attachGlobalHandlers(){
   document.querySelectorAll('[data-exportpack]').forEach(el=>{
     el.onclick=()=>exportAssessmentPackPdf(el.getAttribute('data-exportpack'));
   });
-  document.querySelectorAll('[data-secact]').forEach(el=>{
-    el.onclick=()=>{
-      const open=el.getAttribute('data-secact')==='expand';
-      document.querySelectorAll('details.sec').forEach(d=>{d.open=open;});
-    };
+  document.querySelectorAll('[data-analysistab]').forEach(el=>{
+    el.onclick=()=>{ ACTIVE_ANALYSIS_TAB=el.getAttribute('data-analysistab'); render(); };
   });
   document.querySelectorAll('[data-schedulereport]').forEach(el=>{
     el.onclick=()=>openScheduleReportModal(el.getAttribute('data-schedulereport'));
