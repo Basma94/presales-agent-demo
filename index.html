@@ -1040,9 +1040,14 @@ const ANALYSIS_TABS=[
   {id:'reqs',num:'03',title:'Requirements Analysis',sub:'Requirement quality, clarity, completeness, risk and open clarifications',tag:'Discovery'},
   {id:'solution',num:'04',title:'Solution Recommendation & Gap Closure',sub:'Recommended option, assumptions, dependencies and residual gaps',tag:'Design'},
 ];
-function renderAnalysisTabStrip(){
-  return `<div class="subtabs">${ANALYSIS_TABS.map(t=>`
-    <button type="button" class="subtab ${ACTIVE_ANALYSIS_TAB===t.id?'active':''}" data-analysistab="${t.id}">${esc(t.title)}</button>`).join('')}</div>`;
+function renderAnalysisTabStrip(oppId){
+  return `
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+    <div class="subtabs" style="margin-bottom:0;flex:1;">${ANALYSIS_TABS.map(t=>`
+      <button type="button" class="subtab ${ACTIVE_ANALYSIS_TAB===t.id?'active':''}" data-analysistab="${t.id}">${esc(t.title)}</button>`).join('')}
+    </div>
+    <button class="btn btn-sm" data-exportpack="${oppId}" style="flex-shrink:0;">${ic('doc')} Export PDF</button>
+  </div>`;
 }
 function secPanelOpen(id){
   return `<div class="sec-panel" id="sec-${id}" style="display:${ACTIVE_ANALYSIS_TAB===id?'block':'none'};">`;
@@ -1328,19 +1333,6 @@ function recomputeGate(o){
       recommendation:meddEvidenced>=6?'Strong qualification picture — proceed to Proposal Development.':'Keep gathering MEDDPICC evidence before drafting a proposal.',
       nextStep:meddEvidenced>=6?'Draft Customer Proposal':'Continue Discovery'};
   }
-}
-function analysisStageInfo(o,ins){
-  if(o.status===WON_STATUS){
-    return {cls:'banner-green',icon:'check',title:`${o.status} — Deal Delivered`,
-      body:'This opportunity has been delivered. The analysis below reflects the qualification record that got it here.',next:null};
-  }
-  if(o.status===CANCELLED_STATUS){
-    return {cls:'banner-red',icon:'ban',title:o.status,
-      body:o.cancelReason?`Reason: ${o.cancelReason}`:'This opportunity was cancelled or rejected — no further action recommended.',next:null};
-  }
-  const proceedSignal=/proceed/i.test(ins.gate.signal);
-  return {cls:proceedSignal?'banner-green':'banner-warn',icon:proceedSignal?'trend':'info',
-    title:`${o.status} · ${ins.gate.signal}`,body:`${ins.gate.confidence} — ${ins.gate.recommendation}`,next:ins.gate.nextStep};
 }
 function addInsightFromInput(o,input){
   const ins=ensureInsights(o);
@@ -2307,29 +2299,18 @@ function buildSupportingAnalysisHTML(o,c,ins){
 
 function renderOppInsightsTab(o,c){
   const ins=ensureInsights(o,c);
-  const stageInfo=analysisStageInfo(o,ins);
 
   return `
-  ${renderAnalysisTabStrip()}
+  ${renderAnalysisTabStrip(o.id)}
 
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head"><h3>${ic('spark')} Opportunity Summary</h3><button class="btn btn-sm" data-exportpack="${o.id}">${ic('doc')} Export Assessment Pack (PDF)</button></div>
-    <div class="banner ${stageInfo.cls}" style="margin-bottom:0;">
-      ${ic(stageInfo.icon)}
-      <div>
-        <div class="b-title">${esc(stageInfo.title)}</div>
-        <div class="b-text">${esc(stageInfo.body)}</div>
-        ${stageInfo.next?`<div class="b-text" style="margin-top:4px;"><b>Next step:</b> ${esc(stageInfo.next)}</div>`:''}
-      </div>
+  <div style="display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start;">
+    <div>${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
+    <div class="card card-pad">
+      <div class="card-head" style="margin-bottom:6px;">${iconBadge('chat','navy','sm')}<h3 style="flex:1;margin-left:10px;font-size:14px;">Questions for the Customer</h3></div>
+      <div class="hint" style="display:block;margin-bottom:10px;">CHAMP-aligned — ask before or during the next call</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">${renderKickoffQuestionsList(o,c)}</div>
     </div>
   </div>
-
-  <div class="card card-pad" style="margin-bottom:18px;">
-    <div class="card-head">${iconBadge('chat','navy','sm')}<h3 style="flex:1;margin-left:10px;">Questions for the Customer</h3><span class="hint">CHAMP-aligned — ask before or during the next call</span></div>
-    <div class="grid grid-2" style="gap:8px;">${renderKickoffQuestionsList(o,c)}</div>
-  </div>
-
-  <div style="margin-bottom:18px;">${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
 
   <div class="card card-pad">
     <div class="card-head"><h3>Insights Feed</h3><span class="hint">Every new input — a document, a comment — adds to this picture</span></div>
