@@ -245,6 +245,10 @@ textarea.input{resize:vertical;min-height:70px;}
 .tab.active{color:var(--vf-red);border-color:var(--vf-red);}
 .tab:hover{color:var(--vf-dark);cursor:pointer;}
 .tab.locked{opacity:.45;cursor:not-allowed;}
+.subtabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:18px;background:var(--vf-grey-bg);padding:5px;border-radius:12px;}
+.subtab{padding:9px 16px;border-radius:9px;font-size:13px;font-weight:600;color:var(--vf-grey);background:transparent;border:none;cursor:pointer;white-space:nowrap;font-family:inherit;}
+.subtab:hover{color:var(--vf-dark);}
+.subtab.active{background:#fff;color:var(--vf-red);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
 /* ---------- Banner ---------- */
 .banner{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:10px;margin-bottom:20px;}
@@ -364,20 +368,12 @@ textarea.input{resize:vertical;min-height:70px;}
 .tender-nav-active .tender-nav-count{color:var(--vf-grey);}
 
 /* ---------- Assessment Pack section tabs (matches source design system) ---------- */
-.toolbar{display:flex;align-items:center;gap:12px;margin:26px 0 14px;flex-wrap:wrap;}
-.toolbar-label{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;letter-spacing:-0.2px;color:#0B0C0E;margin-right:auto;}
-.toolbar-sub{font-size:12.5px;color:#6B7280;font-weight:400;margin-left:10px;}
-.sec-btn{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);margin-top:14px;overflow:hidden;list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;padding:20px 26px;user-select:none;text-align:left;width:100%;}
-.sec-btn.active{border-color:#F0C9C9;box-shadow:0 3px 12px rgba(11,12,14,0.07);}
-.sec-btn:hover{background:#FCFCFD;}
 .sec-num{flex:0 0 auto;width:40px;height:40px;border-radius:11px;background:#FDECEC;color:#E60000;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
-.sec-btn.active .sec-num{background:#E60000;color:#FFFFFF;}
 .sec-text{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
 .sec-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;letter-spacing:-0.3px;line-height:1.2;}
 .sec-sub{font-size:12.5px;color:#6B7280;}
 .sec-tag{flex:0 0 auto;font-size:10.5px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;color:#6B7280;background:#F4F4F6;border:1px solid #EDEDEF;border-radius:999px;padding:5px 11px;}
 .chev{flex:0 0 auto;width:22px;height:22px;color:#9CA3AF;transition:transform .18s ease, color .18s ease;}
-.sec-btn.active .chev{transform:rotate(90deg);color:#E60000;}
 .sec-panel{background:#FFFFFF;border:1px solid #E8E8EA;border-radius:16px;box-shadow:0 1px 2px rgba(11,12,14,0.04);padding:26px;margin-top:18px;}
 .sec-body{padding:0 26px 26px;border-top:1px solid #F0F0F2;}
 </style>
@@ -1045,16 +1041,8 @@ const ANALYSIS_TABS=[
   {id:'solution',num:'04',title:'Solution Recommendation & Gap Closure',sub:'Recommended option, assumptions, dependencies and residual gaps',tag:'Design'},
 ];
 function renderAnalysisTabStrip(){
-  return ANALYSIS_TABS.map(t=>`
-    <button type="button" class="sec-btn ${ACTIVE_ANALYSIS_TAB===t.id?'active':''}" data-analysistab="${t.id}">
-      <div class="sec-num">${esc(t.num)}</div>
-      <div class="sec-text">
-        <div class="sec-title">${esc(t.title)}</div>
-        <div class="sec-sub">${esc(t.sub)}</div>
-      </div>
-      <div class="sec-tag">${esc(t.tag)}</div>
-      <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>`).join('');
+  return `<div class="subtabs">${ANALYSIS_TABS.map(t=>`
+    <button type="button" class="subtab ${ACTIVE_ANALYSIS_TAB===t.id?'active':''}" data-analysistab="${t.id}">${esc(t.title)}</button>`).join('')}</div>`;
 }
 function secPanelOpen(id){
   return `<div class="sec-panel" id="sec-${id}" style="display:${ACTIVE_ANALYSIS_TAB===id?'block':'none'};">`;
@@ -2322,6 +2310,8 @@ function renderOppInsightsTab(o,c){
   const stageInfo=analysisStageInfo(o,ins);
 
   return `
+  ${renderAnalysisTabStrip()}
+
   <div class="card card-pad" style="margin-bottom:18px;">
     <div class="card-head"><h3>${ic('spark')} Opportunity Summary</h3><button class="btn btn-sm" data-exportpack="${o.id}">${ic('doc')} Export Assessment Pack (PDF)</button></div>
     <div class="banner ${stageInfo.cls}" style="margin-bottom:0;">
@@ -2338,11 +2328,6 @@ function renderOppInsightsTab(o,c){
     <div class="card-head">${iconBadge('chat','navy','sm')}<h3 style="flex:1;margin-left:10px;">Questions for the Customer</h3><span class="hint">CHAMP-aligned — ask before or during the next call</span></div>
     <div class="grid grid-2" style="gap:8px;">${renderKickoffQuestionsList(o,c)}</div>
   </div>
-
-  <div class="toolbar" style="margin-bottom:0;">
-    <div class="toolbar-label">Opportunity analysis<span class="toolbar-sub">Overview plus four supporting assessments — click a section to view it</span></div>
-  </div>
-  ${renderAnalysisTabStrip()}
 
   <div style="margin-bottom:18px;">${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
 
