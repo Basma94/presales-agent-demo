@@ -1108,27 +1108,6 @@ function renderOpportunityDetail(id){
   `;
 }
 
-const KICKOFF_Q_COLOR={CHALLENGE:'red',AUTHORITY:'teal',MONEY:'amber',PRIORITIZATION:'navy',SCOPE:'blue',FIT:'purple'};
-function buildKickoffQuestions(o,c){
-  const qs=[
-    {cat:'CHALLENGE',q:`What specifically isn't working today${o.profile.problemStatement?' with the current approach':''} — is this purely cost-driven, or are there service or performance issues behind the request?`},
-    {cat:'AUTHORITY',q:`How does ${c.name} engage in the vendor decision beyond ${o.profile.customerContact||'the named contact'} — who else needs to sign off?`},
-    {cat:'MONEY',q:`Is ${o.value?fmtMoney(o.value):'the indicated budget'} a hard ceiling, and does it include implementation costs or is that separate capex?`},
-    {cat:'PRIORITIZATION',q:`How does this rank against ${c.name}'s other current priorities?`},
-    {cat:'SCOPE',q:'Can you confirm the exact scope boundaries, and what is explicitly excluded?'},
-  ];
-  if(['RFP','RFQ'].includes(o.requestType)){
-    qs.push({cat:'FIT',q:'Are we shortlisted alongside other bidders, and what is the evaluation timeline?'});
-  }
-  return qs;
-}
-function renderKickoffQuestionsList(o,c){
-  return buildKickoffQuestions(o,c).map(item=>`
-    <div style="border-left:3px solid var(--vf-${KICKOFF_Q_COLOR[item.cat]});background:var(--vf-grey-bg);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:11px 14px;">
-      <div style="font-size:10.5px;font-weight:700;letter-spacing:0.6px;color:var(--vf-${KICKOFF_Q_COLOR[item.cat]});">${esc(item.cat)}</div>
-      <div style="font-size:13px;color:var(--vf-dark);line-height:1.5;margin-top:4px;">${esc(item.q)}</div>
-    </div>`).join('');
-}
 function buildFurtherReadingLinks(o,c){
   const topics=(o.aiRecommendedServices||[]).length?o.aiRecommendedServices:(SERVICE_CATALOG[c.industry]||[]);
   return topics.map(t=>({label:t,url:'https://www.google.com/search?q='+encodeURIComponent(t+' technology overview')}));
@@ -1138,9 +1117,7 @@ function renderOppProfileTab(o,c){
   const chipColors=['purple','teal','blue','amber','green','navy'];
   const profileFields=[
     ['PEGA Number',esc(o.pegaNumber)],
-    ['Request Type',requestTypeBadge(o)],
     ['Customer',esc(c.name)],
-    ['Customer Contact',esc(o.profile.customerContact||'—')],
     ['Source Document',esc(o.demandFormFileName)],
   ];
   const primaryContact=(c.contacts||[]).find(ct=>o.profile.customerContact&&o.profile.customerContact.includes(ct.name));
@@ -1169,36 +1146,37 @@ function renderOppProfileTab(o,c){
     </div>` : `<div style="font-size:13px;color:var(--vf-grey);">${esc(o.profile.customerContact||'—')}</div>`}
   </div>
 
-  <div class="card card-pad" style="margin-top:18px;">
-    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:28px;">
-      <div>
-        <div class="section-title" style="margin-top:0;">Customer Brief</div>
-        <div style="font-size:13px;line-height:1.6;">${esc(c.overview)}</div>
-        ${(c.priorities||[]).length?`
-        <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
-          ${c.priorities.map(p=>`<div style="display:flex;gap:8px;font-size:12.5px;color:var(--vf-grey);line-height:1.5;"><span style="color:var(--vf-red);flex-shrink:0;">&bull;</span>${esc(p)}</div>`).join('')}
-        </div>`:''}
-        <div class="kv" style="margin-top:10px;"><div class="k">Industry</div><div class="v">${esc(c.industry)}</div></div>
-        <div class="kv"><div class="k">HQ</div><div class="v">${esc(c.hq)}</div></div>
-        <div style="margin-top:8px;">
-          <a class="link-btn" data-nav-customer="${c.id}">View full customer profile &rarr;</a>
-        </div>
-      </div>
-      <div>
-        <div class="section-title" style="margin-top:0;">Technical Brief</div>
-        <div class="kv"><div class="k">Request Type</div><div class="v">${requestTypeBadge(o)}${o.tier?' · '+esc(o.tier):''}</div></div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--vf-grey);margin-top:12px;">Technical Ask</div>
-        <div style="font-size:13px;line-height:1.6;background:var(--vf-grey-bg);border-radius:var(--radius-sm);padding:12px 14px;margin-top:6px;">${esc(o.profile.problemStatement||'Not yet captured.')}</div>
-        ${o.aiRecommendedServices.length?`
-        <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--vf-grey);margin-top:14px;">AI Recommended Services</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">${o.aiRecommendedServices.map((s,i)=>`<span class="chip chip-${chipColors[i%chipColors.length]}">${ic('spark')} ${esc(s)}</span>`).join('')}</div>`:''}
-        ${catalogueServices.length?`
-        <div style="font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--vf-grey);margin-top:14px;">Related Catalogue Services</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">${catalogueServices.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div>`:''}
+  <div class="grid grid-2" style="margin-top:18px;">
+    <div class="card card-pad">
+      <div class="card-head"><h3>Company Brief</h3><span class="hint">${esc(c.industry)}</span></div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px;">${esc(c.overview)}</div>
+      <div class="kv"><div class="k">HQ</div><div class="v">${esc(c.hq)}</div></div>
+      <div class="kv"><div class="k">Employees</div><div class="v">${esc(c.employees)}</div></div>
+      <div class="kv"><div class="k">Annual Revenue</div><div class="v">${esc(c.revenue)}</div></div>
+      ${(c.priorities||[]).length?`
+      <div class="section-title">Strategic Priorities</div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;">
+        ${c.priorities.map(p=>`<li>${esc(p)}</li>`).join('')}
+      </ul>`:''}
+      <div style="margin-top:14px;">
+        <a class="link-btn" data-nav-customer="${c.id}">View full customer profile &rarr;</a>
       </div>
     </div>
 
-    <div class="section-title">Further Reading</div>
+    <div class="card card-pad">
+      <div class="card-head"><h3>Technical Brief</h3><span class="hint">${requestTypeBadge(o)}${o.tier?' · '+esc(o.tier):''}</span></div>
+      <div style="font-size:13px;line-height:1.6;margin-bottom:14px;">${esc(o.profile.problemStatement||'Not yet captured.')}</div>
+      ${o.aiRecommendedServices.length?`
+      <div class="section-title" style="margin-top:0;">AI Recommended Services</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${o.aiRecommendedServices.map((s,i)=>`<span class="chip chip-${chipColors[i%chipColors.length]}">${ic('spark')} ${esc(s)}</span>`).join('')}</div>`:''}
+      ${catalogueServices.length?`
+      <div class="section-title">Related Catalogue Services</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${catalogueServices.map(s=>`<span class="chip">${esc(s)}</span>`).join('')}</div>`:''}
+    </div>
+  </div>
+
+  <div class="card card-pad" style="margin-top:18px;">
+    <div class="card-head"><h3>Further Reading</h3></div>
     ${furtherReading.length?`<div style="display:flex;flex-direction:column;gap:6px;">${furtherReading.map(l=>`
       <a href="${esc(l.url)}" target="_blank" rel="noopener" class="link-btn" style="display:flex;align-items:center;gap:8px;font-weight:500;">${ic('search')}${esc(l.label)}</a>`).join('')}</div>`
       :`<div style="font-size:13px;color:var(--vf-grey);">No recommended services yet to surface reading on.</div>`}
@@ -2303,14 +2281,7 @@ function renderOppInsightsTab(o,c){
   return `
   ${renderAnalysisTabStrip(o.id)}
 
-  <div style="display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start;">
-    <div>${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
-    <div class="card card-pad">
-      <div class="card-head" style="margin-bottom:6px;">${iconBadge('chat','navy','sm')}<h3 style="flex:1;margin-left:10px;font-size:14px;">Questions for the Customer</h3></div>
-      <div class="hint" style="display:block;margin-bottom:10px;">CHAMP-aligned — ask before or during the next call</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">${renderKickoffQuestionsList(o,c)}</div>
-    </div>
-  </div>
+  <div style="margin-bottom:18px;">${buildAssessmentPackHTML(o,c,ins)}${buildSupportingAnalysisHTML(o,c,ins)}</div>
 
   <div class="card card-pad">
     <div class="card-head"><h3>Insights Feed</h3><span class="hint">Every new input — a document, a comment — adds to this picture</span></div>
